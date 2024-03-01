@@ -1,9 +1,7 @@
-import { CalendarDateRangePicker } from '@/components/dashboard/DateRangePicker';
 import { MainNav } from '@/components/dashboard/MainNav';
 import { Search } from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserNav from '@/components/dashboard/UserNav';
-import { Button } from '@/components/ui/button';
 
 const HomePage = () => {
 	return (
@@ -34,3 +32,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

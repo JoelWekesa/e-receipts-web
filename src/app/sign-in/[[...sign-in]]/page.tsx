@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 
-import { cn } from '@/lib/utils';
 import { UserAuthForm } from '@/components/auth/user-auth';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 // import { buttonVariants } from '@/components/ui/button';
 // import { UserAuthForm } from '@/app/examples/authentication/components/user-auth-form';
 

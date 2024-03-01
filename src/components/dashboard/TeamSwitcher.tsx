@@ -38,8 +38,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select';
-
-const groups = [
+import { useUser } from '@clerk/nextjs';
+const groupsP = [
 	{
 		label: 'Personal Account',
 		teams: [
@@ -64,7 +64,7 @@ const groups = [
 	},
 ];
 
-type Team = (typeof groups)[number]['teams'][number];
+type Team = (typeof groupsP)[number]['teams'][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 	typeof PopoverTrigger
@@ -73,6 +73,31 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+	const { user } = useUser();
+	const groups = [
+		{
+			label: 'Personal Account',
+			teams: [
+				{
+					label: user?.fullName || 'Team Switcher',
+					value: 'personal',
+				},
+			],
+		},
+		{
+			label: 'Teams',
+			teams: [
+				{
+					label: 'Acme Inc.',
+					value: 'acme-inc',
+				},
+				{
+					label: 'Monsters Inc.',
+					value: 'monsters',
+				},
+			],
+		},
+	];
 	const [open, setOpen] = React.useState(false);
 	const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
 	const [selectedTeam, setSelectedTeam] = React.useState<Team>(
@@ -91,11 +116,13 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 						className={cn('w-[200px] justify-between', className)}>
 						<Avatar className='mr-2 h-5 w-5'>
 							<AvatarImage
-								src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
+								src={user?.imageUrl}
 								alt={selectedTeam.label}
 								className='grayscale'
 							/>
-							<AvatarFallback>SC</AvatarFallback>
+							<AvatarFallback>
+								{user?.firstName?.slice(0, 1)} {user?.lastName?.slice(0, 1)}
+							</AvatarFallback>
 						</Avatar>
 						{selectedTeam.label}
 						<CaretSortIcon className='ml-auto h-4 w-4 shrink-0 opacity-50' />
