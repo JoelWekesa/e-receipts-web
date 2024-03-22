@@ -1,7 +1,8 @@
-import { MainNav } from '@/components/dashboard/MainNav';
-import { Search } from '@/components/dashboard/Search';
+import {MainNav} from '@/components/dashboard/MainNav';
+import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserNav from '@/components/dashboard/UserNav';
+import StoreHomeComponent from '@/components/stores';
 
 const HomePage = () => {
 	return (
@@ -19,17 +20,10 @@ const HomePage = () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<div className='flex items-center justify-between space-y-2'>
-					<h2 className='text-3xl font-bold tracking-tight'>APIs</h2>
-					{/* <div className='flex items-center space-x-2'>
-						<CalendarDateRangePicker />
-						<Button>Download</Button>
-					</div> */}
-				</div>
+				<StoreHomeComponent />
 			</div>
 		</>
 	);
 };
 
 export default HomePage;
-
