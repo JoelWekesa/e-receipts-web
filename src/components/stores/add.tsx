@@ -7,8 +7,18 @@ import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
+import {useAuth} from '@clerk/nextjs';
+import useAddStore from '@/services/stores/add';
+import {Loader2} from 'lucide-react';
+import {useRouter} from 'next/navigation';
 
 const AddStore = () => {
+	const {sessionId} = useAuth();
+
+	const router = useRouter();
+
+	console.log({sessionId});
+
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
 	const ACCEPTED_FILE_TYPES = ['image/png'];
 	const regex = /^(07|01)\d{8}$/;
@@ -42,8 +52,15 @@ const AddStore = () => {
 		},
 	});
 
+	const successFn = () => {
+		form.reset();
+		router.push('/stores/all');
+	};
+
+	const {mutate, isPending} = useAddStore(successFn);
+
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		console.log(data);
+		mutate(data);
 	};
 
 	return (
@@ -198,10 +215,14 @@ const AddStore = () => {
 									</Dropzone>
 								)}
 							/>
+							<FormDescription>You must upload an image that is 400 * 400</FormDescription>
 						</InnerRowWrap>
 					</RowWrap>
 
-					<Button type='submit'>Create Store</Button>
+					<Button type='submit' disabled={isPending}>
+						{isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+						Create Store
+					</Button>
 				</form>
 			</Form>
 		</div>

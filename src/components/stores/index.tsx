@@ -1,4 +1,3 @@
-import React from 'react';
 import AddStore from './add';
 
 const StoreHomeComponent = () => {
