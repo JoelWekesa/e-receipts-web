@@ -45,7 +45,8 @@ const useAddStore = (successFn: () => void) => {
             })
         },
 
-        onError: (err) => {
+        onError: (err: any) => {
+            console.log("error", err)
             Swal.fire({
                 icon: "error",
                 title: "Oops...",

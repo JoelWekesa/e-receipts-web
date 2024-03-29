@@ -20,7 +20,7 @@ const AddStore = () => {
 	console.log({sessionId});
 
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
-	const ACCEPTED_FILE_TYPES = ['image/png'];
+	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
 	const formSchema = z.object({
 		name: z.string().min(1, {message: 'Name is required'}),
@@ -34,7 +34,8 @@ const AddStore = () => {
 			}, 'File size must be less than 3MB')
 			.refine((file) => {
 				return ACCEPTED_FILE_TYPES.includes(file.type);
-			}, 'File must be a PNG'),
+			}, 'File must be an image'),
+
 		pin_no: z.optional(z.string()),
 		vat_reg_no: z.optional(z.string()),
 	});
@@ -60,13 +61,13 @@ const AddStore = () => {
 	const {mutate, isPending} = useAddStore(successFn);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		mutate(data);
+		console.log(data.logo);
 	};
 
 	return (
-		<div className='flex flex-col gap-5 xl:gap-6 min-w-full'>
+		<div className='flex flex-col gap-5 xl:gap-6 container'>
 			<Form {...form}>
-				<form className='space-y-8 w-full' onSubmit={form.handleSubmit(handleSubmit)} suppressHydrationWarning>
+				<form className='space-y-8' onSubmit={form.handleSubmit(handleSubmit)} suppressHydrationWarning>
 					<RowWrap>
 						<InnerRowWrap>
 							<FormField
@@ -230,11 +231,15 @@ const AddStore = () => {
 };
 
 const RowWrap: FC<{children: ReactNode}> = ({children}) => {
-	return <div className='flex flex-row justify-between min-w-full gap-5'>{children}</div>;
+	return <div className='flex flex-wrap sm:flex-rows'>{children}</div>;
 };
 
 const InnerRowWrap: FC<{children: ReactNode}> = ({children}) => {
-	return <div className='w-1/2'>{children}</div>;
+	return (
+		<div className='w-full sm:w-1/2'>
+			<div className='mx-5'>{children}</div>
+		</div>
+	);
 };
 
 export default AddStore;
