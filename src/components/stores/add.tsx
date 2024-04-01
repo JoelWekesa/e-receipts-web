@@ -1,5 +1,8 @@
 'use client';
+import useAddStore from '@/services/stores/add';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {Loader2} from 'lucide-react';
+import {useRouter} from 'next/navigation';
 import {FC, ReactNode} from 'react';
 import Dropzone from 'react-dropzone';
 import {useForm} from 'react-hook-form';
@@ -7,18 +10,10 @@ import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-import {useAuth} from '@clerk/nextjs';
-import useAddStore from '@/services/stores/add';
-import {Loader2} from 'lucide-react';
-import {useRouter} from 'next/navigation';
+import Image from 'next/image';
 
 const AddStore = () => {
-	const {sessionId} = useAuth();
-
 	const router = useRouter();
-
-	console.log({sessionId});
-
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
@@ -196,18 +191,32 @@ const AddStore = () => {
 											<div className='w-full flex justify-center items-center'>
 												<div
 													{...getRootProps()}
-													className='w-full h-full border-2 border-dashed border-gray-400 hover:border-gray-600 rounded-lg p-4 flex flex-col justify-center items-center'>
+													className='w-full h-full border-2 border-dashed border-gray-400 hover:border-gray-600 rounded-lg p-4 flex flex-col '>
 													<input {...getInputProps()} />
 													<p className='text-gray-600'>
 														{form?.getValues('logo') ? (
-															<div className='mt-4'>
-																<h2 className='text-xl font-bold mb-2'>Uploaded File:</h2>
-																<p className='text-gray-600'>{form?.getValues('logo').name}</p>
+															<div className='flex flex-initial justify-items-start flex-row gap-5'>
+																<Image
+																	src={URL.createObjectURL(form?.getValues('logo'))}
+																	width={100}
+																	height={100}
+																	alt='store'
+																	style={{
+																		borderRadius: '15%',
+																	}}
+																/>
+																<div className='flex flex-col justify-center items-center'>
+																	<p>{`Drag 'n' drop your logo here, or click to select file`}</p>
+																</div>
 															</div>
 														) : !!form?.formState?.errors?.logo?.message ? (
-															<p className='text-red-600'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+															<div className='justify-center items-center'>
+																<p className='text-red-600 text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+															</div>
 														) : (
-															<p className='text-gray-600'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+															<div className='justify-center items-center'>
+																<p className='text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+															</div>
 														)}
 													</p>
 												</div>
@@ -216,7 +225,7 @@ const AddStore = () => {
 									</Dropzone>
 								)}
 							/>
-							<FormDescription>You must upload an image that is 400 * 400</FormDescription>
+							<FormDescription>Upload a new image</FormDescription>
 						</InnerRowWrap>
 					</RowWrap>
 
