@@ -9,9 +9,17 @@ import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
 import {Sheet, SheetContent, SheetTrigger} from '../ui/sheet';
 import {DataTable} from './usertable';
+import UpdateStoreComponent from './update';
+import {useAtom} from 'jotai';
+import {storeAtom} from '@/atoms/store';
+import {useRouter} from 'next/navigation';
 
 const UserStores = ({page, initialData}: StoreFetch) => {
 	const {data, isLoading, isFetching, isRefetching} = useUserStores({page, initialData});
+
+	const [_, setStore] = useAtom(storeAtom);
+
+	const router = useRouter();
 
 	const columns: ColumnDef<StoreDatum>[] = [
 		{
@@ -94,7 +102,7 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 							</Button>
 						</SheetTrigger>
 
-						<Button>
+						<Button onClick={() => handleEditStore(row.original)}>
 							<Edit className='mr-2 h-4 w-4' />
 							Edit
 						</Button>
@@ -116,6 +124,11 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 		toast('Clicked ' + id);
 	};
 
+	const handleEditStore = (store: StoreDatum) => {
+		router.push('/stores/update?id=' + store.id);
+		setStore(store);
+	};
+
 	return (
 		<div className='flex p-3 flex-col'>
 			<Sheet>
@@ -128,9 +141,7 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 						fetching={isRefetching || isFetching || isLoading}
 					/>
 				</div>
-				<SheetContent>
-					<p>Hello World</p>
-				</SheetContent>
+				<SheetContent>Hello World</SheetContent>
 			</Sheet>
 		</div>
 	);
