@@ -9,7 +9,7 @@ export const config = {
 
 export default authMiddleware({
 
-    publicRoutes: ["/register", "/contact"],
+    publicRoutes: ["/register", "/contact", "/"],
     afterAuth(auth, req, evt) {
         if (!auth.userId && !auth.isPublicRoute) {
             return redirectToSignIn({ returnBackUrl: req.url });

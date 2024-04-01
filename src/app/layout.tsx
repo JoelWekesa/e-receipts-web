@@ -1,19 +1,18 @@
-import '../styles/globals.css';
-import {Metadata, Viewport} from 'next';
 import {ClerkProvider} from '@clerk/nextjs';
+import {Metadata, Viewport} from 'next';
+import '../styles/globals.css';
 
-import {siteConfig} from '@/config/site';
-import {fontSans} from '@/lib/fonts';
-import {cn} from '@/lib/utils';
 import {Analytics} from '@/components/analytics';
 import {ThemeProvider} from '@/components/providers';
 import {SiteFooter} from '@/components/site-footer';
 import {SiteHeader} from '@/components/site-header';
 import {TailwindIndicator} from '@/components/tailwind-indicator';
 import {ThemeSwitcher} from '@/components/theme-switcher';
-import {Toaster as DefaultToaster, Toaster} from '@/components/ui/toaster';
 import {Toaster as NewYorkSonner} from '@/components/ui/sonner';
-import {Toaster as NewYorkToaster} from '@/components/ui/toaster';
+import {Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster} from '@/components/ui/toaster';
+import {siteConfig} from '@/config/site';
+import {fontSans} from '@/lib/fonts';
+import {cn} from '@/lib/utils';
 import ReactQueryProvider from '@/providers/react-query';
 
 export const metadata: Metadata = {
@@ -83,7 +82,7 @@ export default function RootLayout({children}: RootLayoutProps) {
 						<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 							<div vaul-drawer-wrapper=''>
 								<div className='relative flex min-h-screen flex-col bg-background'>
-									<SiteHeader />
+									{/* <SiteHeader /> */}
 									<main className='flex-1'>{children}</main>
 									<Toaster />
 									<SiteFooter />

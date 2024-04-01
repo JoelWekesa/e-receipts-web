@@ -13,17 +13,57 @@ import {
 } from '@tanstack/react-table';
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {useState} from 'react';
-import {Input} from '../ui/input';
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {useCallback, useEffect, useState} from 'react';
 import {Button} from '../ui/button';
+import {Input} from '../ui/input';
+import {Loader2} from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	nextPage: number | boolean;
+	previousPage: number | boolean;
+	fetching: boolean;
 }
 
-export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+	columns,
+	data,
+	nextPage,
+	previousPage,
+	fetching,
+}: DataTableProps<TData, TValue>) {
+	const [active, setActive] = useState('previous');
+
+	const [button, setButton] = useState('0');
+
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	const router = useRouter();
+
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const createQueryString = useCallback(
+		(name: string, value: string) => {
+			const params = new URLSearchParams(searchParams.toString());
+			params.set(name, value);
+
+			return params.toString();
+		},
+		[searchParams]
+	);
+
+	useEffect(() => {
+		if (active === 'previous') {
+			setButton('1');
+		} else if (active === 'next') {
+			setButton('2');
+		} else {
+			setButton('0');
+		}
+	}, [active]);
 
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const table = useReactTable({
@@ -41,8 +81,24 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
 		},
 	});
 
+	const handlePrevious = () => {
+		if (previousPage) {
+			router.push(pathname + '?' + createQueryString('page', '' + previousPage));
+		}
+
+		setActive('previous');
+	};
+
+	const handleNext = () => {
+		if (nextPage) {
+			router.push(pathname + '?' + createQueryString('page', '' + nextPage));
+		}
+
+		setActive('next');
+	};
+
 	return (
-		<div className='rounded-md border'>
+		<div className='rounded-md'>
 			<div className='flex items-center py-4 px-4'>
 				<Input
 					placeholder='Search By Shop Name...'
@@ -87,10 +143,12 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
 			</div>
 
 			<div className='flex items-center justify-end space-x-2 py-4 px-4'>
-				<Button variant='outline' size='sm' onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+				<Button variant='outline' size='sm' onClick={() => handlePrevious()} disabled={!previousPage}>
+					{fetching && button === '1' && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
 					Previous
 				</Button>
-				<Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+				<Button variant='outline' size='sm' onClick={() => handleNext()} disabled={!nextPage}>
+					{fetching && button === '2' && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
 					Next
 				</Button>
 			</div>

@@ -1,14 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import ApiClient from '../../config/axios';
 import { Store } from '@/models/store';
-const userStores = async (page: string) => {
-    const stores: Store = await ApiClient.get("stores/stores?page=" + page + "&pageSize=10").then(res => res.data)
+
+export interface StoreFetch {
+    page: string;
+    initialData: Store;
+}
+
+
+export const userStores = async (page: string) => {
+    const stores: Store = await ApiClient.get("stores/stores?page=" + page + "&pageSize=" + process.env.NEXT_PUBLIC_PER_PAGE).then(res => res.data)
+
+
     return stores
 }
 
-const useUserStores = (page: string) => useQuery({
-    queryKey: ['user-stores'],
-    queryFn: () => userStores(page)
+const useUserStores = ({ page, initialData }: StoreFetch) => useQuery({
+    queryKey: ['user-stores', { page }],
+    queryFn: () => userStores(page),
+    initialData
 })
 
 export default useUserStores;

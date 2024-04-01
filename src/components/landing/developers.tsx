@@ -34,11 +34,11 @@ const DevelopersComponent = () => {
 			<div className='flex flex-row'>
 				<div className='w-full md:w-3/5'>
 					<div className='p-8'>
-						<div className='py-6'>
+						<div className='py-6 border-b mb-6'>
 							<p className='text-2xl tracking-widest'>For Developers And Businesses</p>
 						</div>
 						<div>
-							<ol className='space-y-4 px-3'>
+							<ol className='space-y-6 px-3'>
 								<li>
 									<p className='text-base tracking-widest'>
 										Effortlessly integrate e-receipt functionality into your existing system.

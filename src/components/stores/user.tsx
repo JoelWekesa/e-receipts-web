@@ -1,32 +1,17 @@
 'use client';
-import useUserStores from '@/services/stores/user-stores';
-import React, {FC, useState} from 'react';
-import {LoadingSpinner} from '../shared/spinner';
 import {StoreDatum} from '@/models/store';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '../ui/card';
-import {DataTable} from './usertable';
-import {
-	ColumnDef,
-	ColumnFiltersState,
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable,
-} from '@tanstack/react-table';
-import {Button} from '../ui/button';
-import {toast} from 'sonner';
+import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
+import {ColumnDef} from '@tanstack/react-table';
+import {ArrowUpDown, Edit, Eye} from 'lucide-react';
 import Image from 'next/image';
-import {ArrowUpDown, Edit, Eye, MoreHorizontal} from 'lucide-react';
-import {Input} from '../ui/input';
+import {toast} from 'sonner';
+import {LoadingSpinner} from '../shared/spinner';
+import {Button} from '../ui/button';
 import {Sheet, SheetContent, SheetTrigger} from '../ui/sheet';
+import {DataTable} from './usertable';
 
-const UserStores = () => {
-	const {data, isLoading} = useUserStores('1');
-	const [sorting, setSorting] = useState<SortingState>([]);
-
-	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+const UserStores = ({page, initialData}: StoreFetch) => {
+	const {data, isLoading, isFetching, isRefetching} = useUserStores({page, initialData});
 
 	const columns: ColumnDef<StoreDatum>[] = [
 		{
@@ -41,7 +26,7 @@ const UserStores = () => {
 							height={40}
 							alt='logo'
 							style={{
-								borderRadius: 20,
+								borderRadius: '15%',
 							}}
 						/>
 					</div>
@@ -132,10 +117,16 @@ const UserStores = () => {
 	};
 
 	return (
-		<div className='flex p-3 w-screen flex-col'>
+		<div className='flex p-3 flex-col'>
 			<Sheet>
 				<div className='m-3 p-5 rounded-md border'>
-					<DataTable columns={columns} data={data?.data || []} />
+					<DataTable
+						columns={columns}
+						data={data?.data || []}
+						nextPage={data.nextPage}
+						previousPage={data.currentPage > 1 ? data.currentPage - 1 : false}
+						fetching={isRefetching || isFetching || isLoading}
+					/>
 				</div>
 				<SheetContent>
 					<p>Hello World</p>

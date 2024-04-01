@@ -1,7 +1,7 @@
 'use client';
-import { useClerk, useUser } from '@clerk/nextjs';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Button } from '../ui/button';
+import {useClerk, useUser} from '@clerk/nextjs';
+import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
+import {Button} from '../ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,10 +12,16 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import {deleteCookie} from 'cookies-next';
 
 const UserNav = () => {
-	const { signOut } = useClerk();
-	const { user } = useUser();
+	const {signOut} = useClerk();
+	const {user} = useUser();
+
+	const handleLogout = () => {
+		signOut();
+		deleteCookie('clerk_session');
+	};
 
 	return (
 		<DropdownMenu>
@@ -33,9 +39,7 @@ const UserNav = () => {
 				<DropdownMenuLabel className='font-normal'>
 					<div className='flex flex-col space-y-1'>
 						<p className='text-sm font-medium leading-none'>{user?.fullName}</p>
-						<p className='text-xs leading-none text-muted-foreground'>
-							{user?.emailAddresses[0].toString() || ''}
-						</p>
+						<p className='text-xs leading-none text-muted-foreground'>{user?.emailAddresses[0].toString() || ''}</p>
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />

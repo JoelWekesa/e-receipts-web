@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button} from '../ui/button';
+import Link from 'next/link';
 
 const HomeComponent = () => {
 	return (
@@ -16,7 +17,10 @@ const HomeComponent = () => {
 						customers receive receipts.
 					</p>
 					<div className='flex flex-row mt-8 gap-5'>
-						<Button>Get Started</Button>
+						<Link href='/stores/add'>
+							<Button>Get Started</Button>
+						</Link>
+
 						<Button variant='ghost'>Contact Sales</Button>
 					</div>
 				</div>

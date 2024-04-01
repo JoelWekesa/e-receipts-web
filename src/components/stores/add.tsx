@@ -19,7 +19,7 @@ const AddStore = () => {
 
 	console.log({sessionId});
 
-	const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
+	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
 	const formSchema = z.object({
@@ -55,13 +55,13 @@ const AddStore = () => {
 
 	const successFn = () => {
 		form.reset();
-		router.push('/stores/all');
+		router.push('/stores/all?page=1');
 	};
 
 	const {mutate, isPending} = useAddStore(successFn);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		console.log(data.logo);
+		mutate(data);
 	};
 
 	return (
