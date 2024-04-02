@@ -1,21 +1,35 @@
 'use client';
+import {storeAtom} from '@/atoms/store';
 import {StoreDatum} from '@/models/store';
 import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
 import {ColumnDef} from '@tanstack/react-table';
+import {useAtom} from 'jotai';
 import {ArrowUpDown, Edit, Eye} from 'lucide-react';
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import {toast} from 'sonner';
 import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
 import {Sheet, SheetContent, SheetTrigger} from '../ui/sheet';
 import {DataTable} from './usertable';
-import UpdateStoreComponent from './update';
-import {useAtom} from 'jotai';
-import {storeAtom} from '@/atoms/store';
-import {useRouter} from 'next/navigation';
+import {useMemo} from 'react';
+import {searchAtom} from '@/atoms/search';
 
 const UserStores = ({page, initialData}: StoreFetch) => {
 	const {data, isLoading, isFetching, isRefetching} = useUserStores({page, initialData});
+
+	const [search, __] = useAtom(searchAtom);
+
+	const filtered = useMemo(() => {
+		return data?.data.filter((item) => {
+			return (
+				item.name.toLowerCase().includes(search.toLowerCase()) ||
+				item.address.toLowerCase().includes(search.toLowerCase()) ||
+				item.email.toLowerCase().includes(search.toLowerCase()) ||
+				item.phone.toLowerCase().includes(search.toLowerCase())
+			);
+		});
+	}, [data, search]);
 
 	const [_, setStore] = useAtom(storeAtom);
 
@@ -135,7 +149,7 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 				<div className='m-3 p-5 rounded-md border'>
 					<DataTable
 						columns={columns}
-						data={data?.data || []}
+						data={filtered || []}
 						nextPage={data.nextPage}
 						previousPage={data.currentPage > 1 ? data.currentPage - 1 : false}
 						fetching={isRefetching || isFetching || isLoading}

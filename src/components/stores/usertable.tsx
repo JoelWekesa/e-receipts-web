@@ -99,14 +99,14 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className='rounded-md'>
-			<div className='flex items-center py-4 px-4'>
+			{/* <div className='flex items-center py-4 px-4'>
 				<Input
 					placeholder='Search By Shop Name...'
 					value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
 					onChange={(event: any) => table.getColumn('name')?.setFilterValue(event.target.value)}
 					className='max-w-sm'
 				/>
-			</div>
+			</div> */}
 			<div className='p-4'>
 				<Table>
 					<TableHeader>

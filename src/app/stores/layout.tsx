@@ -4,7 +4,7 @@ import {Metadata, Viewport} from 'next';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Update Store',
+		default: 'Store Management',
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),

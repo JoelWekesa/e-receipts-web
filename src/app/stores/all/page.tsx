@@ -1,9 +1,10 @@
+import {MainNav} from '@/components/dashboard/MainNav';
+import {Search} from '@/components/dashboard/Search';
+import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
 import {Store} from '@/models/store';
+import {auth} from '@clerk/nextjs';
 import axios from 'axios';
-import {cookies} from 'next/headers';
-import {auth, currentUser} from '@clerk/nextjs';
-import {redirect} from 'next/navigation';
 
 export const revalidate = 1;
 
@@ -44,9 +45,22 @@ const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string 
 	});
 
 	return (
-		<div className='p-3'>
-			<UserStores page={page} initialData={data} />
-		</div>
+		<>
+			<div className='hidden flex-col md:flex'>
+				<div className='border-b'>
+					<div className='flex h-16 items-center px-4'>
+						<TeamSwitcher />
+						<MainNav className='mx-6' />
+						<div className='ml-auto flex items-center space-x-4'>
+							<Search />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className='flex-1 space-y-4 p-8 pt-6'>
+				<UserStores page={page} initialData={data} />
+			</div>
+		</>
 	);
 };
 
