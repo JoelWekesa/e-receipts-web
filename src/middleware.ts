@@ -3,13 +3,12 @@ import { NextResponse } from 'next/server';
 
 export const config = {
     matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-
-
 }
 
 export default authMiddleware({
 
-    publicRoutes: ["/register", "/contact", "/"],
+    publicRoutes: ["/register", "/contact", "/", "/sign-in", "/sign-up"],
+    debug: true,
     afterAuth(auth, req, evt) {
         if (!auth.userId && !auth.isPublicRoute) {
             return redirectToSignIn({ returnBackUrl: req.url });
