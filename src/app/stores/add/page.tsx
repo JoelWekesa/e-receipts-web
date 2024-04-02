@@ -2,15 +2,8 @@ import {MainNav} from '@/components/dashboard/MainNav';
 import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import StoreHomeComponent from '@/components/stores';
-import {auth} from '@clerk/nextjs';
-import {redirect} from 'next/navigation';
 
 const HomePage = () => {
-	const {sessionId: token} = auth();
-
-	if (!token) {
-		redirect('/sign-in');
-	}
 	return (
 		<>
 			<div className='hidden flex-col md:flex'>

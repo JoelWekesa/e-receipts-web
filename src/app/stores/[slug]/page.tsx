@@ -36,10 +36,6 @@ async function getData({page, token}: GetData): Promise<Store> {
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
 	const {sessionId: token} = auth();
 
-	if (!token) {
-		redirect('/sign-in');
-	}
-
 	const page = '' + searchParams?.page;
 
 	const data = await getData({

@@ -2,7 +2,6 @@ import UpdateStoreComponent from '@/components/stores/update';
 import axios from '@/config/axios';
 import {StoreDatum} from '@/models/store';
 import {auth} from '@clerk/nextjs';
-import {redirect} from 'next/navigation';
 
 interface GetData {
 	id: string;
@@ -30,9 +29,6 @@ async function getData({id, token}: GetData): Promise<StoreDatum> {
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
 	const {sessionId: token} = auth();
 
-	if (!token) {
-		redirect('/sign-in');
-	}
 	const id = '' + searchParams?.id;
 
 	const data = await getData({
