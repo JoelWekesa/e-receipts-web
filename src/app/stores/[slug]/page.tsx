@@ -2,6 +2,8 @@ import UserStores from '@/components/stores/user';
 import {Store} from '@/models/store';
 import axios from 'axios';
 import {cookies} from 'next/headers';
+import {auth, currentUser} from '@clerk/nextjs';
+import {redirect} from 'next/navigation';
 
 export const revalidate = 1;
 
@@ -32,15 +34,17 @@ async function getData({page, token}: GetData): Promise<Store> {
 }
 
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
-	const cookieStore = cookies();
+	const {sessionId: token} = auth();
 
-	const token = cookieStore.get('clerk_session');
+	if (!token) {
+		redirect('/sign-in');
+	}
 
 	const page = '' + searchParams?.page;
 
 	const data = await getData({
 		page,
-		token: token ? token.value : '',
+		token: token ? token : '',
 	});
 
 	return (

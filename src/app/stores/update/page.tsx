@@ -2,7 +2,7 @@ import UpdateStoreComponent from '@/components/stores/update';
 import axios from '@/config/axios';
 import {StoreDatum} from '@/models/store';
 import {auth} from '@clerk/nextjs';
-import {cookies} from 'next/headers';
+import {redirect} from 'next/navigation';
 
 interface GetData {
 	id: string;
@@ -28,18 +28,15 @@ async function getData({id, token}: GetData): Promise<StoreDatum> {
 }
 
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
-	const {sessionId} = auth();
-	console.log({
-		currentUser: sessionId,
-	});
+	const {sessionId: token} = auth();
+
+	if (!token) {
+		redirect('/sign-in');
+	}
 	const id = '' + searchParams?.id;
 
-	const cookieStore = cookies();
-
-	const token = cookieStore.get('clerk_session');
-
 	const data = await getData({
-		token: token ? token.value : '',
+		token: token ? token : '',
 		id,
 	});
 
