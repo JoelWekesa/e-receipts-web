@@ -5,5 +5,5 @@ export const config = {
 }
 
 export default authMiddleware({
-    publicRoutes: ["/register", "/contact", "/", "/sign-in", "/sign-up"],
+    publicRoutes: ["/register", "/contact", "/"],
 });
