@@ -30,7 +30,7 @@ const UserStores = ({initialData}: StoreFetch) => {
 
 	const {data, isLoading} = useUserStores({initialData});
 
-	const [_, setStore] = useAtom(storeAtom);
+	const [store, setStore] = useAtom(storeAtom);
 
 	const router = useRouter();
 
@@ -142,6 +142,11 @@ const UserStores = ({initialData}: StoreFetch) => {
 		setStore(store);
 	};
 
+	const handleEdit = () => {
+		router.push('/stores/update?id=' + store?.id);
+		setStore(store);
+	};
+
 	const handleDeleteDialog = () => {
 		setOpen(!open);
 	};
@@ -158,7 +163,9 @@ const UserStores = ({initialData}: StoreFetch) => {
 					<SheetFooter>
 						<SheetClose asChild>
 							<div className='flex flex-row gap-3 mt-2'>
-								<Button variant='secondary'>Edit</Button>
+								<Button variant='secondary' onClick={handleEdit}>
+									Edit
+								</Button>
 								<Button variant='destructive' onClick={handleDeleteDialog}>
 									Delete
 								</Button>
