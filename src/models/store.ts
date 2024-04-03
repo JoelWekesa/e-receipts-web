@@ -1,13 +1,6 @@
-export interface Store {
-    data: StoreDatum[];
-    total: number;
-    currentPage: number;
-    totalPages: number;
-    pageSize: number;
-    nextPage: number | boolean;
-}
 
-export interface StoreDatum {
+
+export interface Store {
     id: string;
     name: string;
     address: string;

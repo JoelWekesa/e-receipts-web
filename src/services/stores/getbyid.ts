@@ -1,20 +1,21 @@
-import { StoreDatum } from "@/models/store"
+
+import { Store } from '@/models/store';
 import ApiClient from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
 
-interface Store {
+interface StoreGet {
     id: string;
-    store: StoreDatum | null;
+    store: Store | null;
 }
 
 const getStoreById = async (id: string) => {
-    const storeItem: StoreDatum = await ApiClient.get("stores/store?id=" + id).then(res => res.data)
+    const storeItem: Store = await ApiClient.get("stores/store?id=" + id).then(res => res.data)
 
     return storeItem
 }
 
 
-const useStoreById = ({ id, store }: Store) => useQuery({
+const useStoreById = ({ id, store }: StoreGet) => useQuery({
     queryKey: ['user-stores', { id }],
     queryFn: () => getStoreById(id),
     initialData: store,

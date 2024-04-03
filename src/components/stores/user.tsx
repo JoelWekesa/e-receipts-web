@@ -1,6 +1,6 @@
 'use client';
 import {storeAtom} from '@/atoms/store';
-import {StoreDatum} from '@/models/store';
+import {Store} from '@/models/store';
 import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
@@ -12,30 +12,15 @@ import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
 import {Sheet, SheetContent, SheetTrigger} from '../ui/sheet';
 import {DataTable} from './usertable';
-import {useMemo} from 'react';
-import {searchAtom} from '@/atoms/search';
 
-const UserStores = ({page, initialData}: StoreFetch) => {
-	const {data, isLoading, isFetching, isRefetching} = useUserStores({page, initialData});
-
-	const [search, __] = useAtom(searchAtom);
-
-	const filtered = useMemo(() => {
-		return data?.data.filter((item) => {
-			return (
-				item.name.toLowerCase().includes(search.toLowerCase()) ||
-				item.address.toLowerCase().includes(search.toLowerCase()) ||
-				item.email.toLowerCase().includes(search.toLowerCase()) ||
-				item.phone.toLowerCase().includes(search.toLowerCase())
-			);
-		});
-	}, [data, search]);
+const UserStores = ({initialData}: StoreFetch) => {
+	const {data, isLoading} = useUserStores({initialData});
 
 	const [_, setStore] = useAtom(storeAtom);
 
 	const router = useRouter();
 
-	const columns: ColumnDef<StoreDatum>[] = [
+	const columns: ColumnDef<Store>[] = [
 		{
 			accessorKey: 'logo',
 			header: '',
@@ -138,7 +123,7 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 		toast('Clicked ' + id);
 	};
 
-	const handleEditStore = (store: StoreDatum) => {
+	const handleEditStore = (store: Store) => {
 		router.push('/stores/update?id=' + store.id);
 		setStore(store);
 	};
@@ -147,13 +132,7 @@ const UserStores = ({page, initialData}: StoreFetch) => {
 		<div className='flex p-3 flex-col'>
 			<Sheet>
 				<div className='m-3 p-5 rounded-md border'>
-					<DataTable
-						columns={columns}
-						data={filtered || []}
-						nextPage={data.nextPage}
-						previousPage={data.currentPage > 1 ? data.currentPage - 1 : false}
-						fetching={isRefetching || isFetching || isLoading}
-					/>
+					<DataTable columns={columns} data={data || []} />
 				</div>
 				<SheetContent>Hello World</SheetContent>
 			</Sheet>

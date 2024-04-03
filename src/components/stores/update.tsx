@@ -1,5 +1,5 @@
 'use client';
-import {StoreDatum} from '@/models/store';
+import {Store} from '@/models/store';
 import useStoreById from '@/services/stores/getbyid';
 import useUpdateStore from '@/services/stores/update';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -14,7 +14,7 @@ import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 
-const UpdateStoreComponent = ({id, initialData}: {id: string; initialData: StoreDatum}) => {
+const UpdateStoreComponent = ({id, initialData}: {id: string; initialData: Store}) => {
 	const {data} = useStoreById({id, store: initialData});
 
 	const router = useRouter();

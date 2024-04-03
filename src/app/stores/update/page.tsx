@@ -1,6 +1,6 @@
 import UpdateStoreComponent from '@/components/stores/update';
 import axios from '@/config/axios';
-import {StoreDatum} from '@/models/store';
+import {Store} from '@/models/store';
 import {auth} from '@clerk/nextjs';
 
 interface GetData {
@@ -8,7 +8,7 @@ interface GetData {
 	token: string;
 }
 
-async function getData({id, token}: GetData): Promise<StoreDatum> {
+async function getData({id, token}: GetData): Promise<Store> {
 	const res = await axios
 		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + id, {
 			headers: {

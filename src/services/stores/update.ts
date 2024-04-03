@@ -3,8 +3,8 @@ import ApiClient from '../../config/axios';
 import Swal from 'sweetalert2'
 import { toast } from 'sonner';
 import dayjs from 'dayjs'
-import { StoreDatum } from '@/models/store';
-interface Store {
+import { Store } from '@/models/store';
+interface StoreUpdate {
     id: string
     name: string
     address: string
@@ -15,7 +15,7 @@ interface Store {
     logo?: File
 }
 
-const updateStore = async (data: Store) => {
+const updateStore = async (data: StoreUpdate) => {
 
     const formData = new FormData();
     formData.append('id', data.id);
@@ -27,7 +27,7 @@ const updateStore = async (data: Store) => {
     data?.pin_no && formData.append('pin_no', data.pin_no);
     data?.logo && formData.append('logo', data.logo);
 
-    const store: StoreDatum = await ApiClient.patch("stores/update", formData).then(res => res.data)
+    const store: Store = await ApiClient.patch("stores/update", formData).then(res => res.data)
 
     return store
 }

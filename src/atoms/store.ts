@@ -1,4 +1,4 @@
-import { StoreDatum } from "@/models/store";
+import { Store } from "@/models/store";
 import { atom } from "jotai";
 
-export const storeAtom = atom<StoreDatum | null>(null)
+export const storeAtom = atom<Store | null>(null)
