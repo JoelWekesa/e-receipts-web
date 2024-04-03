@@ -1,7 +1,7 @@
 
 import { Store } from '@/models/store';
-import ApiClient from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
+import ApiClient from '../../config/axios';
 
 interface StoreGet {
     id: string;

@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import ApiClient from '../../config/axios';
-import Swal from 'sweetalert2'
-import { toast } from 'sonner';
-import dayjs from 'dayjs'
 import { Store } from '@/models/store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { toast } from 'sonner';
+import ApiClient from '../../config/axios';
 interface StoreUpdate {
     id: string
     name: string
@@ -50,12 +49,6 @@ const useUpdateStore = (successFn: () => void) => {
 
         onError: (err: any) => {
             console.log("error", err)
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-                // footer: '<a href="#">Why do I have this issue?</a>'
-            });
         }
     })
 }

@@ -21,9 +21,16 @@ import {Input} from '../ui/input';
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	searchColumn: string;
+	searchPlaceholder: string;
 }
 
-export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+	columns,
+	data,
+	searchColumn,
+	searchPlaceholder,
+}: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -46,8 +53,8 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
 		<div className='rounded-md'>
 			<div className='flex items-center py-4 px-4'>
 				<Input
-					placeholder='Search By Shop Name...'
-					value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+					placeholder={searchPlaceholder}
+					value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
 					onChange={(event: any) => table.getColumn('name')?.setFilterValue(event.target.value)}
 					className='max-w-sm'
 				/>

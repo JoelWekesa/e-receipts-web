@@ -50,7 +50,7 @@ const AddStore = () => {
 
 	const successFn = () => {
 		form.reset();
-		router.push('/stores/all?page=1');
+		router.push('/stores/all');
 	};
 
 	const {mutate, isPending} = useAddStore(successFn);

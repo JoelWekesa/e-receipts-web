@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Swal from 'sweetalert2';
 
 
 
@@ -27,7 +28,12 @@ const ApiClient = () => {
 			return response;
 		},
 		(error) => {
-			console.log(`error`, error);
+			Swal.fire({
+				icon: "error",
+				title: "Oops...",
+				text: error?.response?.data?.message || "Something went wrong!",
+				footer: '<a href="#">Why do I have this issue?</a>'
+			})
 		}
 	);
 

@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import ApiClient from '../../config/axios';
-import Swal from 'sweetalert2'
+import dayjs from 'dayjs';
 import { toast } from 'sonner';
-import dayjs from 'dayjs'
+import ApiClient from '../../config/axios';
 interface Store {
     name: string
     address: string
@@ -47,12 +46,6 @@ const useAddStore = (successFn: () => void) => {
 
         onError: (err: any) => {
             console.log("error", err)
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-                // footer: '<a href="#">Why do I have this issue?</a>'
-            });
         }
     })
 }
