@@ -8,6 +8,20 @@ const nextConfig = {
 				port: '',
 				pathname: '/logo/**',
 			},
+
+			{
+				protocol: 'https',
+				hostname: 'e-receipts-kenya.s3.amazonaws.com',
+				port: '',
+				pathname: '/receipts/**',
+			},
+
+			{
+				protocol: 'https',
+				hostname: 'e-receipts-kenya.s3.amazonaws.com',
+				port: '',
+				pathname: '/qrcode/**',
+			},
 		],
 	},
 };

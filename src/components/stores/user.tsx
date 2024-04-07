@@ -24,6 +24,7 @@ import {Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger} from '../ui/
 import StoreComponent from './store';
 import {Input} from '../ui/input';
 import useDeleteStore from '@/services/stores/delete';
+import StoreButtonDropDown from './dropdown';
 
 const UserStores = ({initialData}: StoreFetch) => {
 	const [open, setOpen] = useState(false);
@@ -109,16 +110,16 @@ const UserStores = ({initialData}: StoreFetch) => {
 			cell: ({row}) => {
 				return (
 					<div className='flex flex-row gap-2'>
-						<SheetTrigger asChild>
-							<Button onClick={() => handleClick(row.original)}>
-								<Eye className='mr-2 h-4 w-4' /> View
+						<StoreButtonDropDown
+							drop={{
+								label: 'Store Actions',
+								store: row.original,
+							}}>
+							<Button onClick={() => handleEditStore(row.original)}>
+								<Edit className='mr-2 h-4 w-4' />
+								Store Actions
 							</Button>
-						</SheetTrigger>
-
-						<Button onClick={() => handleEditStore(row.original)}>
-							<Edit className='mr-2 h-4 w-4' />
-							Edit
-						</Button>
+						</StoreButtonDropDown>
 					</div>
 				);
 			},
