@@ -8,8 +8,4 @@ export interface ReceiptItem {
 
 export const receiptItemsAtom = atom<ReceiptItem[]>([])
 
-export const receiptItemAtom = atom<ReceiptItem>({
-    item: '',
-    quantity: '',
-    price: '',
-})
+export const receiptItemAtom = atom<ReceiptItem | null>(null)

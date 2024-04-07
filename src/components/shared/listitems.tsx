@@ -1,11 +1,11 @@
-import { ReceiptItem, receiptItemsAtom } from '@/atoms/receiptitem';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useAtom } from 'jotai';
-import { Edit, Trash2Icon } from 'lucide-react';
-import { FC } from 'react';
-import { Button } from '../ui/button';
+import {ReceiptItem, receiptItemsAtom} from '@/atoms/receiptitem';
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
+import {useAtom} from 'jotai';
+import {Edit, Trash2Icon} from 'lucide-react';
+import {FC} from 'react';
+import {Button} from '../ui/button';
 
-const ListItems: FC<{handleItem: (item: ReceiptItem) => void}> = ({handleItem}) => {
+const ListItems = () => {
 	const [items, _] = useAtom(receiptItemsAtom);
 	return (
 		<Accordion type='single' collapsible className='w-full'>
@@ -19,7 +19,7 @@ const ListItems: FC<{handleItem: (item: ReceiptItem) => void}> = ({handleItem}) 
 				<AccordionContent>
 					<div className='gap-4'>
 						{items?.map((item) => (
-							<ListItem key={item.item} item={item} handleItem={() => handleItem(item)} />
+							<ListItem key={item.item} item={item} />
 						))}
 					</div>
 				</AccordionContent>
@@ -30,12 +30,13 @@ const ListItems: FC<{handleItem: (item: ReceiptItem) => void}> = ({handleItem}) 
 
 export default ListItems;
 
-const ListItem: FC<{item: ReceiptItem; handleItem: (item: ReceiptItem) => void}> = ({item, handleItem}) => {
+const ListItem: FC<{item: ReceiptItem}> = ({item}) => {
 	const [_, setItems] = useAtom(receiptItemsAtom);
 
 	const handleDelete = () => {
 		setItems((prev) => prev.filter((i) => i !== item));
 	};
+
 	return (
 		<div className='flex flex-row justify-between my-2 border-b'>
 			<div className='w-2/3'>

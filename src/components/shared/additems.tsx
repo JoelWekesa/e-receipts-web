@@ -1,26 +1,27 @@
 'use client';
-import {receiptItemAtom, receiptItemsAtom} from '@/atoms/receiptitem';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useAtom} from 'jotai';
-import {Plus} from 'lucide-react';
-import {useFieldArray, useForm, useFormContext} from 'react-hook-form';
-import {z} from 'zod';
-import {Button} from '../ui/button';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
-import {Input} from '../ui/input';
+import { receiptItemsAtom } from '@/atoms/receiptitem';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtom } from 'jotai';
+import { Plus } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '../ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
 import ListItems from './listitems';
+import { useToast } from '../ui/use-toast';
 
 const AddReceiptItems = () => {
 	const formSchema = z.object({
-		item: z.string().min(1, {message: 'Name is required'}),
+		item: z.string().min(1, {message: 'Item name is required'}),
 		quantity: z
 			.string()
 			.min(1, {message: 'Quantity is required'})
 			.refine((value) => !isNaN(Number(value)), {message: 'Quantity must be a number'}),
 		price: z
 			.string()
-			.min(1, {message: 'Quantity is required'})
-			.refine((value) => !isNaN(Number(value)), {message: 'Quantity must be a number'}),
+			.min(1, {message: 'Price is required'})
+			.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
 	});
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -32,17 +33,17 @@ const AddReceiptItems = () => {
 		},
 	});
 
-	const {setValue} = useForm();
-
 	const [_, setItems] = useAtom(receiptItemsAtom);
+
+	const {toast} = useToast();
 
 	const addItem = (data: z.infer<typeof formSchema>) => {
 		setItems((prev) => [...prev, data]);
+		toast({
+			title: 'Success!',
+			description: 'You have successfully added a receipt item',
+		});
 		form.reset();
-	};
-
-	const handleItem = (data: z.infer<typeof formSchema>) => {
-		setValue('item', data.item);
 	};
 
 	return (
@@ -102,7 +103,7 @@ const AddReceiptItems = () => {
 							Add Item
 						</Button>
 					</div>
-					<ListItems handleItem={handleItem} />
+					<ListItems />
 				</fieldset>
 			</form>
 		</Form>
