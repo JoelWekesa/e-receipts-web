@@ -5,11 +5,16 @@ import React, {FC, useMemo} from 'react';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import {receiptItemsAtom} from '@/atoms/receiptitem';
+import {paymentAtom} from '@/atoms/payment';
 
 const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 	const [items, _] = useAtom(receiptItemsAtom);
 
 	const total = useMemo(() => items.reduce((acc, item) => acc + +item.price * +item.quantity, 0), [items]);
+
+	const [payment] = useAtom(paymentAtom);
+
+	const total_paid = useMemo(() => payment.amount.cash + payment.amount.mpesa, [payment]);
 
 	return (
 		<div className=' sm:px-4 font-sans'>
@@ -127,7 +132,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className='uppercase p-2 '>cash paid</p>
 								</td>
 								<td className='w-1/6' align='center'>
-									<p className='capitalize p-2 '>0</p>
+									<p className='capitalize p-2 '>{payment.amount.cash}</p>
 								</td>
 							</tr>
 							<tr>
@@ -135,71 +140,57 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className='p-2 uppercase '>mpesa pay</p>
 								</td>
 								<td className='w-1/6' align='center'>
-									<p className='capitalize p-2 '>500</p>
+									<p className='capitalize p-2 '>{payment.amount.mpesa}</p>
 								</td>
 							</tr>
 							<tr>
 								<td className='w-5/6'>
-									<p className='uppercase p-2 '>change</p>
+									<p className='uppercase p-2 '>{total_paid >= total ? 'change' : 'due'}</p>
 								</td>
 								<td className='w-1/6' align='center'>
-									<p className='capitalize p-2 '>0</p>
+									<p className='capitalize p-2 '>{total_paid >= total ? total_paid - total : total - total_paid}</p>
 								</td>
 							</tr>
 						</table>
-						<table className='w-full my-2 border border-black dark:border-white mb-5 rounded-xl'>
-							<th align='left' className='p-2'>
-								MPESA Details
-							</th>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>Name</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>Joel</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>Mobile No</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>0719748***</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>MPESA Type</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>LEGACY</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>MPESA Trn</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>RCJ268CUOW</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>TRN ID</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>626996</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize p-2 '>Amount</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize p-2 '>500.00</p>
-								</td>
-							</tr>
-						</table>
+						{payment.amount.mpesa > 0 && (
+							<table className='w-full my-2 border border-black dark:border-white mb-5 rounded-xl'>
+								<th align='left' className='p-2'>
+									MPESA Details
+								</th>
+								<tr>
+									<td className='w-1/3'>
+										<p className='capitalize p-2 '>Name</p>
+									</td>
+									<td className='w-2/3'>
+										<p className='capitalize p-2 '>{payment?.client_name}</p>
+									</td>
+								</tr>
+								<tr>
+									<td className='w-1/3'>
+										<p className='capitalize p-2 '>Mobile No</p>
+									</td>
+									<td className='w-2/3'>
+										<p className='capitalize p-2 '>{payment?.mobile_no}</p>
+									</td>
+								</tr>
+								<tr>
+									<td className='w-1/3'>
+										<p className='capitalize p-2 '>MPESA TRN ID</p>
+									</td>
+									<td className='w-2/3'>
+										<p className='capitalize p-2 '>{payment?.m_pesa_transaction_id}</p>
+									</td>
+								</tr>
+								<tr>
+									<td className='w-1/3'>
+										<p className='capitalize p-2 '>Amount</p>
+									</td>
+									<td className='w-2/3'>
+										<p className='capitalize p-2 '>{payment.amount.mpesa}</p>
+									</td>
+								</tr>
+							</table>
+						)}
 						<table className='w-full my-2 mb-5'>
 							<tr>
 								<td className='w-1/4'>
