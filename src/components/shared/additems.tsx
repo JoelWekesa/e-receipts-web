@@ -1,15 +1,15 @@
 'use client';
-import { receiptItemsAtom } from '@/atoms/receiptitem';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAtom } from 'jotai';
-import { Plus } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '../ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
+import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useAtom} from 'jotai';
+import {Plus} from 'lucide-react';
+import {useForm} from 'react-hook-form';
+import {z} from 'zod';
+import {Button} from '../ui/button';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
+import {Input} from '../ui/input';
 import ListItems from './listitems';
-import { useToast } from '../ui/use-toast';
+import {useToast} from '../ui/use-toast';
 
 const AddReceiptItems = () => {
 	const formSchema = z.object({
@@ -22,6 +22,11 @@ const AddReceiptItems = () => {
 			.string()
 			.min(1, {message: 'Price is required'})
 			.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
+
+		discount: z
+			.string()
+			.min(1, {message: 'Discount is required> If you are not providing a discount, enter 0'})
+			.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
 	});
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -30,6 +35,7 @@ const AddReceiptItems = () => {
 			item: '',
 			quantity: '',
 			price: '',
+			discount: '0',
 		},
 	});
 
@@ -90,6 +96,21 @@ const AddReceiptItems = () => {
 									<FormLabel>Price</FormLabel>
 									<FormControl>
 										<Input placeholder='Price of item sold' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					<div className='grid gap-3'>
+						<FormField
+							control={form.control}
+							name='discount'
+							render={({field}) => (
+								<FormItem>
+									<FormLabel>Discount</FormLabel>
+									<FormControl>
+										<Input placeholder='Discount added to item' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

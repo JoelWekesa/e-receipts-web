@@ -1,10 +1,10 @@
 'use client';
-import {paymentAtom, PaymentMethods} from '@/atoms/payment';
+import {paymentAtom, PaymentMethods} from '@/atoms/receiptgen/payment';
 import {useAtom} from 'jotai';
 import {Checkbox} from '../ui/checkbox';
 import CashPaymentDetails from './cash';
 import MpesaPaymentDetails from './mpesa';
-import {receiptItemsAtom} from '@/atoms/receiptitem';
+import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
 
 const AddPaymentDetails = () => {
 	const [payment, setPayment] = useAtom(paymentAtom);
@@ -15,6 +15,16 @@ const AddPaymentDetails = () => {
 			setPayment({
 				...payment,
 				methods: payment.methods.filter((m) => m !== method),
+				mpesa:
+					method === PaymentMethods.MPESA
+						? {
+								client_name: '',
+								mobile_no: '',
+								amount: 0,
+								m_pesa_transaction_id: '',
+						  }
+						: payment.mpesa,
+				cash: method === PaymentMethods.CASH ? {amount: 0} : payment.cash,
 			});
 		} else {
 			setPayment({...payment, methods: [...payment.methods, method]});

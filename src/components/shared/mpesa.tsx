@@ -7,7 +7,7 @@ import {Button} from '../ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 import {useAtom} from 'jotai';
-import {paymentAtom, PaymentMethods} from '@/atoms/payment';
+import {paymentAtom, PaymentMethods} from '@/atoms/receiptgen/payment';
 
 const formSchema = z.object({
 	name: z.string().min(1, {message: "Client's name is required"}),
@@ -40,12 +40,11 @@ const MpesaPaymentDetails = () => {
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		setPayment({
 			...payment,
-			client_name: data.name,
-			mobile_no: data.mobile_no,
-			m_pesa_transaction_id: data.m_pesa_transaction_id,
-			amount: {
-				...payment.amount,
-				mpesa: Number(data.amount),
+			mpesa: {
+				client_name: data.name,
+				mobile_no: data.mobile_no,
+				m_pesa_transaction_id: data.m_pesa_transaction_id,
+				amount: Number(data.amount),
 			},
 		});
 	};

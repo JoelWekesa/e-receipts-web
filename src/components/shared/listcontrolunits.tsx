@@ -4,22 +4,23 @@ import {useAtom} from 'jotai';
 import {Edit, Trash2Icon} from 'lucide-react';
 import {FC} from 'react';
 import {Button} from '../ui/button';
+import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 
-const ListItems = () => {
-	const [items, _] = useAtom(receiptItemsAtom);
+const ListControlItems = () => {
+	const [items, _] = useAtom(controlUnitAtom);
 	return (
 		<Accordion type='single' collapsible className='w-full' disabled={items?.length === 0}>
 			<AccordionItem value='item-1'>
 				<AccordionTrigger>
 					<div className='flex flex-row gap-2'>
 						<Edit className='mr-2 h-4 w-4' />
-						<p>Manage Added Receipt items</p>
+						<p>Manage Control Unit Info</p>
 					</div>
 				</AccordionTrigger>
 				<AccordionContent>
 					<div className='gap-4'>
 						{items?.map((item) => (
-							<ListItem key={item.item} item={item} />
+							<ListItem key={item.title} item={item} />
 						))}
 					</div>
 				</AccordionContent>
@@ -28,10 +29,10 @@ const ListItems = () => {
 	);
 };
 
-export default ListItems;
+export default ListControlItems;
 
-const ListItem: FC<{item: ReceiptItem}> = ({item}) => {
-	const [_, setItems] = useAtom(receiptItemsAtom);
+const ListItem: FC<{item: ControlUnit}> = ({item}) => {
+	const [_, setItems] = useAtom(controlUnitAtom);
 
 	const handleDelete = () => {
 		setItems((prev) => prev.filter((i) => i !== item));
@@ -42,15 +43,10 @@ const ListItem: FC<{item: ReceiptItem}> = ({item}) => {
 			<div className='w-2/3'>
 				<div className='flex flex-row justify-between'>
 					<div className='w-1/2'>
-						<p>{item.item}</p>
+						<p>{item.title}</p>
 					</div>
-					<div className='w-1/4'>
-						<p>
-							{item.quantity} x {item.price}
-						</p>
-					</div>
-					<div className='w-1/4'>
-						<p>{+item.quantity * +item.price}</p>
+					<div className='w-1/2'>
+						<p>{item.value}</p>
 					</div>
 				</div>
 			</div>

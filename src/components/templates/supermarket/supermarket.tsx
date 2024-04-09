@@ -4,17 +4,27 @@ import Image from 'next/image';
 import React, {FC, useMemo} from 'react';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
-import {receiptItemsAtom} from '@/atoms/receiptitem';
-import {paymentAtom} from '@/atoms/payment';
+import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {paymentAtom} from '@/atoms/receiptgen/payment';
+import {controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 
 const SupermarketComponent: FC<{store: Store}> = ({store}) => {
-	const [items, _] = useAtom(receiptItemsAtom);
+	const [items] = useAtom(receiptItemsAtom);
 
 	const total = useMemo(() => items.reduce((acc, item) => acc + +item.price * +item.quantity, 0), [items]);
 
+	const discountedItems = useMemo(() => items.filter((item) => item.discount !== '0'), [items]);
+
+	const totalDiscounts = useMemo(
+		() => discountedItems.reduce((acc, item) => acc + +item.discount * +item.quantity, 0),
+		[discountedItems]
+	);
+
 	const [payment] = useAtom(paymentAtom);
 
-	const total_paid = useMemo(() => payment.amount.cash + payment.amount.mpesa, [payment]);
+	const total_paid = useMemo(() => payment.cash.amount + payment.mpesa.amount, [payment]);
+
+	const [controlUnits] = useAtom(controlUnitAtom);
 
 	return (
 		<div className=' sm:px-4 font-sans'>
@@ -132,7 +142,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className='uppercase p-2 '>cash paid</p>
 								</td>
 								<td className='w-1/6' align='center'>
-									<p className='capitalize p-2 '>{payment.amount.cash}</p>
+									<p className='capitalize p-2 '>{payment?.cash?.amount}</p>
 								</td>
 							</tr>
 							<tr>
@@ -140,7 +150,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className='p-2 uppercase '>mpesa pay</p>
 								</td>
 								<td className='w-1/6' align='center'>
-									<p className='capitalize p-2 '>{payment.amount.mpesa}</p>
+									<p className='capitalize p-2 '>{payment?.mpesa?.amount}</p>
 								</td>
 							</tr>
 							<tr>
@@ -152,8 +162,8 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 								</td>
 							</tr>
 						</table>
-						{payment.amount.mpesa > 0 && (
-							<table className='w-full my-2 border border-black dark:border-white mb-5 rounded-xl'>
+						{payment.mpesa.amount > 0 && (
+							<table className='w-full my-2 border border-black dark:border-white mb-5 rounded'>
 								<th align='left' className='p-2'>
 									MPESA Details
 								</th>
@@ -162,7 +172,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 										<p className='capitalize p-2 '>Name</p>
 									</td>
 									<td className='w-2/3'>
-										<p className='capitalize p-2 '>{payment?.client_name}</p>
+										<p className='capitalize p-2 '>{payment?.mpesa?.client_name}</p>
 									</td>
 								</tr>
 								<tr>
@@ -170,7 +180,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 										<p className='capitalize p-2 '>Mobile No</p>
 									</td>
 									<td className='w-2/3'>
-										<p className='capitalize p-2 '>{payment?.mobile_no}</p>
+										<p className='capitalize p-2 '>{payment?.mpesa?.mobile_no}</p>
 									</td>
 								</tr>
 								<tr>
@@ -178,7 +188,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 										<p className='capitalize p-2 '>MPESA TRN ID</p>
 									</td>
 									<td className='w-2/3'>
-										<p className='capitalize p-2 '>{payment?.m_pesa_transaction_id}</p>
+										<p className='capitalize p-2 '>{payment?.mpesa?.m_pesa_transaction_id}</p>
 									</td>
 								</tr>
 								<tr>
@@ -186,7 +196,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 										<p className='capitalize p-2 '>Amount</p>
 									</td>
 									<td className='w-2/3'>
-										<p className='capitalize p-2 '>{payment.amount.mpesa}</p>
+										<p className='capitalize p-2 '>{payment?.mpesa?.amount}</p>
 									</td>
 								</tr>
 							</table>
@@ -243,50 +253,35 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 								</td>
 							</tr>
 						</table>
-						<table className='w-full my-2 '>
-							<th align='center'>
-								<p className='uppercase  font-bold'>control unit info</p>
-							</th>
-							<tr>
-								<td align='center'>
-									<p className=' '>
-										CU Serial No: <span>KRAMWO123456789</span>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td align='center'>
-									<p className=' '>
-										CU Invoice No: <span>0O123456789</span>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td align='center'>
-									<p className=' '>
-										Receipt Ref No: <span>90102418951</span>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td align='center'>
-									<p className=' '>
-										Date: <span>9/03/2024 16:08:51</span>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td align='center'>
-									<Image
-										src='https://e-receipts-kenya.s3.amazonaws.com/qrcode/717b120f-548d-4598-b416-ed1b9a376fbe.png'
-										alt='qrcode'
-										className='block m-auto'
-										width={100}
-										height={100}
-									/>
-								</td>
-							</tr>
-						</table>
+
+						{controlUnits.length > 0 && (
+							<table className='w-full my-2 '>
+								<th align='center'>
+									<p className='uppercase  font-bold'>control unit info</p>
+								</th>
+								{controlUnits.map((i, index) => (
+									<tr key={index}>
+										<td align='center'>
+											<p className=' '>
+												{i.title}: <span>{i.value}</span>
+											</p>
+										</td>
+									</tr>
+								))}
+								<tr>
+									<td align='center'>
+										<Image
+											src='https://e-receipts-kenya.s3.amazonaws.com/qrcode/717b120f-548d-4598-b416-ed1b9a376fbe.png'
+											alt='qrcode'
+											className='block m-auto'
+											width={100}
+											height={100}
+										/>
+									</td>
+								</tr>
+							</table>
+						)}
+
 						<table className='w-full my-2 border-t border-b border-black dark:border-white'>
 							<th align='left'>
 								<p className='uppercase font-bold '>rewarded discounts</p>
@@ -299,28 +294,33 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className='capitalize '>Rewarded discount</p>
 								</td>
 							</tr>
-							<tr>
-								<td className='w-1/2'>
-									<p className='capitalize '>stainless steel water bottle</p>
-								</td>
-								<td align='right' className='w-1/2'>
-									<p className='capitalize '>20</p>
-								</td>
-							</tr>
+							{discountedItems.map((item, index) => (
+								<tr key={index}>
+									<td className='w-1/2'>
+										<p className='capitalize '>{item.item}</p>
+									</td>
+									<td align='right' className='w-1/2'>
+										<p className='capitalize '>{Number(item.discount) * Number(item.quantity)}</p>
+									</td>
+								</tr>
+							))}
+
 							<tr>
 								<td className='w-1/2'>
 									<p className='capitalize '>total discount</p>
 								</td>
 								<td align='right' className='w-1/2'>
-									<p className='capitalize '>20</p>
+									<p className='capitalize '>{totalDiscounts}</p>
 								</td>
 							</tr>
 						</table>
+
 						<table className='w-full my-2'>
 							<th align='left'>
 								<p className=' '>Note: Prices shown on receipt are inclusive of discount</p>
 							</th>
 						</table>
+
 						<table className='w-full my-2 border-t border-b border-black dark:border-white'>
 							<th align='left'>
 								<p className='uppercase  font-bold'>loyalty points</p>
