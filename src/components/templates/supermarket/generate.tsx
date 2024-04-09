@@ -1,28 +1,22 @@
+'use client';
+import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
 import AddReceiptItems from '@/components/shared/additems';
+import ClientDetailsComponent from '@/components/shared/client-details';
 import ControlUnitComponent from '@/components/shared/controlunit';
+import LoyaltyPointsComponent from '@/components/shared/loyaltypoints';
 import AddPaymentDetails from '@/components/shared/payments';
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
+import {useAtom} from 'jotai';
 
 const GenerateSuperMarketTemplate = () => {
+	const [path] = useAtom(navigateAtom);
+
 	return (
 		<div className='flex flex-col gap-3'>
-			<div>
-				<AddReceiptItems />
-			</div>
-
-			<div>
-				<AddPaymentDetails />
-			</div>
-			<div>
-				<Accordion type='single' collapsible className='w-full '>
-					<AccordionItem value='item-1'>
-						<AccordionTrigger className='p-4'>Control Unit Information</AccordionTrigger>
-						<AccordionContent>
-							<ControlUnitComponent />
-						</AccordionContent>
-					</AccordionItem>
-				</Accordion>
-			</div>
+			{path === Path.CLIENT_DETAILS && <ClientDetailsComponent />}
+			{path === Path.RECEIPT_ITEM && <AddReceiptItems />}
+			{path === Path.PAYMENT && <AddPaymentDetails />}
+			{path === Path.CONTROL_UNIT && <ControlUnitComponent />}
+			{path === Path.LOYALTY_POINTS && <LoyaltyPointsComponent />}
 		</div>
 	);
 };

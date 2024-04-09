@@ -5,10 +5,16 @@ import {Checkbox} from '../ui/checkbox';
 import CashPaymentDetails from './cash';
 import MpesaPaymentDetails from './mpesa';
 import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {Button} from '../ui/button';
+import {ArrowLeft, ArrowRight} from 'lucide-react';
+import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
+import {Progress} from '../ui/progress';
 
 const AddPaymentDetails = () => {
 	const [payment, setPayment] = useAtom(paymentAtom);
 	const [receiptItems] = useAtom(receiptItemsAtom);
+
+	const [_, setPath] = useAtom(navigateAtom);
 
 	const handleMethod = (method: PaymentMethods) => {
 		if (payment.methods.includes(method)) {
@@ -33,6 +39,9 @@ const AddPaymentDetails = () => {
 
 	return (
 		<div>
+			<div className='p-4 pt-0'>
+				<Progress value={60} />
+			</div>
 			<div className='p-4'>
 				<fieldset className='grid gap-6 rounded-lg border p-4'>
 					<legend className='-ml-1 px-1 text-sm font-medium'>Select Payment Method(s)</legend>
@@ -66,6 +75,21 @@ const AddPaymentDetails = () => {
 			</div>
 			{payment.methods.includes(PaymentMethods.CASH) && <CashPaymentDetails />}
 			{payment.methods.includes(PaymentMethods.MPESA) && <MpesaPaymentDetails />}
+
+			<div className='flex justify-end items-end p-4 pt-0'>
+				<div className='flex flex-row gap-2'>
+					<Button onClick={() => setPath(Path.RECEIPT_ITEM)}>
+						<ArrowLeft className='mr-2 h-4 w-4' />
+						Prev
+					</Button>
+					<Button
+						disabled={payment.cash.amount === 0 && payment.mpesa.amount === 0}
+						onClick={() => setPath(Path.CONTROL_UNIT)}>
+						<ArrowRight className='mr-2 h-4 w-4' />
+						Next
+					</Button>
+				</div>
+			</div>
 		</div>
 	);
 };

@@ -1,12 +1,13 @@
 'use client';
 import {Store} from '@/models/store';
 import Image from 'next/image';
-import React, {FC, useMemo} from 'react';
+import React, {FC, Fragment, useMemo} from 'react';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
 import {paymentAtom} from '@/atoms/receiptgen/payment';
 import {controlUnitAtom} from '@/atoms/receiptgen/controlunit';
+import {loyaltyAtom} from '@/atoms/receiptgen/loyalty';
 
 const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 	const [items] = useAtom(receiptItemsAtom);
@@ -25,6 +26,8 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 	const total_paid = useMemo(() => payment.cash.amount + payment.mpesa.amount, [payment]);
 
 	const [controlUnits] = useAtom(controlUnitAtom);
+
+	const [loyalty] = useAtom(loyaltyAtom);
 
 	return (
 		<div className=' sm:px-4 font-sans'>
@@ -321,35 +324,41 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 							</th>
 						</table>
 
-						<table className='w-full my-2 border-t border-b border-black dark:border-white'>
-							<th align='left'>
-								<p className='uppercase  font-bold'>loyalty points</p>
-							</th>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize '>loyalty code</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize '>01234567</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize '>customer</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize '>Joel Wekesa</p>
-								</td>
-							</tr>
-							<tr>
-								<td className='w-1/3'>
-									<p className='capitalize '>points earned</p>
-								</td>
-								<td className='w-2/3'>
-									<p className='capitalize '>16 credited</p>
-								</td>
-							</tr>
-						</table>
+						{loyalty.length > 0 && (
+							<table className='w-full my-2 border-t border-b border-black dark:border-white'>
+								<th align='left'>
+									<p className='uppercase  font-bold'>loyalty points</p>
+								</th>
+								{loyalty.map((i, index) => (
+									<Fragment key={index}>
+										<tr>
+											<td className='w-1/3'>
+												<p className='capitalize '>loyalty code</p>
+											</td>
+											<td className='w-2/3'>
+												<p className='capitalize '>{i.code}</p>
+											</td>
+										</tr>
+										<tr>
+											<td className='w-1/3'>
+												<p className='capitalize '>customer</p>
+											</td>
+											<td className='w-2/3'>
+												<p className='capitalize '>{i.customer}</p>
+											</td>
+										</tr>
+										<tr>
+											<td className='w-1/3'>
+												<p className='capitalize '>{i.points_earned}</p>
+											</td>
+											<td className='w-2/3'>
+												<p className='capitalize '>16 credited</p>
+											</td>
+										</tr>
+									</Fragment>
+								))}
+							</table>
+						)}
 					</td>
 				</tr>
 			</table>

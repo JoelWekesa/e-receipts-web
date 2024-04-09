@@ -16,7 +16,7 @@ export interface CASH {
     amount: number,
 }
 
-interface Payment {
+export interface Payment {
     methods: PaymentMethods[]
     mpesa: MPESA
     cash: CASH
