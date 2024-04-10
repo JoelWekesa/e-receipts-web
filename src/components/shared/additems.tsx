@@ -48,7 +48,15 @@ const AddReceiptItems = () => {
 	const {toast} = useToast();
 
 	const addItem = (data: z.infer<typeof formSchema>) => {
-		setItems((prev) => [...prev, data]);
+		setItems((prev) => [
+			...prev,
+			{
+				...data,
+				price: Number(data.price),
+				discount: Number(data.discount),
+				quantity: Number(data.quantity),
+			},
+		]);
 		toast({
 			title: 'Success!',
 			description: 'You have successfully added a receipt item',

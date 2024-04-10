@@ -2,7 +2,7 @@
 import {Loyalty, loyaltyAtom} from '@/atoms/receiptgen/loyalty';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {ArrowLeft, ArrowRight, Plus, Receipt} from 'lucide-react';
+import {ArrowLeft, ArrowRight, Loader2, Plus, Receipt} from 'lucide-react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
@@ -15,14 +15,9 @@ import {Payment, paymentAtom} from '@/atoms/receiptgen/payment';
 import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 import {Progress} from '../ui/progress';
 import {ClientDetails, clientDetailsAtom} from '@/atoms/receiptgen/client-details';
-
-interface Receipt {
-	client_details: ClientDetails;
-	items: ReceiptItem[];
-	payment: Payment;
-	control_units: ControlUnit[];
-	loyalty: Loyalty[];
-}
+import {AddReceipt} from '@/models/receipts/add';
+import {FC} from 'react';
+import useAddReceipt from '@/services/receipts/add';
 
 const formSchema = z.object({
 	code: z.string().min(1, {message: 'Code is required'}),
@@ -30,7 +25,7 @@ const formSchema = z.object({
 	points_earned: z.string().min(1, {message: 'Points earned is required'}),
 });
 
-const LoyaltyPointsComponent = () => {
+const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -40,33 +35,63 @@ const LoyaltyPointsComponent = () => {
 		},
 	});
 
-	const [client_details] = useAtom(clientDetailsAtom);
-	const [items] = useAtom(receiptItemsAtom);
-	const [payment] = useAtom(paymentAtom);
-	const [controlUnits] = useAtom(controlUnitAtom);
-	const [loyaltyPoints, setLoyaltyPoints] = useAtom(loyaltyAtom);
+	const [client_details, setClientDetails] = useAtom(clientDetailsAtom);
+	const [items, setItems] = useAtom(receiptItemsAtom);
+	const [payment, setPayment] = useAtom(paymentAtom);
+	const [control_units, setControlUnits] = useAtom(controlUnitAtom);
+	const [loyalty, setLoyaltyPoints] = useAtom(loyaltyAtom);
+
+	const successFn = () => {
+		setClientDetails({
+			name: '',
+			phone: '',
+			email: '',
+		});
+
+		setItems([]);
+		setLoyaltyPoints([]);
+		setControlUnits([]);
+		setPayment({
+			cash: {
+				amount: 0,
+			},
+			methods: [],
+
+			mpesa: {
+				client_name: '',
+				mobile_no: '',
+				m_pesa_transaction_id: '',
+				amount: 0,
+			},
+		});
+		setPath(Path.CLIENT_DETAILS);
+	};
+
+	const {mutate, isPending} = useAddReceipt(successFn);
 
 	const handleReceipt = () => {
-		const data: Receipt = {
-			client_details,
+		const data: AddReceipt = {
+			storeId,
 			items,
-			payment,
-			control_units: controlUnits,
-			loyalty: loyaltyPoints,
+			loyalty,
+			control_units,
+			name: client_details.name,
+			phone: client_details.phone,
+			email: client_details.email,
+			cash: payment.cash.amount,
+			mpesa: payment.mpesa.amount,
+			mpesa_name: payment.mpesa.client_name,
+			mpesa_phone_no: payment.mpesa.mobile_no,
+			mpesa_transaction_id: payment.mpesa.m_pesa_transaction_id,
 		};
 
-		console.log(data);
+		mutate(data);
 	};
 
 	const [__, setPath] = useAtom(navigateAtom);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		setLoyaltyPoints([
-			{
-				...data,
-				points_earned: Number(data.points_earned),
-			},
-		]);
+		setLoyaltyPoints([data]);
 
 		form.reset();
 	};
@@ -144,7 +169,7 @@ const LoyaltyPointsComponent = () => {
 						Prev
 					</Button>
 					<Button onClick={handleReceipt}>
-						<Receipt className='mr-2 h-4 w-4' />
+						{isPending ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : <Receipt className='mr-2 h-4 w-4' />}
 						Send Receipt
 					</Button>
 				</div>

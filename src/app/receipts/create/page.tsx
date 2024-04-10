@@ -1,8 +1,7 @@
-import UpdateStoreComponent from '@/components/stores/update';
-import {PreviewBox} from '@/components/templates/supermarket/show';
+import { PreviewBox } from '@/components/templates/supermarket/show';
 import axios from '@/config/axios';
-import {Store} from '@/models/store';
-import {auth} from '@clerk/nextjs';
+import { Store } from '@/models/store';
+import { auth } from '@clerk/nextjs';
 
 interface GetData {
 	id: string;

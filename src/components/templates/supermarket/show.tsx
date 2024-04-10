@@ -8,7 +8,7 @@ export const PreviewBox: FC<{store: Store}> = ({store}) => {
 		<div className='container mx-auto px-4 py-8'>
 			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
 				<div className=' p-4'>
-					<GenerateSuperMarketTemplate />
+					<GenerateSuperMarketTemplate storeId={store.id} />
 				</div>
 				<div className='hidden sm:block lg:block p-4 justify-center items-center'>
 					<SupermarketComponent store={store} />

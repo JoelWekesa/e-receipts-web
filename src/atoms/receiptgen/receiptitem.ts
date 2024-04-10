@@ -2,9 +2,9 @@ import { atom } from "jotai";
 
 export interface ReceiptItem {
     item: string;
-    quantity: string;
-    price: string;
-    discount: string;
+    quantity: number;
+    price: number;
+    discount: number;
 }
 
 export const receiptItemsAtom = atom<ReceiptItem[]>([])

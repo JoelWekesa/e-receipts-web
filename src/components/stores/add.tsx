@@ -11,6 +11,7 @@ import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 import Image from 'next/image';
+import {useAuth} from '@clerk/nextjs';
 
 const AddStore = () => {
 	const router = useRouter();
@@ -58,6 +59,10 @@ const AddStore = () => {
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		mutate(data);
 	};
+
+	const {sessionId} = useAuth();
+
+	console.log({sessionId});
 
 	return (
 		<div className='flex flex-col gap-5 xl:gap-6 container'>
