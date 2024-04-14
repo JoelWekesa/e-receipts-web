@@ -66,8 +66,8 @@ export const SalesDashboard: FC<{receipts: Receipt[]; total_monthly: Totals; tot
 								<CardContent>
 									<div className='text-sm text-muted-foreground'>
 										{weekly.increase > 0
-											? `+${weekly.increase * 100}% increase from last week`
-											: `-${weekly.increase * 100}% decrease from last week`}
+											? `+${(weekly.increase * 100).toFixed(2)}% increase from last week`
+											: `${(weekly.increase * 100).toFixed(2)}% decrease from last week`}
 									</div>
 								</CardContent>
 								<CardFooter>
@@ -82,8 +82,8 @@ export const SalesDashboard: FC<{receipts: Receipt[]; total_monthly: Totals; tot
 								<CardContent>
 									<div className='text-sm text-muted-foreground'>
 										{monthly.increase > 0
-											? `+${monthly.increase * 100}% increase from last month`
-											: `${monthly.increase * 100}% decrease from last month`}
+											? `+${(monthly.increase * 100).toFixed(2)}% increase from last month`
+											: `${(monthly.increase * 100).toFixed(2)}% decrease from last month`}
 									</div>
 								</CardContent>
 								<CardFooter>

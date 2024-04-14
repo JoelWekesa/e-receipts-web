@@ -60,11 +60,6 @@ const Sales = async () => {
 		token: token ? token : '',
 	});
 
-	console.log({
-		weekly,
-		monthly,
-	});
-
 	return (
 		<>
 			<div className='hidden flex-col md:flex'>
