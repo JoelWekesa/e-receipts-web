@@ -198,32 +198,31 @@ const AddStore = () => {
 													{...getRootProps()}
 													className='w-full h-full border-2 border-dashed border-gray-400 hover:border-gray-600 rounded-lg p-4 flex flex-col '>
 													<input {...getInputProps()} />
-													<p className='text-gray-600'>
-														{form?.getValues('logo') ? (
-															<div className='flex flex-initial justify-items-start flex-row gap-5'>
-																<Image
-																	src={URL.createObjectURL(form?.getValues('logo'))}
-																	width={100}
-																	height={100}
-																	alt='store'
-																	style={{
-																		borderRadius: '15%',
-																	}}
-																/>
-																<div className='flex flex-col justify-center items-center'>
-																	<p>{`Drag 'n' drop your logo here, or click to select file`}</p>
-																</div>
+
+													{form?.getValues('logo') ? (
+														<div className='flex flex-initial justify-items-start flex-row gap-5'>
+															<Image
+																src={URL.createObjectURL(form?.getValues('logo'))}
+																width={100}
+																height={100}
+																alt='store'
+																style={{
+																	borderRadius: '15%',
+																}}
+															/>
+															<div className='flex flex-col justify-center items-center'>
+																<p>{`Drag 'n' drop your logo here, or click to select file`}</p>
 															</div>
-														) : !!form?.formState?.errors?.logo?.message ? (
-															<div className='justify-center items-center'>
-																<p className='text-red-600 text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
-															</div>
-														) : (
-															<div className='justify-center items-center'>
-																<p className='text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
-															</div>
-														)}
-													</p>
+														</div>
+													) : !!form?.formState?.errors?.logo?.message ? (
+														<div className='justify-center items-center'>
+															<p className='text-red-600 text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+														</div>
+													) : (
+														<div className='justify-center items-center'>
+															<p className='text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+														</div>
+													)}
 												</div>
 											</div>
 										)}

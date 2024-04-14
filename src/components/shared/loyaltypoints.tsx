@@ -1,38 +1,43 @@
 'use client';
-import {Loyalty, loyaltyAtom} from '@/atoms/receiptgen/loyalty';
+import {clientDetailsAtom} from '@/atoms/receiptgen/client-details';
+import {controlUnitAtom} from '@/atoms/receiptgen/controlunit';
+import {loyaltyAtom} from '@/atoms/receiptgen/loyalty';
+import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
+import {paymentAtom} from '@/atoms/receiptgen/payment';
+import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {AddReceipt} from '@/models/receipts/add';
+import useAddReceipt from '@/services/receipts/add';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {ArrowLeft, ArrowRight, Loader2, Plus, Receipt} from 'lucide-react';
+import {ArrowLeft, Loader2, Receipt} from 'lucide-react';
+import {FC, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-import LoyaltyControlItems from './loyaltycontrolitems';
-import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
-import {ReceiptItem, receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
-import {Payment, paymentAtom} from '@/atoms/receiptgen/payment';
-import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 import {Progress} from '../ui/progress';
-import {ClientDetails, clientDetailsAtom} from '@/atoms/receiptgen/client-details';
-import {AddReceipt} from '@/models/receipts/add';
-import {FC} from 'react';
-import useAddReceipt from '@/services/receipts/add';
+import LoyaltyControlItems from './loyaltycontrolitems';
+import {Checkbox} from '../ui/checkbox';
 
-const formSchema = z.object({
-	code: z.string().min(1, {message: 'Code is required'}),
-	customer: z.string().min(1, {message: 'Customer is required'}),
-	points_earned: z.string().min(1, {message: 'Points earned is required'}),
-});
+const formSchema = z
+	.object({
+		code: z.string().optional(),
+		customer: z.string().optional(),
+		points_earned: z.string().optional(),
+	})
+	.refine(
+		(data) =>
+			!data.customer && !data.points_earned && !data.code ? true : data.customer && data.points_earned && data.code,
+		{
+			message: 'Please fill all fields',
+			path: ['points_earned'],
+		}
+	);
 
 const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			code: '',
-			customer: '',
-			points_earned: '',
-		},
 	});
 
 	const [client_details, setClientDetails] = useAtom(clientDetailsAtom);
@@ -69,32 +74,60 @@ const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 
 	const {mutate, isPending} = useAddReceipt(successFn);
 
-	const handleReceipt = () => {
-		const data: AddReceipt = {
-			storeId,
-			items,
-			loyalty,
-			control_units,
-			name: client_details.name,
-			phone: client_details.phone,
-			email: client_details.email,
-			cash: payment.cash.amount,
-			mpesa: payment.mpesa.amount,
-			mpesa_name: payment.mpesa.client_name,
-			mpesa_phone_no: payment.mpesa.mobile_no,
-			mpesa_transaction_id: payment.mpesa.m_pesa_transaction_id,
-		};
+	const [submit, setSubmit] = useState(false);
 
-		mutate(data);
+	useEffect(() => {
+		if (submit) {
+			const val: AddReceipt = {
+				storeId,
+				items,
+				loyalty,
+				control_units,
+				name: client_details.name,
+				phone: client_details.phone,
+				email: client_details.email,
+				cash: payment.cash.amount,
+				mpesa: payment.mpesa.amount,
+				mpesa_name: payment.mpesa.client_name,
+				mpesa_phone_no: payment.mpesa.mobile_no,
+				mpesa_transaction_id: payment.mpesa.m_pesa_transaction_id,
+			};
+
+			mutate(val);
+		}
+
+		return () => setSubmit(false);
+	}, [submit, storeId, items, loyalty, control_units, client_details, mutate, payment]);
+
+	const [checked, setChecked] = useState(false);
+
+	useEffect(() => {
+		if (checked) {
+			form.setValue('customer', client_details.name);
+		} else {
+			form.setValue('customer', undefined);
+		}
+	}, [checked, client_details, form]);
+
+	const handleCheck = () => {
+		setChecked((prev) => !prev);
+	};
+
+	const handleReceipt = (data: z.infer<typeof formSchema>) => {
+		if (data.code && data.customer && data.points_earned) {
+			setLoyaltyPoints([
+				{
+					code: data.code || '',
+					customer: data.customer || '',
+					points_earned: data.points_earned || '',
+				},
+			]);
+		}
+		setSubmit(true);
+		form.reset();
 	};
 
 	const [__, setPath] = useAtom(navigateAtom);
-
-	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		setLoyaltyPoints([data]);
-
-		form.reset();
-	};
 
 	return (
 		<>
@@ -102,10 +135,21 @@ const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 				<Progress value={100} />
 			</div>
 			<Form {...form}>
-				<form className='grid w-full items-start gap-6 overflow-auto p-4 pt-0' onSubmit={form.handleSubmit(handleSubmit)}>
+				<form className='grid w-full items-start gap-6 overflow-auto p-4 pt-0' onSubmit={form.handleSubmit(handleReceipt)}>
 					<fieldset className='grid gap-6 rounded-lg border p-4'>
 						<legend className='-ml-1 px-1 text-sm font-medium capitalize'>Loyalty Points</legend>
-
+						<div className='grid gap-3 justify-end items-end'>
+							<div className='items-top flex space-x-2'>
+								<Checkbox id='similar' checked={checked} onCheckedChange={handleCheck} />
+								<div className='grid gap-1.5 leading-none'>
+									<label
+										htmlFor='similar'
+										className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
+										Use client details
+									</label>
+								</div>
+							</div>
+						</div>
 						<div className='grid gap-3'>
 							<FormField
 								control={form.control}
@@ -151,29 +195,22 @@ const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 								)}
 							/>
 						</div>
-						<div className='grid gap-3'>
-							<Button type='submit'>
-								{' '}
-								<Plus className='mr-2 h-4 w-4' />
-								Add Loyalty Points
-							</Button>
+						<div className='flex justify-end items-end p-4 pt-0'>
+							<div className='flex flex-row gap-2'>
+								<Button onClick={() => setPath(Path.CONTROL_UNIT)}>
+									<ArrowLeft className='mr-2 h-4 w-4' />
+									Prev
+								</Button>
+								<Button type='submit'>
+									{isPending ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : <Receipt className='mr-2 h-4 w-4' />}
+									Send Receipt
+								</Button>
+							</div>
 						</div>
 						<LoyaltyControlItems />
 					</fieldset>
 				</form>
 			</Form>
-			<div className='flex justify-end items-end p-4 pt-0'>
-				<div className='flex flex-row gap-2'>
-					<Button onClick={() => setPath(Path.CONTROL_UNIT)}>
-						<ArrowLeft className='mr-2 h-4 w-4' />
-						Prev
-					</Button>
-					<Button onClick={handleReceipt}>
-						{isPending ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : <Receipt className='mr-2 h-4 w-4' />}
-						Send Receipt
-					</Button>
-				</div>
-			</div>
 		</>
 	);
 };

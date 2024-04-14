@@ -1,6 +1,6 @@
 import { AddReceipt } from "@/models/receipts/add";
 import ApiClient from '../../config/axios';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import dayjs from 'dayjs'
 
@@ -12,9 +12,12 @@ const addReceipt = async (data: AddReceipt) => {
 
 const useAddReceipt = (successFn: () => void) => {
     const { toast } = useToast()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: addReceipt,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+            await Promise.all([queryClient.invalidateQueries({ queryKey: ["business-period"], }), queryClient.invalidateQueries({ queryKey: ["totals"], })])
+
             successFn()
             toast({
                 title: "Receipt successfully sent",

@@ -14,7 +14,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 
 	const total = useMemo(() => items.reduce((acc, item) => acc + +item.price * +item.quantity, 0), [items]);
 
-	const discountedItems = useMemo(() => items.filter((item) => item.discount !== '0'), [items]);
+	const discountedItems = useMemo(() => items.filter((item) => item.discount !== 0), [items]);
 
 	const totalDiscounts = useMemo(
 		() => discountedItems.reduce((acc, item) => acc + +item.discount * +item.quantity, 0),

@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
 				<Input
 					placeholder={searchPlaceholder}
 					value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-					onChange={(event: any) => table.getColumn('name')?.setFilterValue(event.target.value)}
+					onChange={(event: any) => table.getColumn(searchColumn)?.setFilterValue(event.target.value)}
 					className='max-w-sm'
 				/>
 			</div>
@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id}>
+							<TableRow key={headerGroup.id} className='bg-accent'>
 								{headerGroup.headers.map((header) => {
 									return (
 										<TableHead key={header.id}>
@@ -79,7 +79,9 @@ export function DataTable<TData, TValue>({
 							table.getRowModel().rows.map((row) => (
 								<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+										<TableCell key={cell.id} className='font-medium'>
+											{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										</TableCell>
 									))}
 								</TableRow>
 							))

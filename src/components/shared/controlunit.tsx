@@ -12,18 +12,19 @@ import ListControlItems from './listcontrolunits';
 import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
 import {Progress} from '../ui/progress';
 
-const formSchema = z.object({
-	title: z.string().min(1, {message: 'Title is required'}),
-	value: z.string().min(1, {message: 'Value is required'}),
-});
+const formSchema = z
+	.object({
+		title: z.string().optional(),
+		value: z.string().optional(),
+	})
+	.refine((data) => (!data.title && !data.value ? true : data.title && data.value), {
+		message: 'Please fill all fields',
+		path: ['title'],
+	});
 
 const ControlUnitComponent = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			title: '',
-			value: '',
-		},
 	});
 
 	const [_, setControlUnits] = useAtom(controlUnitAtom);
@@ -31,7 +32,17 @@ const ControlUnitComponent = () => {
 	const [__, setPath] = useAtom(navigateAtom);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		setControlUnits((prev) => [...prev, data]);
+		if (data.title && data.value) {
+			setControlUnits((prev) => [
+				...prev,
+				{
+					title: data.title || '',
+					value: data.value || '',
+				},
+			]);
+		}
+		setPath(Path.LOYALTY_POINTS);
+
 		form.reset();
 	};
 
@@ -75,30 +86,22 @@ const ControlUnitComponent = () => {
 								)}
 							/>
 						</div>
-						<div className='grid gap-3'>
-							<Button type='submit'>
-								{' '}
-								<Plus className='mr-2 h-4 w-4' />
-								Add Control Unit
-							</Button>
-						</div>
 						<ListControlItems />
+						<div className='flex justify-end items-end pt-0'>
+							<div className='flex flex-row gap-2'>
+								<Button onClick={() => setPath(Path.PAYMENT)}>
+									<ArrowLeft className='mr-2 h-4 w-4' />
+									Prev
+								</Button>
+								<Button type='submit'>
+									<ArrowRight className='mr-2 h-4 w-4' />
+									Next
+								</Button>
+							</div>
+						</div>
 					</fieldset>
 				</form>
 			</Form>
-
-			<div className='flex justify-end items-end p-4 pt-0'>
-				<div className='flex flex-row gap-2'>
-					<Button onClick={() => setPath(Path.PAYMENT)}>
-						<ArrowLeft className='mr-2 h-4 w-4' />
-						Prev
-					</Button>
-					<Button onClick={() => setPath(Path.LOYALTY_POINTS)}>
-						<ArrowRight className='mr-2 h-4 w-4' />
-						Next
-					</Button>
-				</div>
-			</div>
 		</>
 	);
 };

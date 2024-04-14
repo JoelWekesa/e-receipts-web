@@ -3,13 +3,12 @@ import {clientDetailsAtom} from '@/atoms/receiptgen/client-details';
 import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {ArrowRight, Plus} from 'lucide-react';
+import {ArrowRight} from 'lucide-react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-import LoyaltyControlItems from './loyaltycontrolitems';
 import {Progress} from '../ui/progress';
 
 const formSchema = z.object({
@@ -42,6 +41,7 @@ const ClientDetailsComponent = () => {
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		setClientDetails(data);
+		setPath(Path.RECEIPT_ITEM);
 	};
 
 	return (
@@ -99,25 +99,17 @@ const ClientDetailsComponent = () => {
 								)}
 							/>
 						</div>
-						<div className='grid gap-3'>
-							<Button type='submit'>
-								{' '}
-								<Plus className='mr-2 h-4 w-4' />
-								Add Client Details
-							</Button>
+						<div className='flex justify-end items-end pt-0'>
+							<div className='flex flex-row gap-2'>
+								<Button type='submit'>
+									<ArrowRight className='mr-2 h-4 w-4' />
+									Next
+								</Button>
+							</div>
 						</div>
-						<LoyaltyControlItems />
 					</fieldset>
 				</form>
 			</Form>
-			<div className='flex justify-end items-end p-4 pt-0'>
-				<div className='flex flex-row gap-2'>
-					<Button onClick={() => setPath(Path.RECEIPT_ITEM)} disabled={client.name === '' || client.phone === ''}>
-						<ArrowRight className='mr-2 h-4 w-4' />
-						Next
-					</Button>
-				</div>
-			</div>
 		</>
 	);
 };

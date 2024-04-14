@@ -4,7 +4,7 @@ import AddReceiptItems from '@/components/shared/additems';
 import ClientDetailsComponent from '@/components/shared/client-details';
 import ControlUnitComponent from '@/components/shared/controlunit';
 import LoyaltyPointsComponent from '@/components/shared/loyaltypoints';
-import AddPaymentDetails from '@/components/shared/payments';
+import AddPaymentDetails from '@/components/shared/payment';
 import {useAtom} from 'jotai';
 import {FC} from 'react';
 
