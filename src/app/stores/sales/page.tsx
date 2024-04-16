@@ -1,14 +1,12 @@
-import {SalesDashboard} from '@/components/dashboard/Sales';
-import {Search} from '@/components/dashboard/Search';
+import { MainNav } from '@/components/dashboard/MainNav';
+import { SalesDashboard } from '@/components/dashboard/Sales';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import {MainNav} from '@/components/dashboard/MainNav';
-import React from 'react';
-import {Receipt} from '@/models/receipts/receipt';
 import axios from '@/config/axios';
-import {auth} from '@clerk/nextjs';
-import {Period} from '@/services/receipts/businessperiod';
-import {Totals} from '@/models/receipts/totals';
-import {AxiosResponse} from 'axios';
+import { Receipt } from '@/models/receipts/receipt';
+import { Totals } from '@/models/receipts/totals';
+import { Period } from '@/services/receipts/businessperiod';
+import { auth } from '@clerk/nextjs';
+import { AxiosResponse } from 'axios';
 
 async function getData({token}: {token: string}) {
 	const week: Promise<AxiosResponse<Totals>> = axios.get(
@@ -67,9 +65,6 @@ const Sales = async () => {
 					<div className='flex h-16 items-center px-4'>
 						<TeamSwitcher />
 						<MainNav className='mx-6' />
-						<div className='ml-auto flex items-center space-x-4'>
-							<Search />
-						</div>
 					</div>
 				</div>
 			</div>

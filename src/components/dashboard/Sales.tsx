@@ -102,8 +102,8 @@ export const SalesDashboard: FC<{receipts: Receipt[]; total_monthly: Totals; tot
 							<TabsContent value={Period.week}>
 								<Card x-chunk='dashboard-05-chunk-3'>
 									<CardHeader className='px-7'>
-										<CardTitle>Orders</CardTitle>
-										<CardDescription>Recent orders from your store.</CardDescription>
+										<CardTitle>Sales</CardTitle>
+										<CardDescription>{`This week's sales from your store.`}</CardDescription>
 									</CardHeader>
 									<CardContent>
 										<SalesTable receipts={receipts} period={Period.week} />
@@ -114,7 +114,7 @@ export const SalesDashboard: FC<{receipts: Receipt[]; total_monthly: Totals; tot
 								<Card x-chunk='dashboard-05-chunk-3'>
 									<CardHeader className='px-7'>
 										<CardTitle>Orders</CardTitle>
-										<CardDescription>Recent orders from your store.</CardDescription>
+										<CardDescription>{`This month's sales from your store.`}</CardDescription>
 									</CardHeader>
 									<CardContent>
 										<SalesTable receipts={receipts} period={Period.month} />
@@ -125,7 +125,7 @@ export const SalesDashboard: FC<{receipts: Receipt[]; total_monthly: Totals; tot
 								<Card x-chunk='dashboard-05-chunk-3'>
 									<CardHeader className='px-7'>
 										<CardTitle>Orders</CardTitle>
-										<CardDescription>Recent orders from your store.</CardDescription>
+										<CardDescription>{`This year's sales from your store.`}</CardDescription>
 									</CardHeader>
 									<CardContent>
 										<SalesTable receipts={receipts} period={Period.year} />

@@ -64,7 +64,7 @@ export default function StoresLayout({children}: StoreLayoutProps) {
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader />
+					<SiteHeader show={false} />
 					<main className='flex-1'>{children}</main>
 				</div>
 			</div>
