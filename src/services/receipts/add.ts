@@ -16,7 +16,13 @@ const useAddReceipt = (successFn: () => void) => {
     return useMutation({
         mutationFn: addReceipt,
         onSuccess: async (data) => {
-            await Promise.all([queryClient.invalidateQueries({ queryKey: ["business-period"], }), queryClient.invalidateQueries({ queryKey: ["totals"], })])
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ["business-period"], }),
+                queryClient.invalidateQueries({ queryKey: ["totals"], }),
+                queryClient.invalidateQueries({ queryKey: ["count"], }),
+                queryClient.invalidateQueries({ queryKey: ["top-stores"], }),
+                queryClient.invalidateQueries({ queryKey: ["top-customers"], })
+            ])
 
             successFn()
             toast({

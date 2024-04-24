@@ -15,3 +15,19 @@ export interface Store {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface TopStore {
+    name: string;
+    amount: number;
+}
+
+export interface TopCustomers {
+    _count: Count;
+    name: string;
+}
+
+export interface Count {
+    name: number;
+}
+
+

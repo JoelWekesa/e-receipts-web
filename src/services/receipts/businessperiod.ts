@@ -3,9 +3,12 @@ import ApiClient from '../../config/axios';
 import { Receipt } from '@/models/receipts/receipt';
 
 export enum Period {
+
+    day = 'day',
     week = 'week',
     month = 'month',
-    year = 'year'
+    year = 'year',
+    alltime = 'alltime'
 }
 
 
@@ -27,7 +30,6 @@ const useBusinessPeriod = ({ period, receipts }: BusinessPeriod) => {
         queryKey: ['business-period', period],
         queryFn: () => getBusinessPeriod(period),
         initialData: receipts,
-        staleTime: 10
     })
 }
 

@@ -1,60 +1,89 @@
-import { MainNav } from '@/components/dashboard/MainNav';
-import { SalesDashboard } from '@/components/dashboard/Sales';
+import {MainNav} from '@/components/dashboard/MainNav';
+import {SalesDashboard} from '@/components/dashboard/Sales';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import axios from '@/config/axios';
-import { Receipt } from '@/models/receipts/receipt';
-import { Totals } from '@/models/receipts/totals';
-import { Period } from '@/services/receipts/businessperiod';
-import { auth } from '@clerk/nextjs';
-import { AxiosResponse } from 'axios';
+import {Period} from '@/services/receipts/businessperiod';
+import {auth} from '@clerk/nextjs';
 
-async function getData({token}: {token: string}) {
-	const week: Promise<AxiosResponse<Totals>> = axios.get(
-		process.env.NEXT_PUBLIC_API_URL + 'receipts/periodtotals?period=' + Period.week,
-		{
+const durations = [Period.day, Period.week, Period.month, Period.year, Period.alltime];
+
+const periodTotalsUrls = durations.map(
+	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/periodtotals?period=' + duration
+);
+
+const receiptPeriodUrls = durations.map(
+	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/store?period=' + duration
+);
+
+const countPeriodUrls = durations.map(
+	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/countall?period=' + duration
+);
+
+const topUrls = [
+	process.env.NEXT_PUBLIC_API_URL + 'receipts/topstores',
+	process.env.NEXT_PUBLIC_API_URL + 'receipts/topcustomersvolume',
+];
+
+const allUrls = [...periodTotalsUrls, ...receiptPeriodUrls, ...countPeriodUrls, ...topUrls];
+
+async function getData({token, url}: {token: string; url: string}) {
+	const response = await axios
+		.get(url, {
 			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
-		}
-	);
+		})
+		.then((res) => res.data);
 
-	const month: Promise<AxiosResponse<Totals>> = axios.get(
-		process.env.NEXT_PUBLIC_API_URL + 'receipts/periodtotals?period=' + Period.month,
-		{
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		}
-	);
+	return response;
+}
 
-	const res: Promise<AxiosResponse<Receipt[]>> = axios.get(
-		process.env.NEXT_PUBLIC_API_URL + 'receipts/store?period=week',
-		{
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		}
-	);
-
-	const [weekly, monthly, receipts] = await Promise.all([week, month, res]);
+const getAllData = async ({token}: {token: string}) => {
+	const [
+		total_daily,
+		total_weekly,
+		total_monthly,
+		total_yearly,
+		alltime,
+		receiptsDay,
+		receiptsWeek,
+		receiptsMonth,
+		receiptsYear,
+		allReceipts,
+		todayCount,
+		weekCount,
+		monthCount,
+		yearCount,
+		alltimeCount,
+		topStores,
+		topCustomers,
+	] = await Promise.all(allUrls.map((url) => getData({token, url})));
 
 	return {
-		weekly: weekly.data,
-		monthly: monthly.data,
-		receipts: receipts.data,
+		total_daily,
+		total_weekly,
+		total_monthly,
+		total_yearly,
+		alltime,
+		receiptsDay,
+		receiptsWeek,
+		receiptsMonth,
+		receiptsYear,
+		allReceipts,
+		todayCount,
+		weekCount,
+		monthCount,
+		yearCount,
+		alltimeCount,
+		topStores,
+		topCustomers,
 	};
-}
+};
 
 const Sales = async () => {
 	const {sessionId: token} = auth();
 
-	const {weekly, monthly, receipts} = await getData({
+	const data = await getAllData({
 		token: token ? token : '',
 	});
 
@@ -69,7 +98,7 @@ const Sales = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<SalesDashboard receipts={receipts} total_monthly={monthly} total_weekly={weekly} />
+				<SalesDashboard data={data} />
 			</div>
 		</>
 	);

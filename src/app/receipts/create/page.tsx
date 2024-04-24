@@ -1,7 +1,7 @@
-import { PreviewBox } from '@/components/templates/supermarket/show';
+import {PreviewBox} from '@/components/templates/supermarket/show';
 import axios from '@/config/axios';
-import { Store } from '@/models/store';
-import { auth } from '@clerk/nextjs';
+import {Store} from '@/models/store';
+import {auth} from '@clerk/nextjs';
 
 interface GetData {
 	id: string;
@@ -19,7 +19,6 @@ async function getData({id, token}: GetData): Promise<Store> {
 		})
 		.then((res) => res.data)
 		.catch((err) => {
-			// console.log(err?.response?.data);initialData});
 			throw new Error(err);
 		});
 
