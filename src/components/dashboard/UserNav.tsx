@@ -12,16 +12,10 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import {deleteCookie} from 'cookies-next';
 
 const UserNav = () => {
 	const {signOut} = useClerk();
 	const {user} = useUser();
-
-	const handleLogout = () => {
-		signOut();
-		deleteCookie('clerk_session');
-	};
 
 	return (
 		<DropdownMenu>

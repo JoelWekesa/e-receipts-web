@@ -1,4 +1,3 @@
-import {MainNav} from '@/components/dashboard/MainNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
 import {Store} from '@/models/store';
@@ -35,7 +34,7 @@ const StoresPage = async () => {
 				<div className='border-b'>
 					<div className='flex h-16 items-center px-4'>
 						<TeamSwitcher />
-						<MainNav className='mx-6' />
+						{/* <MainNav className='mx-6' /> */}
 					</div>
 				</div>
 			</div>

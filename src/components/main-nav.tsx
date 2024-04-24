@@ -6,6 +6,13 @@ import {usePathname} from 'next/navigation';
 import {Icons} from '@/components/icons';
 import {siteConfig} from '@/config/site';
 import {cn} from '@/lib/utils';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export function MainNav() {
 	const pathname = usePathname();
@@ -39,16 +46,30 @@ export function MainNav() {
 					)}>
 					Stores
 				</Link>
+
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<p
+							className={cn(
+								'transition-colors hover:text-foreground/80 cursor-pointer',
+								pathname?.startsWith('/receipts/create') ? 'text-foreground' : 'text-foreground/60'
+							)}>
+							Create Receipt
+						</p>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className='w-56' align='end' forceMount>
+						<Link href='/receipts/create'>
+							<DropdownMenuItem className='font-normal cursor-pointer'>Default</DropdownMenuItem>
+						</Link>
+
+						<DropdownMenuSeparator />
+						<Link href='/stores/all'>
+							<DropdownMenuItem className='font-normal cursor-pointer'>Select Store</DropdownMenuItem>
+						</Link>
+					</DropdownMenuContent>
+				</DropdownMenu>
 				<Link
-					href='/themes'
-					className={cn(
-						'transition-colors hover:text-foreground/80',
-						pathname?.startsWith('/receipts/create') ? 'text-foreground' : 'text-foreground/60'
-					)}>
-					New Receipt
-				</Link>
-				<Link
-					href='/examples'
+					href='/settings'
 					className={cn(
 						'transition-colors hover:text-foreground/80',
 						pathname?.startsWith('/examples') ? 'text-foreground' : 'text-foreground/60'
