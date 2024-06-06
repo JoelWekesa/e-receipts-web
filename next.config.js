@@ -4,6 +4,27 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
+				hostname: 'receipts-ke.s3.amazonaws.com',
+				port: '',
+				pathname: '/logo/**',
+			},
+
+			{
+				protocol: 'https',
+				hostname: 'receipts-ke.s3.amazonaws.com',
+				port: '',
+				pathname: '/receipts/**',
+			},
+
+			{
+				protocol: 'https',
+				hostname: 'receipts-ke.s3.amazonaws.com',
+				port: '',
+				pathname: '/qrcode/**',
+			},
+
+			{
+				protocol: 'https',
 				hostname: 'e-receipts-kenya.s3.amazonaws.com',
 				port: '',
 				pathname: '/logo/**',

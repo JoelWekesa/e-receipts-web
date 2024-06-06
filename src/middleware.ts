@@ -7,7 +7,7 @@ export const config = {
 
 export default authMiddleware({
     // debug: true,
-    publicRoutes: ["/register", "/contact", "/", "/templates/supermarket"],
+    publicRoutes: ["/register", "/contact", "/", "/templates/supermarket", "/maps"],
     afterAuth(auth, req, evt) {
         // Handle users who aren't authenticated
         if (!auth.userId && !auth.isPublicRoute) {

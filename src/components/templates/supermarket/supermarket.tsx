@@ -62,7 +62,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 								<Image
 									id='barcode'
 									alt='barcode'
-									src='https://e-receipts-kenya.s3.amazonaws.com/receipts/e0a484dc-acf8-4124-b144-3db15bf6bb35.png'
+									src='https://receipts-ke.s3.amazonaws.com/logo/barcode.png'
 									width={70}
 									height={70}
 									className='block m-auto'
@@ -274,7 +274,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 								<tr>
 									<td align='center'>
 										<Image
-											src='https://e-receipts-kenya.s3.amazonaws.com/qrcode/717b120f-548d-4598-b416-ed1b9a376fbe.png'
+											src='https://receipts-ke.s3.amazonaws.com/logo/qrcode.png'
 											alt='qrcode'
 											className='block m-auto'
 											width={100}
