@@ -1,8 +1,10 @@
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import {PreviewBox} from '@/components/templates/supermarket/show';
-import axios from '@/config/axios';
+import ApiClient from '@/config/axios';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
-import {auth} from '@clerk/nextjs';
+import axios from 'axios';
+import {getServerSession} from 'next-auth';
 
 interface GetData {
 	id?: string;
@@ -15,14 +17,8 @@ async function getData({id, token}: GetData): Promise<Store> {
 	if (id !== undefined) {
 		val = '' + id;
 	} else {
-		const def: Setting = await axios
-			.get(process.env.NEXT_PUBLIC_API_URL + 'settings', {
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			})
+		const def: Setting = await ApiClient(token)
+			.get(process.env.NEXT_PUBLIC_API_URL + 'settings')
 			.then((res) => res.data)
 			.catch((err) => {
 				throw new Error(err);
@@ -31,14 +27,8 @@ async function getData({id, token}: GetData): Promise<Store> {
 		val = def?.storeId || '';
 	}
 
-	const res = await axios
-		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + val, {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const res = await ApiClient(token)
+		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + val)
 		.then((res) => res.data)
 		.catch((err) => {
 			throw new Error(err);
@@ -48,7 +38,11 @@ async function getData({id, token}: GetData): Promise<Store> {
 }
 
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
-	const {sessionId: token} = auth();
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
+
+	console.log({token});
 
 	const id = searchParams?.id;
 
@@ -59,7 +53,7 @@ const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string 
 
 	return (
 		<div className='p-3'>
-			<PreviewBox store={data} />
+			<PreviewBox store={data} token={token ? token : ''} />
 		</div>
 	);
 };

@@ -12,7 +12,12 @@ interface Store {
     logo: File
 }
 
-const addStore = async (data: Store) => {
+interface Add {
+    data: Store
+    token: string
+}
+
+const addStore = async ({ data, token }: Add) => {
 
     const formData = new FormData();
     formData.append('name', data.name);
@@ -23,7 +28,7 @@ const addStore = async (data: Store) => {
     data?.pin_no && formData.append('pin_no', data.pin_no);
     formData.append('logo', data.logo);
 
-    const store = await ApiClient.post("stores/new", formData).then(res => res.data)
+    const store = await ApiClient(token).post("stores/new", formData).then(res => res.data)
 
     return store
 }

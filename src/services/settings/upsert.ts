@@ -4,6 +4,7 @@ import { toast } from '@/components/ui/use-toast';
 import dayjs from 'dayjs';
 interface Setting {
 	store_id?: string;
+	token: string
 }
 
 export interface AddSetting {
@@ -14,8 +15,8 @@ export interface AddSetting {
 	updatedAt: Date;
 }
 
-const upsertSettings = async (setting: Setting) => {
-	const nSetting: AddSetting = await ApiClient.post('settings/add', setting).then((res) => res.data);
+const upsertSettings = async ({ store_id, token }: Setting) => {
+	const nSetting: AddSetting = await ApiClient(token).post('settings/add', { store_id }).then((res) => res.data);
 	return nSetting;
 };
 

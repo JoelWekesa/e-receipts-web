@@ -1,7 +1,8 @@
 import LandingComponent from '@/components/landing';
-import {SiteHeader} from '@/components/site-header';
+import { SiteHeader } from '@/components/site-header';
 
 const HomePage = () => {
+
 	return (
 		<>
 			<SiteHeader />

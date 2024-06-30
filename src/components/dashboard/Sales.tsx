@@ -6,21 +6,21 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {Progress} from '@/components/ui/progress';
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
+import {Count} from '@/models/receipts/count';
 import {Receipt} from '@/models/receipts/receipt';
 import {Totals} from '@/models/receipts/totals';
-import useBusinessPeriod, {Period} from '@/services/receipts/businessperiod';
+import {TopCustomers, TopStore} from '@/models/store';
+import {Period} from '@/services/receipts/businessperiod';
 import useTotals from '@/services/receipts/totals';
 import currencyFormat from '@/utils/currency';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import {FC} from 'react';
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '../ui/dropdown-menu';
-import SalesTable from './tables/sales';
-import {Count} from '@/models/receipts/count';
 import ReceiptDistribution from './ReceiptDistribution';
-import {TopCustomers, TopStore} from '@/models/store';
-import TopStores from './TopStores';
+import SalesTable from './tables/sales';
 import TopCustomersComponent from './TopCustomers';
+import TopStores from './TopStores';
 
 interface Data {
 	//Receipt Totals
@@ -74,20 +74,26 @@ export const SalesDashboard: FC<{
 		topCustomers,
 	},
 }) => {
-	const {data: daily} = useTotals({
-		period: Period.day,
-		totals: total_daily,
-	});
+	const {data: daily} = useTotals(
+		{
+			period: Period.day,
+			totals: total_daily,
+		},
+	);
 
-	const {data: weekly} = useTotals({
-		period: Period.week,
-		totals: total_weekly,
-	});
+	const {data: weekly} = useTotals(
+		{
+			period: Period.week,
+			totals: total_weekly,
+		},
+	);
 
-	const {data: monthly} = useTotals({
-		period: Period.month,
-		totals: total_monthly,
-	});
+	const {data: monthly} = useTotals(
+		{
+			period: Period.month,
+			totals: total_monthly,
+		},
+	);
 
 	const {data: annual} = useTotals({
 		period: Period.year,

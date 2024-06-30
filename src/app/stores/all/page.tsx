@@ -1,18 +1,13 @@
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
+import ApiClient from '@/config/axios';
 import {Store} from '@/models/store';
-import {auth} from '@clerk/nextjs';
-import axios from 'axios';
+import {getServerSession} from 'next-auth';
 
 async function getData({token}: {token: string}): Promise<Store[]> {
-	const res = await axios
-		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/stores', {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const res = await ApiClient(token)
+		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/stores')
 		.then((res) => res.data)
 		.catch((err) => {
 			throw new Error(err);
@@ -22,7 +17,9 @@ async function getData({token}: {token: string}): Promise<Store[]> {
 }
 
 const StoresPage = async () => {
-	const {sessionId: token} = auth();
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
 
 	const data = await getData({
 		token: token ? token : '',
@@ -39,7 +36,7 @@ const StoresPage = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<UserStores initialData={data} />
+				<UserStores initialData={data} token={token ? token : ''} />
 			</div>
 		</>
 	);

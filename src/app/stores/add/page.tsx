@@ -1,9 +1,15 @@
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import {MainNav} from '@/components/dashboard/MainNav';
 import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import StoreHomeComponent from '@/components/stores';
+import {getServerSession} from 'next-auth';
 
-const HomePage = () => {
+const HomePage = async () => {
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
+
 	return (
 		<>
 			<div className='hidden flex-col md:flex'>
@@ -17,8 +23,10 @@ const HomePage = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* <div>{JSON.stringify(session)}</div> */}
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<StoreHomeComponent />
+				<StoreHomeComponent token={token ? token : ''} />
 			</div>
 		</>
 	);

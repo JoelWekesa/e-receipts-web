@@ -2,6 +2,7 @@
 import useAddStore from '@/services/stores/add';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Loader2} from 'lucide-react';
+import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {FC, ReactNode} from 'react';
 import Dropzone from 'react-dropzone';
@@ -10,10 +11,8 @@ import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-import Image from 'next/image';
-import {useAuth} from '@clerk/nextjs';
 
-const AddStore = () => {
+const AddStore: FC<{token: string}> = ({token}) => {
 	const router = useRouter();
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -57,12 +56,11 @@ const AddStore = () => {
 	const {mutate, isPending} = useAddStore(successFn);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		mutate(data);
+		mutate({
+			data,
+			token,
+		});
 	};
-
-	const {sessionId} = useAuth();
-
-	console.log({sessionId});
 
 	return (
 		<div className='flex flex-col gap-5 xl:gap-6 container'>

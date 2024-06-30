@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	output: 'standalone',
 	images: {
 		remotePatterns: [
 			{
@@ -45,6 +46,8 @@ const nextConfig = {
 			},
 		],
 	},
+
+	transpilePackages: ["@radix-ui/react-alert-dialog"],
 };
 
 module.exports = nextConfig;

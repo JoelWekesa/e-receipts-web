@@ -2,27 +2,17 @@ import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import SettingsComponent from '@/components/settings/settings';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
-import {auth} from '@clerk/nextjs';
 import axios from 'axios';
+import {getServerSession} from 'next-auth';
+import {options} from '../api/auth/[...nextauth]/options';
+import ApiClient from '@/config/axios';
 
 async function getData({token}: {token: string}) {
-	const setting: Promise<Setting> = axios
-		.get(process.env.NEXT_PUBLIC_API_URL + 'settings', {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const setting: Promise<Setting> = ApiClient(token)
+		.get(process.env.NEXT_PUBLIC_API_URL + 'settings')
 		.then((res) => res.data);
-	const store: Promise<Store[]> = axios
-		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/stores', {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const store: Promise<Store[]> = ApiClient(token)
+		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/stores')
 		.then((res) => res.data);
 
 	const [settingRes, storeRes] = await Promise.all([setting, store]);
@@ -31,7 +21,9 @@ async function getData({token}: {token: string}) {
 }
 
 const Settings = async () => {
-	const {sessionId: token} = auth();
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
 
 	const {setting, stores} = await getData({
 		token: token ? token : '',
@@ -46,7 +38,7 @@ const Settings = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-1'>
-				<SettingsComponent stores={stores} setting={setting} />
+				<SettingsComponent stores={stores} setting={setting} token={token ? token : ''} />
 			</div>
 		</>
 	);

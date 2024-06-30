@@ -4,8 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import dayjs from 'dayjs'
 
-const addReceipt = async (data: AddReceipt) => {
-    const newReceipt = await ApiClient.post("receipts/add", data).then(res => res.data)
+interface Receipt {
+    data: AddReceipt
+    token: string
+}
+
+const addReceipt = async ({ data, token }: Receipt) => {
+    const newReceipt = await ApiClient(token).post("receipts/add", data).then(res => res.data)
     return newReceipt
 }
 

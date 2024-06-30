@@ -1,4 +1,3 @@
-import {ClerkProvider} from '@clerk/nextjs';
 import {Metadata, Viewport} from 'next';
 import '../styles/globals.css';
 
@@ -13,6 +12,7 @@ import {siteConfig} from '@/config/site';
 import {fontSans} from '@/lib/fonts';
 import {cn} from '@/lib/utils';
 import ReactQueryProvider from '@/providers/react-query';
+import NextAuthProvider from '@/providers/next-auth';
 
 export const metadata: Metadata = {
 	title: {
@@ -73,7 +73,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({children}: RootLayoutProps) {
 	return (
-		<ClerkProvider>
+		<NextAuthProvider>
 			<ReactQueryProvider>
 				<html lang='en' suppressHydrationWarning>
 					<head />
@@ -97,6 +97,6 @@ export default function RootLayout({children}: RootLayoutProps) {
 					</body>
 				</html>
 			</ReactQueryProvider>
-		</ClerkProvider>
+		</NextAuthProvider>
 	);
 }

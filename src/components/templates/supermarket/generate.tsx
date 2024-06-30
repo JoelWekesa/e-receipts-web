@@ -8,7 +8,7 @@ import AddPaymentDetails from '@/components/shared/payment';
 import {useAtom} from 'jotai';
 import {FC} from 'react';
 
-const GenerateSuperMarketTemplate: FC<{storeId: string}> = ({storeId}) => {
+const GenerateSuperMarketTemplate: FC<{storeId: string; token: string}> = ({storeId, token}) => {
 	const [path] = useAtom(navigateAtom);
 
 	return (
@@ -17,7 +17,7 @@ const GenerateSuperMarketTemplate: FC<{storeId: string}> = ({storeId}) => {
 			{path === Path.RECEIPT_ITEM && <AddReceiptItems />}
 			{path === Path.PAYMENT && <AddPaymentDetails />}
 			{path === Path.CONTROL_UNIT && <ControlUnitComponent />}
-			{path === Path.LOYALTY_POINTS && <LoyaltyPointsComponent storeId={storeId} />}
+			{path === Path.LOYALTY_POINTS && <LoyaltyPointsComponent storeId={storeId} token={token} />}
 		</div>
 	);
 };

@@ -14,7 +14,7 @@ import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 
-const UpdateStoreComponent = ({id, initialData}: {id: string; initialData: Store}) => {
+const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData: Store; token: string}) => {
 	const {data} = useStoreById({id, store: initialData});
 
 	const router = useRouter();
@@ -70,8 +70,11 @@ const UpdateStoreComponent = ({id, initialData}: {id: string; initialData: Store
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		mutate({
-			...data,
-			id,
+			data: {
+				...data,
+				id,
+			},
+			token,
 		});
 	};
 

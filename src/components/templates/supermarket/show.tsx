@@ -4,7 +4,7 @@ import SupermarketComponent from './supermarket';
 import {FC} from 'react';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 
-export const PreviewBox: FC<{store: Store}> = ({store}) => {
+export const PreviewBox: FC<{store: Store; token: string}> = ({store, token}) => {
 	return (
 		<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 			<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
@@ -16,7 +16,7 @@ export const PreviewBox: FC<{store: Store}> = ({store}) => {
 								<CardDescription>Send your receipt in 4 easy steps</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<GenerateSuperMarketTemplate storeId={store.id} />
+								<GenerateSuperMarketTemplate storeId={store.id} token={token} />
 							</CardContent>
 						</Card>
 					</div>

@@ -22,7 +22,7 @@ const formSchema = z.object({
 	}),
 });
 
-const SettingsComponent: FC<{stores: Store[]; setting: Setting}> = ({stores, setting}) => {
+const SettingsComponent: FC<{stores: Store[]; setting: Setting; token: string}> = ({stores, setting, token}) => {
 	const {mutate, isPending} = useUpsertSettings();
 
 	const {data: userSetting} = useSetting(setting);
@@ -37,6 +37,7 @@ const SettingsComponent: FC<{stores: Store[]; setting: Setting}> = ({stores, set
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		mutate({
 			store_id: data.store,
+			token,
 		});
 	};
 

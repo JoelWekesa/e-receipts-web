@@ -35,7 +35,7 @@ const formSchema = z
 		}
 	);
 
-const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
+const LoyaltyPointsComponent: FC<{storeId: string; token: string}> = ({storeId, token}) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 	});
@@ -93,11 +93,14 @@ const LoyaltyPointsComponent: FC<{storeId: string}> = ({storeId}) => {
 				mpesa_transaction_id: payment.mpesa.m_pesa_transaction_id,
 			};
 
-			mutate(val);
+			mutate({
+				data: val,
+				token,
+			});
 		}
 
 		return () => setSubmit(false);
-	}, [submit, storeId, items, loyalty, control_units, client_details, mutate, payment]);
+	}, [submit, storeId, items, loyalty, control_units, client_details, mutate, payment, token]);
 
 	const [checked, setChecked] = useState(false);
 

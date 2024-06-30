@@ -26,10 +26,10 @@ import {Input} from '../ui/input';
 import useDeleteStore from '@/services/stores/delete';
 import StoreButtonDropDown from './dropdown';
 
-const UserStores = ({initialData}: StoreFetch) => {
+const UserStores = ({initialData, token}: StoreFetch) => {
 	const [open, setOpen] = useState(false);
 
-	const {data, isLoading} = useUserStores({initialData});
+	const {data, isLoading} = useUserStores({initialData, token});
 
 	const [store, setStore] = useAtom(storeAtom);
 
@@ -157,7 +157,7 @@ const UserStores = ({initialData}: StoreFetch) => {
 			<Sheet>
 				<div className='m-3 p-5 rounded-md border'>
 					<DataTable columns={columns} data={data || []} searchColumn='name' searchPlaceholder='Search by store name...' />
-					<DeleteDialog open={open} setOpen={handleDeleteDialog} />
+					<DeleteDialog open={open} setOpen={handleDeleteDialog} token={token} />
 				</div>
 				<SheetContent>
 					<StoreComponent />
@@ -181,7 +181,7 @@ const UserStores = ({initialData}: StoreFetch) => {
 
 export default UserStores;
 
-const DeleteDialog: FC<{open: boolean; setOpen: () => void}> = ({open, setOpen}) => {
+const DeleteDialog: FC<{open: boolean; setOpen: () => void; token: string}> = ({open, setOpen, token}) => {
 	const router = useRouter();
 
 	const [store, _] = useAtom(storeAtom);
@@ -197,7 +197,10 @@ const DeleteDialog: FC<{open: boolean; setOpen: () => void}> = ({open, setOpen})
 	const {mutate, isPending} = useDeleteStore(successFn);
 
 	const handleDelete = () => {
-		mutate(store?.id || '');
+		mutate({
+			id: store?.id || '',
+			token: token,
+		});
 	};
 
 	return (

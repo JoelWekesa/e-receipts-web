@@ -1,27 +1,21 @@
 
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import dayjs from 'dayjs';
 import { toast } from 'sonner';
-import Swal from 'sweetalert2';
 
-
-
-const ApiClient = () => {
+const ApiClient = (token: string) => {
 	const baseURL = process.env.NEXT_PUBLIC_API_URL;
 	const defaultOptions = {
 		baseURL,
 		timeout: 15000,
 	};
 
-	const sessionId = getCookie("clerk_session");
-
 	const instance = axios.create(defaultOptions);
 
 	instance.interceptors.request.use(async (request) => {
-		if (sessionId) {
-			request.headers.Authorization = `Bearer ${sessionId}`;
-		}
+		// const sessionId = await getServerSession(options);
+
+		request.headers.Authorization = `Bearer ${token}`;
+
 		return request;
 	});
 
@@ -39,4 +33,4 @@ const ApiClient = () => {
 	return instance;
 };
 
-export default ApiClient();
+export default ApiClient;

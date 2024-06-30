@@ -3,9 +3,14 @@ import dayjs from 'dayjs';
 import { toast } from 'sonner';
 import ApiClient from '../../config/axios';
 
+interface Delete {
+    id: string
+    token: string
+}
 
-const deleteStore = async (id: string) => {
-    const store = await ApiClient.delete("stores/delete", {
+
+const deleteStore = async ({ id, token }: Delete) => {
+    const store = await ApiClient(token).delete("stores/delete", {
         data: { id }
     }).then(res => res.data)
     return store

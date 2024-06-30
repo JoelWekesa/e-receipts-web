@@ -1,9 +1,10 @@
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import {MainNav} from '@/components/dashboard/MainNav';
 import {SalesDashboard} from '@/components/dashboard/Sales';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import axios from '@/config/axios';
+import ApiClient from '@/config/axios';
 import {Period} from '@/services/receipts/businessperiod';
-import {auth} from '@clerk/nextjs';
+import {getServerSession} from 'next-auth';
 
 const durations = [Period.day, Period.week, Period.month, Period.year, Period.alltime];
 
@@ -27,12 +28,8 @@ const topUrls = [
 const allUrls = [...periodTotalsUrls, ...receiptPeriodUrls, ...countPeriodUrls, ...topUrls];
 
 async function getData({token, url}: {token: string; url: string}) {
-	const response = await axios
-		.get(url, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const response = await ApiClient(token)
+		.get(url)
 		.then((res) => res.data);
 
 	return response;
@@ -81,7 +78,9 @@ const getAllData = async ({token}: {token: string}) => {
 };
 
 const Sales = async () => {
-	const {sessionId: token} = auth();
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
 
 	const data = await getAllData({
 		token: token ? token : '',

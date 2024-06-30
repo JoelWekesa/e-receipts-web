@@ -1,7 +1,8 @@
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import UpdateStoreComponent from '@/components/stores/update';
-import axios from '@/config/axios';
+import ApiClient from '@/config/axios';
 import {Store} from '@/models/store';
-import {auth} from '@clerk/nextjs';
+import {getServerSession} from 'next-auth';
 
 interface GetData {
 	id: string;
@@ -9,14 +10,8 @@ interface GetData {
 }
 
 async function getData({id, token}: GetData): Promise<Store> {
-	const res = await axios
-		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + id, {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+	const res = await ApiClient(token)
+		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + id)
 		.then((res) => res.data)
 		.catch((err) => {
 			// console.log(err?.response?.data);initialData});
@@ -27,7 +22,9 @@ async function getData({id, token}: GetData): Promise<Store> {
 }
 
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
-	const {sessionId: token} = auth();
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken;
 
 	const id = '' + searchParams?.id;
 
@@ -38,7 +35,7 @@ const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string 
 
 	return (
 		<div className='p-3'>
-			<UpdateStoreComponent id={id} initialData={data} />
+			<UpdateStoreComponent id={id} initialData={data} token={token ? token : ''} />
 		</div>
 	);
 };

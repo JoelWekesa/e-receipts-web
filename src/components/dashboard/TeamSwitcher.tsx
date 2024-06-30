@@ -1,15 +1,12 @@
 'use client';
 
+import {CaretSortIcon, CheckIcon, PlusCircledIcon} from '@radix-ui/react-icons';
 import * as React from 'react';
-import {
-	CaretSortIcon,
-	CheckIcon,
-	PlusCircledIcon,
-} from '@radix-ui/react-icons';
 
-import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Button } from '../ui/button';
+import {cn} from '@/lib/utils';
+import {useSession} from 'next-auth/react';
+import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
+import {Button} from '../ui/button';
 import {
 	Command,
 	CommandEmpty,
@@ -28,17 +25,10 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '../ui/dialog';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '../ui/select';
-import { useUser } from '@clerk/nextjs';
+import {Input} from '../ui/input';
+import {Label} from '../ui/label';
+import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '../ui/select';
 const groupsP = [
 	{
 		label: 'Personal Account',
@@ -66,20 +56,18 @@ const groupsP = [
 
 type Team = (typeof groupsP)[number]['teams'][number];
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<
-	typeof PopoverTrigger
->;
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
 interface TeamSwitcherProps extends PopoverTriggerProps {}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
-	const { user } = useUser();
+export default function TeamSwitcher({className}: TeamSwitcherProps) {
+	const {data: user} = useSession();
 	const groups = [
 		{
 			label: 'Personal Account',
 			teams: [
 				{
-					label: user?.fullName || 'Team Switcher',
+					label: user?.name || 'Team Switcher',
 					value: 'personal',
 				},
 			],
@@ -100,9 +88,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 	];
 	const [open, setOpen] = React.useState(false);
 	const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-	const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-		groups[0].teams[0]
-	);
+	const [selectedTeam, setSelectedTeam] = React.useState<Team>(groups[0].teams[0]);
 
 	return (
 		<Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -115,14 +101,8 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 						aria-label='Select a team'
 						className={cn('w-[200px] justify-between', className)}>
 						<Avatar className='mr-2 h-5 w-5'>
-							<AvatarImage
-								src={user?.imageUrl}
-								alt={selectedTeam.label}
-								className='grayscale'
-							/>
-							<AvatarFallback>
-								{user?.firstName?.slice(0, 1)} {user?.lastName?.slice(0, 1)}
-							</AvatarFallback>
+							<AvatarImage src={user?.picture || user?.image || ''} alt={selectedTeam.label} className='grayscale' />
+							<AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
 						</Avatar>
 						{selectedTeam.label}
 						<CaretSortIcon className='ml-auto h-4 w-4 shrink-0 opacity-50' />
@@ -144,21 +124,12 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 											}}
 											className='text-sm'>
 											<Avatar className='mr-2 h-5 w-5'>
-												<AvatarImage
-													src={`https://avatar.vercel.sh/${team.value}.png`}
-													alt={team.label}
-													className='grayscale'
-												/>
+												<AvatarImage src={`https://avatar.vercel.sh/${team.value}.png`} alt={team.label} className='grayscale' />
 												<AvatarFallback>SC</AvatarFallback>
 											</Avatar>
 											{team.label}
 											<CheckIcon
-												className={cn(
-													'ml-auto h-4 w-4',
-													selectedTeam.value === team.value
-														? 'opacity-100'
-														: 'opacity-0'
-												)}
+												className={cn('ml-auto h-4 w-4', selectedTeam.value === team.value ? 'opacity-100' : 'opacity-0')}
 											/>
 										</CommandItem>
 									))}
@@ -186,9 +157,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Create team</DialogTitle>
-					<DialogDescription>
-						Add a new team to manage products and customers.
-					</DialogDescription>
+					<DialogDescription>Add a new team to manage products and customers.</DialogDescription>
 				</DialogHeader>
 				<div>
 					<div className='space-y-4 py-2 pb-4'>
@@ -204,16 +173,10 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 								</SelectTrigger>
 								<SelectContent>
 									<SelectItem value='free'>
-										<span className='font-medium'>Free</span> -{' '}
-										<span className='text-muted-foreground'>
-											Trial for two weeks
-										</span>
+										<span className='font-medium'>Free</span> - <span className='text-muted-foreground'>Trial for two weeks</span>
 									</SelectItem>
 									<SelectItem value='pro'>
-										<span className='font-medium'>Pro</span> -{' '}
-										<span className='text-muted-foreground'>
-											$9/month per user
-										</span>
+										<span className='font-medium'>Pro</span> - <span className='text-muted-foreground'>$9/month per user</span>
 									</SelectItem>
 								</SelectContent>
 							</Select>

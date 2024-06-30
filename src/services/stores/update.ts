@@ -14,7 +14,12 @@ interface StoreUpdate {
     logo?: File
 }
 
-const updateStore = async (data: StoreUpdate) => {
+interface Update {
+    data: StoreUpdate,
+    token: string
+}
+
+const updateStore = async ({ data, token }: Update) => {
 
     const formData = new FormData();
     formData.append('id', data.id);
@@ -26,7 +31,7 @@ const updateStore = async (data: StoreUpdate) => {
     data?.pin_no && formData.append('pin_no', data.pin_no);
     data?.logo && formData.append('logo', data.logo);
 
-    const store: Store = await ApiClient.patch("stores/update", formData).then(res => res.data)
+    const store: Store = await ApiClient(token).patch("stores/update", formData).then(res => res.data)
 
     return store
 }

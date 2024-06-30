@@ -4,17 +4,20 @@ import ApiClient from '../../config/axios';
 
 export interface StoreFetch {
     initialData: Store[];
+    token: string;
 }
 
 
-export const userStores = async () => {
-    const stores: Store[] = await ApiClient.get("stores/stores").then(res => res.data)
+
+
+export const userStores = async (token: string) => {
+    const stores: Store[] = await ApiClient(token).get("stores/stores").then(res => res.data)
     return stores
 }
 
-const useUserStores = ({ initialData }: StoreFetch) => useQuery({
+const useUserStores = ({ initialData, token }: StoreFetch) => useQuery({
     queryKey: ['user-stores'],
-    queryFn: userStores,
+    queryFn: () => userStores(token),
     initialData
 })
 
