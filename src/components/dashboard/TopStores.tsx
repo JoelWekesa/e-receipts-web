@@ -1,3 +1,4 @@
+'use client';
 import {TopStore} from '@/models/store';
 import useTopStores from '@/services/stores/top';
 import currencyFormat from '@/utils/currency';

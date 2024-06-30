@@ -1,3 +1,4 @@
+'use client';
 import {Count} from '@/models/receipts/count';
 import {Period} from '@/services/receipts/businessperiod';
 import useCount from '@/services/receipts/count';

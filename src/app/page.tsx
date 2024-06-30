@@ -1,7 +1,12 @@
 import LandingComponent from '@/components/landing';
-import { SiteHeader } from '@/components/site-header';
+import {SiteHeader} from '@/components/site-header';
+import {getServerSession} from 'next-auth';
+import {options} from './api/auth/[...nextauth]/options';
 
-const HomePage = () => {
+const HomePage = async () => {
+	const session = await getServerSession(options);
+
+	console.log({id: session?.accessToken});
 
 	return (
 		<>

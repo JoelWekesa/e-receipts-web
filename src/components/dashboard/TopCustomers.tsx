@@ -1,3 +1,4 @@
+'use client';
 import {TopCustomers} from '@/models/store';
 import useTopCustomers from '@/services/stores/topcustomers';
 import {FC} from 'react';
