@@ -30,12 +30,13 @@ const useTotals = ({ period, totals }: Total) => {
         required: true
     })
 
-    const token = session?.accessToken || ''
+    const token = session?.accessToken
 
     return useQuery({
         queryKey: ['totals', period],
-        queryFn: () => getTotals({ period, token }),
-        initialData: totals
+        queryFn: () => getTotals({ period, token: token || '' }),
+        initialData: totals,
+        enabled: !!token
     })
 }
 

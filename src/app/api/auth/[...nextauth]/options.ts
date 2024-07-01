@@ -31,7 +31,7 @@ export const options: NextAuthOptions = {
                     return null
                 }
 
-                const url = 'http://localhost:5600/auth/login'
+                const url = process.env.NEXT_PUBLIC_API_URL + 'auth/login'
 
                 const config: AxiosRequestConfig = {
                     method: 'POST',
@@ -83,7 +83,7 @@ export const options: NextAuthOptions = {
         },
         async session({ session, token }) {
 
-            const url = 'http://localhost:5600/auth'
+            const url = process.env.NEXT_PUBLIC_API_URL + 'auth'
 
             const config: AxiosRequestConfig = {
                 method: 'POST',
@@ -107,15 +107,6 @@ export const options: NextAuthOptions = {
             return { ...session, ...token }
         }
     },
-
-    // session: {
-    //     strategy: 'jwt'
-    // },
-
-    // jwt: {
-    //     secret: process.env.NEXT_JWT_SECRET || '',
-    //     maxAge: 24 * 60 * 60 * 30 // 30 days
-    // },
 
 
 }

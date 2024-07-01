@@ -1,6 +1,7 @@
 import { Store } from '@/models/store';
 import { useQuery } from '@tanstack/react-query';
 import ApiClient from '../../config/axios';
+import { useSession } from 'next-auth/react';
 
 export interface StoreFetch {
     initialData: Store[];
@@ -15,10 +16,20 @@ export const userStores = async (token: string) => {
     return stores
 }
 
-const useUserStores = ({ initialData, token }: StoreFetch) => useQuery({
-    queryKey: ['user-stores'],
-    queryFn: () => userStores(token),
-    initialData
-})
+const useUserStores = ({ initialData }: StoreFetch) => {
+
+    const { data: session } = useSession({
+        required: true
+    })
+
+    const token = session?.accessToken
+
+    return useQuery({
+        queryKey: ['user-stores'],
+        queryFn: () => userStores(token || ''),
+        initialData,
+        enabled: !!token
+    })
+}
 
 export default useUserStores;

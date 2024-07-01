@@ -24,7 +24,9 @@ async function getData({token, url}: {token: string; url: string}) {
 }
 
 const getAllData = async ({token}: {token: string}) => {
-	const [total_monthly, total_yearly, alltime] = await Promise.all(periodTotalsUrls.map((url) => getData({token, url})));
+	const [total_monthly, total_yearly, alltime] = await Promise.all(
+		periodTotalsUrls.slice(-3).map((url) => getData({token, url}))
+	);
 
 	return {
 		total_monthly,

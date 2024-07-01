@@ -3,6 +3,9 @@ import ApiClient from '../../config/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import dayjs from 'dayjs'
+import { PeriodSalesEnum } from "../sales/periodsales";
+import { Counts } from "./distribution";
+import { TopEnum } from "../top/top";
 
 interface Receipt {
     data: AddReceipt
@@ -26,7 +29,19 @@ const useAddReceipt = (successFn: () => void) => {
                 queryClient.invalidateQueries({ queryKey: ["totals"], }),
                 queryClient.invalidateQueries({ queryKey: ["count"], }),
                 queryClient.invalidateQueries({ queryKey: ["top-stores"], }),
-                queryClient.invalidateQueries({ queryKey: ["top-customers"], })
+                queryClient.invalidateQueries({ queryKey: ["top-customers"], }),
+                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.dailysales], }),
+                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.weeklysales], }),
+                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.monthlysales], }),
+                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.yearlysales], }),
+                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.alltime], }),
+                queryClient.invalidateQueries({ queryKey: [Counts.daily_count], }),
+                queryClient.invalidateQueries({ queryKey: [Counts.weekly_count], }),
+                queryClient.invalidateQueries({ queryKey: [Counts.monthly_count], }),
+                queryClient.invalidateQueries({ queryKey: [Counts.yearly_count], }),
+                queryClient.invalidateQueries({ queryKey: [Counts.alltime_count], }),
+                queryClient.invalidateQueries({ queryKey: [TopEnum.topstores], }),
+                queryClient.invalidateQueries({ queryKey: [TopEnum.topcustomers], }),
             ])
 
             successFn()

@@ -18,14 +18,17 @@ const getStoreById = async ({ id, token }: { id: string, token: string }) => {
 
 const useStoreById = ({ id, store }: StoreGet) => {
     const { data: session } = useSession()
+
+    const token = session?.accessToken
     return useQuery({
         queryKey: ['user-stores', { id }],
+
         queryFn: () => getStoreById({
             id,
-            token: session?.accessToken || ''
+            token: token || ''
         }),
         initialData: store,
-        enabled: !!id
+        enabled: !!id && !!token
     })
 }
 

@@ -1,12 +1,18 @@
 {
 	"cSpell.words": [
 		"alltime",
+		"alltimesales",
 		"businessperiod",
 		"countall",
+		"dailysales",
 		"lucide",
+		"monthlysales",
 		"periodsales",
+		"topcustomers",
 		"topcustomersvolume",
 		"topstores",
-		"upsert"
+		"upsert",
+		"weeklysales",
+		"yearlysales"
 	]
 }

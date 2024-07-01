@@ -72,7 +72,7 @@ export function MainNav() {
 					href='/settings'
 					className={cn(
 						'transition-colors hover:text-foreground/80',
-						pathname?.startsWith('/examples') ? 'text-foreground' : 'text-foreground/60'
+						pathname?.startsWith('/settings') ? 'text-foreground' : 'text-foreground/60'
 					)}>
 					Settings
 				</Link>

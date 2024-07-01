@@ -31,14 +31,18 @@ const useBusinessPeriod = ({ period, receipts }: BusinessPeriod) => {
         required: true
     })
 
+    const token = session?.accessToken
+
 
     return useQuery({
         queryKey: ['business-period', period],
         queryFn: () => getBusinessPeriod({
             period,
-            token: session?.accessToken || ''
+            token: token || '',
+
         }),
         initialData: receipts,
+        enabled: !!token
     })
 }
 

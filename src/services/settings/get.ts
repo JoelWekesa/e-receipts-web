@@ -17,11 +17,14 @@ const useSetting = (setting?: Setting) => {
         required: true
     })
 
+    const token = session?.accessToken
+
     return useQuery({
 
         queryKey: ['setting', setting?.id],
-        queryFn: () => getSetting(session?.accessToken || ''),
+        queryFn: () => getSetting(token || ''),
         initialData: setting,
+        enabled: !!token
     })
 }
 

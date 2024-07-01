@@ -1,9 +1,17 @@
+'use client';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
-import {Period} from '@/services/receipts/businessperiod';
-import React, {FC} from 'react';
-import SalesTable from '../tables/sales';
 import {Receipt} from '@/models/receipts/receipt';
+import {Period} from '@/services/receipts/businessperiod';
+import {
+	useAllTimeSales,
+	useDailySales,
+	useMonthlySales,
+	useWeeklySales,
+	useYearlySales,
+} from '@/services/sales/periodsales';
+import {FC} from 'react';
+import SalesTable from '../tables/sales';
 
 const PeriodSales: FC<{
 	receiptsDay: Receipt[];
@@ -12,6 +20,12 @@ const PeriodSales: FC<{
 	receiptsYear: Receipt[];
 	allReceipts: Receipt[];
 }> = ({receiptsDay, receiptsWeek, receiptsMonth, receiptsYear, allReceipts}) => {
+	const {data: daily} = useDailySales(receiptsDay);
+	const {data: weekly} = useWeeklySales(receiptsWeek);
+	const {data: monthly} = useMonthlySales(receiptsMonth);
+	const {data: yearly} = useYearlySales(receiptsYear);
+	const {data: allTime} = useAllTimeSales(allReceipts);
+
 	return (
 		<Tabs defaultValue={Period.day} className='hidden lg:block'>
 			<div className='flex items-center'>
@@ -23,6 +37,7 @@ const PeriodSales: FC<{
 					<TabsTrigger value='alltime'>All Time</TabsTrigger>
 				</TabsList>
 			</div>
+
 			<TabsContent value={Period.day}>
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
@@ -30,7 +45,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`Today's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={receiptsDay} period={Period.day} />
+						<SalesTable receipts={daily} period={Period.day} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -41,7 +56,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This week's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={receiptsWeek} period={Period.week} />
+						<SalesTable receipts={weekly} period={Period.week} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -52,7 +67,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This month's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={receiptsMonth} period={Period.month} />
+						<SalesTable receipts={monthly} period={Period.month} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -63,7 +78,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This year's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={receiptsYear} period={Period.year} />
+						<SalesTable receipts={yearly} period={Period.year} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -74,7 +89,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`All time sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={allReceipts} period={Period.alltime} />
+						<SalesTable receipts={allTime} period={Period.alltime} />
 					</CardContent>
 				</Card>
 			</TabsContent>

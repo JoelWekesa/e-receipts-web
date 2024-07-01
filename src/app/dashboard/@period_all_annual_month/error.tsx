@@ -15,9 +15,6 @@ export default function StoresError({error, reset}: {error: Error & {digest?: st
 					investigate the issue. Please try again later.`}
 				</p>
 			</div>
-			<Link className='w-full max-w-xs' href='#'>
-				<Button size='sm'>Back to safety</Button>
-			</Link>
 		</div>
 	);
 }

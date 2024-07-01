@@ -13,7 +13,7 @@ interface initialCount {
 
 const getCount = async ({ period, token }: { period: Period, token: string }) => {
 
-    const count: Count = await ApiClient(token).get("receipts/periodtotals?period=" + period).then(res => res.data)
+    const count: Count = await ApiClient(token).get("receipts/countall?period=" + period).then(res => res.data)
 
     return count
 }
@@ -25,13 +25,16 @@ const useCount = ({ period, count }: initialCount) => {
         required: true
     })
 
+    const token = session?.accessToken
+
     return useQuery({
         queryKey: ['count', period],
         queryFn: () => getCount({
             period,
-            token: session?.accessToken || ''
+            token: token || ''
         }),
-        initialData: count
+        initialData: count,
+        enabled: !!token
     })
 }
 

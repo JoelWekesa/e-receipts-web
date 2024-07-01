@@ -10,7 +10,7 @@ import {FC} from 'react';
 
 const AllTimeTotal: FC<{allTime: Totals}> = ({allTime}) => {
 	const {data} = useTotals({
-		period: Period.day,
+		period: Period.alltime,
 		totals: allTime,
 	});
 	return (
