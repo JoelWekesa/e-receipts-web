@@ -77,7 +77,7 @@ export default function RootLayout({children}: RootLayoutProps) {
 			<ReactQueryProvider>
 				<html lang='en' suppressHydrationWarning>
 					<head />
-					<body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.className)}>
+					<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
 						<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 							<div vaul-drawer-wrapper=''>
 								<div className='relative flex min-h-screen flex-col bg-background'>

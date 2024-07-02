@@ -38,15 +38,27 @@ export function MainNav() {
 					)}>
 					Dashboard
 				</Link>
-				<Link
-					href='/stores/all'
-					className={cn(
-						'transition-colors hover:text-foreground/80',
-						pathname?.startsWith('/stores/all') ? 'text-foreground' : 'text-foreground/60'
-					)}>
-					Stores
-				</Link>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<p
+							className={cn(
+								'transition-colors hover:text-foreground/80 cursor-pointer',
+								pathname?.startsWith('/stores') ? 'text-foreground' : 'text-foreground/60'
+							)}>
+							Stores
+						</p>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className='w-56' align='end' forceMount>
+						<Link href='/stores/add'>
+							<DropdownMenuItem className='font-normal cursor-pointer'>Create</DropdownMenuItem>
+						</Link>
 
+						<DropdownMenuSeparator />
+						<Link href='/stores/all'>
+							<DropdownMenuItem className='font-normal cursor-pointer'>View All</DropdownMenuItem>
+						</Link>
+					</DropdownMenuContent>
+				</DropdownMenu>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<p

@@ -3,14 +3,14 @@
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
+import {emailPattern, passwordPattern, phoneNumberPattern, usernamePattern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {signIn} from 'next-auth/react';
 import Link from 'next/link';
+import {FC} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
-import {signIn} from 'next-auth/react';
-import {FC} from 'react';
-import {emailPattern, passwordPattern, phoneNumberPattern, usernamePattern} from '@/utils/regex';
 
 const formSchema = z.object({
 	username: z.string().refine(() => usernamePattern || emailPattern || phoneNumberPattern, {
@@ -83,20 +83,26 @@ export const LoginForm: FC<{path?: string}> = ({path}) => {
 					</form>
 					<Button
 						variant='default'
-						className='w-full bg-blue-500'
+						className='w-full bg-blue-500 text-white'
 						onClick={() =>
 							signIn('google', {
 								redirect: true,
 								callbackUrl: path || '/',
 							})
 						}>
-						Login with Google
+						Continue With Google
 					</Button>
 				</Form>
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
-					<Link href='#' className='underline'>
+					<Link href='/auth/register' className='underline'>
 						Sign up
+					</Link>
+				</div>
+				<div className='mt-4 text-center text-sm'>
+					Forgot your password?{' '}
+					<Link href='/auth/request' className='underline'>
+						Reset Password
 					</Link>
 				</div>
 			</CardContent>

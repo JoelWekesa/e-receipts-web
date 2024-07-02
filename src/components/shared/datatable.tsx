@@ -23,6 +23,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 	searchColumn: string;
 	searchPlaceholder: string;
+	black?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -30,6 +31,7 @@ export function DataTable<TData, TValue>({
 	data,
 	searchColumn,
 	searchPlaceholder,
+	black,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -50,7 +52,7 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className='rounded-md'>
+		<div className={`rounded-md ${black && 'bg-[#000000]'}`}>
 			<div className='flex items-center py-4 px-4'>
 				<Input
 					placeholder={searchPlaceholder}

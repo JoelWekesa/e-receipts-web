@@ -1,43 +1,22 @@
 'use client';
-import {
-	Cloud,
-	CreditCard,
-	Github,
-	Keyboard,
-	LifeBuoy,
-	LogOut,
-	Mail,
-	MessageSquare,
-	Plus,
-	PlusCircle,
-	Settings,
-	User,
-	UserPlus,
-	Users,
-} from 'lucide-react';
+import {CreditCard, Settings, ShoppingCart, User} from 'lucide-react';
 
-import {Button} from '@/components/ui/button';
+import {storeAtom} from '@/atoms/store';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuPortal,
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {FC, ReactNode} from 'react';
 import {Store} from '@/models/store';
-import {useRouter} from 'next/navigation';
-import Link from 'next/link';
-import {SheetTrigger} from '../ui/sheet';
 import {useAtom} from 'jotai';
-import {storeAtom} from '@/atoms/store';
+import Link from 'next/link';
+import {FC, ReactNode} from 'react';
+import {SheetTrigger} from '../ui/sheet';
 
 interface Drop {
 	label: string;
@@ -76,6 +55,13 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 						<DropdownMenuItem>
 							<Settings className='mr-2 h-4 w-4' />
 							<span>Edit Store</span>
+							<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+						</DropdownMenuItem>
+					</Link>
+					<Link href={`/inventory/${drop.store.id}`}>
+						<DropdownMenuItem>
+							<ShoppingCart className='mr-2 h-4 w-4' />
+							<span>Manage Inventory</span>
 							<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
 						</DropdownMenuItem>
 					</Link>
