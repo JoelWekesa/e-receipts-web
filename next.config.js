@@ -44,10 +44,16 @@ const nextConfig = {
 				port: '',
 				pathname: '/qrcode/**',
 			},
+			{
+				protocol: 'https',
+				hostname: 'receipts-ke.s3.amazonaws.com',
+				port: '',
+				pathname: '/inventory/**',
+			},
 		],
 	},
 
-	transpilePackages: ["@radix-ui/react-alert-dialog"],
+	transpilePackages: ['@radix-ui/react-alert-dialog'],
 };
 
 module.exports = nextConfig;

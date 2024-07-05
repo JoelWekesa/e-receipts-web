@@ -32,10 +32,16 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 							Categories
 						</Link>
 						<Link
+							href={`/inventory/all/${storeId}`}
+							className={`font-semibold ${activeTab === 'inventory' ? 'text-primary' : 'text-muted-foreground'}`}
+							onClick={() => setActiveTab('inventory')}>
+							Inventory
+						</Link>
+						<Link
 							href={`/inventory/add/${storeId}`}
 							className={`font-semibold ${activeTab === 'product' ? 'text-primary' : 'text-muted-foreground'}`}
 							onClick={() => setActiveTab('product')}>
-							Products
+							Add Inventory
 						</Link>
 						<Link
 							href='#'

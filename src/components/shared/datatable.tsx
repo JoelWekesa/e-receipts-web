@@ -21,7 +21,7 @@ import {Input} from '../ui/input';
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	searchColumn: string;
+	searchColumn?: string;
 	searchPlaceholder: string;
 	black?: boolean;
 }
@@ -56,8 +56,8 @@ export function DataTable<TData, TValue>({
 			<div className='flex items-center py-4 px-4'>
 				<Input
 					placeholder={searchPlaceholder}
-					value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-					onChange={(event: any) => table.getColumn(searchColumn)?.setFilterValue(event.target.value)}
+					value={(table.getColumn(searchColumn ?? 'name')?.getFilterValue() as string) ?? ''}
+					onChange={(event: any) => table.getColumn(searchColumn ?? 'name')?.setFilterValue(event.target.value)}
 					className='max-w-sm'
 				/>
 			</div>
