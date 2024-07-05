@@ -24,7 +24,7 @@ const columns: ColumnDef<Variant>[] = [
 		cell: ({row}) => {
 			return (
 				<div className='flex justify-end pr-5'>
-					<div className='flex flex-col gap-1 w-[200px] border border-dotted border-primary/50 rounded-md p-2'>
+					<div className='flex flex-col gap-1 w-full border border-dotted border-primary/50 rounded-md p-2'>
 						{row.original.name.map((item, index) => (
 							<div key={index} className='flex flex-row justify-between'>
 								<span>{item.name}</span>
@@ -95,10 +95,8 @@ const ProductVariant = () => {
 	const [variants, _] = useAtom(variantsAtom);
 
 	return (
-		<div className='flex flex-col'>
-			<div className='p-5 rounded-md border'>
-				<DataTable columns={columns} data={variants} searchColumn='name' searchPlaceholder='Search by variant name' />
-			</div>
+		<div className='pt-5 rounded-md border'>
+			<DataTable columns={columns} data={variants} searchColumn='name' searchPlaceholder='Search by variant name' />
 		</div>
 	);
 };

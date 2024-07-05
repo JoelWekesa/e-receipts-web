@@ -107,15 +107,15 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 										{/* <Button type='submit'>Save and Continue</Button> */}
 									</form>
 								</Form>
-								<VariantTypes />
-								<AddVariant />
-								<ProductVariant />
 							</div>
 							<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
 								{/* <ProductStatus /> */}
 								<ProductImages images={images} />
 							</div>
 						</div>
+						<VariantTypes />
+						<AddVariant />
+						<ProductVariant />
 					</div>
 				</main>
 			</div>

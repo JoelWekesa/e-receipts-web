@@ -73,6 +73,7 @@ export const AddProductComponent: FC<{
 										'image/*': ['.png'],
 									}}
 									multiple={true}
+									maxFiles={6}
 									maxSize={3000000}
 									onDropAccepted={(items) => onDrop(items)}>
 									{({getRootProps, getInputProps}) => (
