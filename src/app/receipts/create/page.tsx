@@ -3,7 +3,6 @@ import {PreviewBox} from '@/components/templates/supermarket/show';
 import ApiClient from '@/config/axios';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
-import axios from 'axios';
 import {getServerSession} from 'next-auth';
 
 interface GetData {

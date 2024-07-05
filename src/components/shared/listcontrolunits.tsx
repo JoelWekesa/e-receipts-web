@@ -1,10 +1,9 @@
-import {ReceiptItem, receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
 import {useAtom} from 'jotai';
 import {Edit, Trash2Icon} from 'lucide-react';
 import {FC} from 'react';
 import {Button} from '../ui/button';
-import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 
 const ListControlItems = () => {
 	const [items, _] = useAtom(controlUnitAtom);

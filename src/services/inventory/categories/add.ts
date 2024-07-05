@@ -10,7 +10,7 @@ interface Category {
 }
 
 export const addCategory = async ({ token, ...data }: Category) => {
-    const response = await InventoryClient(token).post('/category/new', data).then((res) => res.data);
+    const response = await InventoryClient({ token, id: data.storeId }).post('/category/new', data).then((res) => res.data);
 
     return response;
 }

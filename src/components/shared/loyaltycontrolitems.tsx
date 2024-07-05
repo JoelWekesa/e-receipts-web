@@ -1,11 +1,9 @@
-import {ReceiptItem, receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
+import {Loyalty, loyaltyAtom} from '@/atoms/receiptgen/loyalty';
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
 import {useAtom} from 'jotai';
 import {Edit, Trash2Icon} from 'lucide-react';
 import {FC} from 'react';
 import {Button} from '../ui/button';
-import {ControlUnit, controlUnitAtom} from '@/atoms/receiptgen/controlunit';
-import {Loyalty, loyaltyAtom} from '@/atoms/receiptgen/loyalty';
 
 const LoyaltyControlItems = () => {
 	const [item] = useAtom(loyaltyAtom);

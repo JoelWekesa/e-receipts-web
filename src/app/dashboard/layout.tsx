@@ -1,11 +1,11 @@
+import { MainNav } from '@/components/dashboard/MainNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import {MainNav} from '@/components/dashboard/MainNav';
-import React, {FC, ReactNode} from 'react';
-import {Card, CardContent, CardHeader} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { FC, ReactNode } from 'react';
 
-import {SiteHeader} from '@/components/site-header';
-import {siteConfig} from '@/config/site';
-import {Metadata, Viewport} from 'next';
+import { SiteHeader } from '@/components/site-header';
+import { siteConfig } from '@/config/site';
+import { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
 	title: {
@@ -59,10 +59,6 @@ export const viewport: Viewport = {
 		{media: '(prefers-color-scheme: dark)', color: 'black'},
 	],
 };
-
-interface StoreLayoutProps {
-	children: React.ReactNode;
-}
 
 const DashBoardLayout: FC<{
 	periodtotals: ReactNode;

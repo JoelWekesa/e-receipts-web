@@ -41,7 +41,7 @@ const DeleteCategory: FC<{category: Category; handleClick: () => void}> = ({cate
 
 	useEffect(() => {
 		if (name === category?.name) {
-			del({id: category?.id || '', token});
+			del({id: category?.id || '', token, storeId: category?.storeId || ''});
 		}
 	}, [name, category, del, token]);
 

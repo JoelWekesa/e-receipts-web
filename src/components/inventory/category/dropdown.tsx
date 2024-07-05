@@ -1,5 +1,5 @@
 'use client';
-import {Delete, Edit, Trash} from 'lucide-react';
+import {Edit, Trash} from 'lucide-react';
 
 import {Dialog, DialogContent} from '@/components/ui/dialog';
 import {
@@ -14,8 +14,8 @@ import {
 import {Category} from '@/models/inventory/category';
 import {DialogTrigger} from '@radix-ui/react-dialog';
 import {FC, ReactNode, useState} from 'react';
-import EditCategory from './edit';
 import DeleteCategory from './delete';
+import EditCategory from './edit';
 
 interface Drop {
 	label: string;

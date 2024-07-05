@@ -1,10 +1,10 @@
 'use client';
 import {storeAtom} from '@/atoms/store';
-import {useAtom} from 'jotai';
-import {Calendar, FileDigit, PhoneCall, Pin} from 'lucide-react';
-import Image from 'next/image';
-import React, {FC, ReactNode} from 'react';
 import dayjs from 'dayjs';
+import {useAtom} from 'jotai';
+import {Calendar, FileDigit} from 'lucide-react';
+import Image from 'next/image';
+import {FC, ReactNode} from 'react';
 
 const StoreComponent = () => {
 	const [store, _] = useAtom(storeAtom);

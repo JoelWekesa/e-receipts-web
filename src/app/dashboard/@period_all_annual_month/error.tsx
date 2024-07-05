@@ -1,8 +1,6 @@
 'use client';
-import {Button} from '@/components/ui/button';
-import Link from 'next/link';
 
-export default function StoresError({error, reset}: {error: Error & {digest?: string}; reset: () => void}) {
+export default function StoresError({error}: {error: Error & {digest?: string}; reset: () => void}) {
 	return (
 		<div className='flex flex-col items-center justify-center w-full min-h-[80vh] px-4 text-center space-y-4'>
 			<ServerCrashIcon className='h-20 w-20' />

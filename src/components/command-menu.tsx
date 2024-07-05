@@ -1,21 +1,14 @@
 /* tslint:disable */
 'use client';
 
+import {CircleIcon, FileIcon, LaptopIcon, MoonIcon, SunIcon} from '@radix-ui/react-icons';
+import {useTheme} from 'next-themes';
+import {useRouter} from 'next/navigation';
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
-import * as DialogProps  from '@radix-ui/react-alert-dialog';
-import {
-	CircleIcon,
-	FileIcon,
-	LaptopIcon,
-	MoonIcon,
-	SunIcon,
-} from '@radix-ui/react-icons';
-import { useTheme } from 'next-themes';
 
-import { docsConfig } from '@/config/docs';
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import {docsConfig} from '@/config/docs';
+import {cn} from '@/lib/utils';
+import {Button} from './ui/button';
 import {
 	CommandDialog,
 	CommandEmpty,
@@ -26,10 +19,10 @@ import {
 	CommandSeparator,
 } from './ui/command';
 
-export function CommandMenu({ ...props }: any) {
+export function CommandMenu({...props}: any) {
 	const router = useRouter();
 	const [open, setOpen] = React.useState(false);
-	const { setTheme } = useTheme();
+	const {setTheme} = useTheme();
 
 	React.useEffect(() => {
 		const down = (e: KeyboardEvent) => {

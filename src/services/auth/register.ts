@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
 import ApiClient from '../../config/axios';
-import MultiPartClient from '@/config/axios-multipart';
 
 
 interface Auth {
@@ -27,9 +26,6 @@ const register = async (data: Auth) => {
     formData.append("l_name", data.l_name)
     data?.email && formData.append("email", data.email)
     data?.image && formData.append("image", data.image)
-
-    console.log(formData.getAll('image'))
-
 
     const user = await ApiClient('').post("auth/register", formData).then(res => res.data)
 

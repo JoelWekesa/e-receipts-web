@@ -1,16 +1,16 @@
 'use client';
 import {controlUnitAtom} from '@/atoms/receiptgen/controlunit';
+import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {ArrowLeft, ArrowRight, Plus} from 'lucide-react';
+import {ArrowLeft, ArrowRight} from 'lucide-react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-import ListControlItems from './listcontrolunits';
-import {navigateAtom, Path} from '@/atoms/receiptgen/navigate';
 import {Progress} from '../ui/progress';
+import ListControlItems from './listcontrolunits';
 
 const formSchema = z
 	.object({

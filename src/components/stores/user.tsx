@@ -10,21 +10,21 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import {Store} from '@/models/store';
+import useDeleteStore from '@/services/stores/delete';
 import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
-import {ArrowUpDown, Edit, Eye, Loader2} from 'lucide-react';
+import {ArrowUpDown, Edit, Loader2} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {FC, useState} from 'react';
 import {DataTable} from '../shared/datatable';
 import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
-import {Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger} from '../ui/sheet';
-import StoreComponent from './store';
 import {Input} from '../ui/input';
-import useDeleteStore from '@/services/stores/delete';
+import {Sheet, SheetClose, SheetContent, SheetFooter} from '../ui/sheet';
 import StoreButtonDropDown from './dropdown';
+import StoreComponent from './store';
 
 const UserStores = ({initialData, token}: StoreFetch) => {
 	const [open, setOpen] = useState(false);
@@ -133,10 +133,6 @@ const UserStores = ({initialData, token}: StoreFetch) => {
 			</div>
 		);
 	}
-
-	const handleClick = (store: Store) => {
-		setStore(store);
-	};
 
 	const handleEditStore = (store: Store) => {
 		router.push('/stores/update?id=' + store.id);

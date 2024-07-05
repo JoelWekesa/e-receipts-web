@@ -2,7 +2,12 @@
 import axios from 'axios';
 import { toast } from 'sonner';
 
-const InventoryClient = (token: string) => {
+interface Options {
+    token: string;
+    id?: string
+}
+
+const InventoryClient = ({ token, id }: Options) => {
     const baseURL = process.env.NEXT_PUBLIC_INVENTORY_URL;
     const defaultOptions = {
         baseURL,
@@ -15,6 +20,7 @@ const InventoryClient = (token: string) => {
         // const sessionId = await getServerSession(options);
 
         request.headers.Authorization = `Bearer ${token}`;
+        request.headers.id = id;
 
         return request;
     });

@@ -36,7 +36,7 @@ const EditCategory: FC<{category: Category; handleClick: () => void}> = ({catego
 	const token = session?.accessToken || '';
 
 	const onSubmit = (data: z.infer<typeof validationSchema>) => {
-		edit({...data, id: category?.id || '', token});
+		edit({...data, id: category?.id || '', token, storeId: category?.storeId || ''});
 	};
 
 	return (

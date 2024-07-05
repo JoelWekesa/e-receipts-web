@@ -1,106 +1,105 @@
+'use client';
+import variantsAtom, {Variant} from '@/atoms/inventory/variants';
+import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {ToggleGroup, ToggleGroupItem} from '@/components/ui/toggle-group';
-import {PlusCircle} from 'lucide-react';
-import React from 'react';
+import currencyFormat from '@/utils/currency';
+import {ColumnDef} from '@tanstack/react-table';
+import {useAtom} from 'jotai';
+import {ArrowUpDown} from 'lucide-react';
+
+const columns: ColumnDef<Variant>[] = [
+	{
+		accessorKey: 'name',
+		header: ({column}) => {
+			return (
+				<div className='flex justify-end'>
+					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Variant
+						<ArrowUpDown className='ml-2 h-4 w-4' />
+					</Button>
+				</div>
+			);
+		},
+
+		cell: ({row}) => {
+			return (
+				<div className='flex justify-end pr-5'>
+					<div className='flex flex-col gap-1 w-[200px] border border-dotted border-primary/50 rounded-md p-2'>
+						{row.original.name.map((item, index) => (
+							<div key={index} className='flex flex-row justify-between'>
+								<span>{item.name}</span>
+								<span className='ml-2'>{item.value}</span>
+							</div>
+						))}
+					</div>
+				</div>
+			);
+		},
+	},
+
+	{
+		accessorKey: 'quantity',
+		header: ({column}) => {
+			return (
+				<div className='flex justify-end'>
+					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Quantity
+						<ArrowUpDown className='ml-2 h-4 w-4' />
+					</Button>
+				</div>
+			);
+		},
+
+		cell: ({row}) => {
+			return <div className='flex justify-end pr-5'>{row.original.quantity}</div>;
+		},
+	},
+
+	{
+		accessorKey: 'price',
+		header: ({column}) => {
+			return (
+				<div className='flex justify-end'>
+					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Price Each
+						<ArrowUpDown className='ml-2 h-4 w-4' />
+					</Button>
+				</div>
+			);
+		},
+		cell: ({row}) => {
+			return <div className='flex justify-end pr-5'>{currencyFormat.format(+row.original.price)}</div>;
+		},
+	},
+
+	{
+		accessorKey: 'warnLevel',
+		header: ({column}) => {
+			return (
+				<div className='flex justify-end'>
+					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Warn Level
+						<ArrowUpDown className='ml-2 h-4 w-4' />
+					</Button>
+				</div>
+			);
+		},
+
+		cell: ({row}) => {
+			return <div className='flex justify-end pr-5'>{row.original.warnLevel}</div>;
+		},
+	},
+];
 
 const ProductVariant = () => {
+	const [variants, _] = useAtom(variantsAtom);
+
 	return (
-		<Card x-chunk='dashboard-07-chunk-1'>
-			<CardHeader>
-				<CardTitle>Stock</CardTitle>
-				<CardDescription>Lipsum dolor sit amet, consectetur adipiscing elit</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead className='w-[100px]'>SKU</TableHead>
-							<TableHead>Stock</TableHead>
-							<TableHead>Price</TableHead>
-							<TableHead className='w-[100px]'>Size</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						<TableRow>
-							<TableCell className='font-semibold'>GGPC-001</TableCell>
-							<TableCell>
-								<Label htmlFor='stock-1' className='sr-only'>
-									Stock
-								</Label>
-								<Input id='stock-1' type='number' defaultValue='100' />
-							</TableCell>
-							<TableCell>
-								<Label htmlFor='price-1' className='sr-only'>
-									Price
-								</Label>
-								<Input id='price-1' type='number' defaultValue='99.99' />
-							</TableCell>
-							<TableCell>
-								<ToggleGroup type='single' defaultValue='s' variant='outline'>
-									<ToggleGroupItem value='s'>S</ToggleGroupItem>
-									<ToggleGroupItem value='m'>M</ToggleGroupItem>
-									<ToggleGroupItem value='l'>L</ToggleGroupItem>
-								</ToggleGroup>
-							</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell className='font-semibold'>GGPC-002</TableCell>
-							<TableCell>
-								<Label htmlFor='stock-2' className='sr-only'>
-									Stock
-								</Label>
-								<Input id='stock-2' type='number' defaultValue='143' />
-							</TableCell>
-							<TableCell>
-								<Label htmlFor='price-2' className='sr-only'>
-									Price
-								</Label>
-								<Input id='price-2' type='number' defaultValue='99.99' />
-							</TableCell>
-							<TableCell>
-								<ToggleGroup type='single' defaultValue='m' variant='outline'>
-									<ToggleGroupItem value='s'>S</ToggleGroupItem>
-									<ToggleGroupItem value='m'>M</ToggleGroupItem>
-									<ToggleGroupItem value='l'>L</ToggleGroupItem>
-								</ToggleGroup>
-							</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell className='font-semibold'>GGPC-003</TableCell>
-							<TableCell>
-								<Label htmlFor='stock-3' className='sr-only'>
-									Stock
-								</Label>
-								<Input id='stock-3' type='number' defaultValue='32' />
-							</TableCell>
-							<TableCell>
-								<Label htmlFor='price-3' className='sr-only'>
-									Stock
-								</Label>
-								<Input id='price-3' type='number' defaultValue='99.99' />
-							</TableCell>
-							<TableCell>
-								<ToggleGroup type='single' defaultValue='s' variant='outline'>
-									<ToggleGroupItem value='s'>S</ToggleGroupItem>
-									<ToggleGroupItem value='m'>M</ToggleGroupItem>
-									<ToggleGroupItem value='l'>L</ToggleGroupItem>
-								</ToggleGroup>
-							</TableCell>
-						</TableRow>
-					</TableBody>
-				</Table>
-			</CardContent>
-			<CardFooter className='justify-center border-t p-4'>
-				<Button size='sm' variant='ghost' className='gap-1'>
-					<PlusCircle className='h-3.5 w-3.5' />
-					Add Variant
-				</Button>
-			</CardFooter>
-		</Card>
+		<div className='flex flex-col'>
+			<div className='p-5 rounded-md border'>
+				<DataTable columns={columns} data={variants} searchColumn='name' searchPlaceholder='Search by variant name' />
+			</div>
+		</div>
 	);
 };
 

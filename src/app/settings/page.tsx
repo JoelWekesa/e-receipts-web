@@ -1,11 +1,10 @@
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import SettingsComponent from '@/components/settings/settings';
+import ApiClient from '@/config/axios';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
-import axios from 'axios';
 import {getServerSession} from 'next-auth';
 import {options} from '../api/auth/[...nextauth]/options';
-import ApiClient from '@/config/axios';
 
 async function getData({token}: {token: string}) {
 	const setting: Promise<Setting> = ApiClient(token)

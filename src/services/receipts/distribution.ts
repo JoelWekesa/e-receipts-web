@@ -4,7 +4,6 @@ import { durations } from "@/utils/durations";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { Period } from "./businessperiod";
-import { count } from "console";
 
 export enum Counts {
     daily_count = 'daily-count',

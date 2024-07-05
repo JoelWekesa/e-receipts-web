@@ -7,7 +7,9 @@ import {getServerSession} from 'next-auth';
 import React from 'react';
 
 const getCategories = async ({storeId, token}: {storeId: string; token: string}) => {
-	const response = await InventoryClient(token)
+	const response = await InventoryClient({
+		token,
+	})
 		.get(`category/all?storeId=${storeId}`)
 		.then((res) => res.data);
 

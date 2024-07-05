@@ -7,10 +7,11 @@ import { toast } from "sonner";
 interface Category {
     id: string
     token: string;
+    storeId: string
 }
 
-export const deleteCategory = async ({ token, id }: Category) => {
-    const response = await InventoryClient(token).delete(`category/delete?id=${id}`).then((res) => res.data);
+export const deleteCategory = async ({ token, id, storeId }: Category) => {
+    const response = await InventoryClient({ token, id: storeId }).delete(`category/delete?id=${id}`).then((res) => res.data);
 
     return response;
 }

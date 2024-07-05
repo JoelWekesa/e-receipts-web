@@ -8,10 +8,11 @@ interface Category {
     name: string;
     id: string
     token: string;
+    storeId: string;
 }
 
-export const editCategory = async ({ token, ...data }: Category) => {
-    const response = await InventoryClient(token).patch('/category/update', data).then((res) => res.data);
+export const editCategory = async ({ token, storeId, ...data }: Category) => {
+    const response = await InventoryClient({ token, id: storeId }).patch('/category/update', data).then((res) => res.data);
 
     return response;
 }
