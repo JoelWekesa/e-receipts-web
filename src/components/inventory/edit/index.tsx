@@ -1,23 +1,20 @@
 'use client';
-import addImagesAtom from '@/atoms/inventory/addimage';
-import variantsAtom from '@/atoms/inventory/variants';
+import editImagesAtom from '@/atoms/inventory/images';
+import inventoryAtom from '@/atoms/inventory/inventory';
 import {Form} from '@/components/ui/form';
 import {Category} from '@/models/inventory/category';
-import useAddProduct from '@/services/inventory/products/add';
+import {Inventory} from '@/models/inventory/inventory';
+import useEditInventory from '@/services/inventory/edit/inventory';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
 import {useSession} from 'next-auth/react';
-import {FC, useMemo} from 'react';
+import {FC} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
-import AddVariant from './add-variant';
-import SelectProductCategory from './category';
-import AddProductComponent from './product';
-import ProductHeader from './productheader';
-import ProductImages from './productimages';
-import ProductVariant from './variant';
-import VariantTypes from './variant-types';
-import optionsAtom from '@/atoms/inventory/options';
+import SelectProductCategory from '../add/category';
+import ProductHeader from '../add/productheader';
+import {EditProductComponent} from './product';
+import EditProductImages from './productimages';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -42,58 +39,42 @@ const formSchema = z.object({
 		.optional(),
 });
 
-const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, storeId}) => {
+const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inventory | null}> = ({
+	categories,
+	storeId,
+	inventory,
+}) => {
+	const [data, __] = useAtom(inventoryAtom);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			category: '',
+			category: data?.inventory?.category?.id || '',
+			name: data?.inventory?.name || '',
+			description: data?.inventory?.description || '',
 		},
 
 		mode: 'onChange',
 	});
 
-	const [images, setImages] = useAtom(addImagesAtom);
-
-	const [variants, setVariants] = useAtom(variantsAtom);
-
-	const [options, setOptions] = useAtom(optionsAtom);
+	const [images, _] = useAtom(editImagesAtom);
 
 	const {data: session} = useSession({
 		required: true,
 	});
 
-	const handleSuccess = () => {
-		form.reset();
-		setVariants([]);
-		setImages([]);
-		setOptions([]);
-	};
-
 	const token = session?.accessToken || '';
 
-	const {mutate: add, isPending} = useAddProduct(handleSuccess);
-
-	const fVariants = useMemo(
-		() =>
-			variants.map((variant) => ({
-				...variant,
-				warnLevel: variant.warnLevel ? parseInt(variant.warnLevel) : 0,
-				price: variant.price ? parseFloat(variant.price) : 0,
-				quantity: variant.quantity ? parseInt(variant.quantity) : 0,
-			})),
-		[variants]
-	);
+	const {mutate: edit, isPending} = useEditInventory();
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		add({
+		edit({
 			data: {
-				name: data.name,
+				...data,
+				images: images?.new || [],
 				description: data.description || '',
-				categoryId: data.category,
-				files: images,
-				variants: fVariants,
-				storeId,
-				options,
+				removed: images?.removed || [],
+				id: inventory?.id || '',
 			},
 
 			token,
@@ -104,7 +85,7 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 		<div className='grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleSubmit)}>
-					<ProductHeader isPending={isPending} storeId={storeId} />
+					<ProductHeader isPending={isPending} storeId={storeId} edit />
 				</form>
 			</Form>
 
@@ -112,7 +93,7 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
 					<Form {...form}>
 						<form className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-							<AddProductComponent form={form} />
+							<EditProductComponent form={form} inventory={data?.inventory} />
 							<SelectProductCategory categories={categories} form={form} />
 							{/* <Button type='submit'>Save and Continue</Button> */}
 						</form>
@@ -120,14 +101,14 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 				</div>
 				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
 					{/* <ProductStatus /> */}
-					<ProductImages images={images} />
+					<EditProductImages />
 				</div>
 			</div>
-			<VariantTypes />
+			{/* <EditVariantTypes />
 			<AddVariant />
-			<ProductVariant />
+			<EditProductVariant /> */}
 		</div>
 	);
 };
 
-export default AddProduct;
+export default EditProduct;

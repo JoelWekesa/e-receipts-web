@@ -2,6 +2,7 @@
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
 import {Inventory} from '@/models/inventory/inventory';
+import useInventory from '@/services/inventory/all/getinventory';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown, Edit} from 'lucide-react';
@@ -100,7 +101,7 @@ const columns: ColumnDef<Inventory>[] = [
 					<InventoryDropDown
 						drop={{
 							label: 'Manage Inventory',
-							id: row.original.id,
+							inventory: row.original,
 						}}>
 						<Button>
 							<Edit className='mr-2 h-4 w-4' />
@@ -113,10 +114,23 @@ const columns: ColumnDef<Inventory>[] = [
 	},
 ];
 
-const StoreInventory: FC<{data: Inventory[]}> = ({data}) => {
+interface Q {
+	storeId: string;
+	inventory: Inventory[];
+}
+
+const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data}}) => {
+	const {data: inventory} = useInventory({storeId, inventory: data});
+
 	return (
-		<div className='m-3 p-5 rounded-md border'>
-			<DataTable columns={columns} data={data} searchColumn='name' searchPlaceholder='Search by inventory name...' />
+		<div>
+			<DataTable
+				columns={columns}
+				data={inventory}
+				searchColumn='name'
+				searchPlaceholder='Search by inventory name...'
+				black
+			/>
 		</div>
 	);
 };

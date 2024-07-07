@@ -1,24 +1,43 @@
-import addImagesAtom from '@/atoms/inventory/addimage';
+import editImagesAtom from '@/atoms/inventory/images';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
+import {Inventory} from '@/models/inventory/inventory';
 import {useAtom} from 'jotai';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import Dropzone from 'react-dropzone';
 import {UseFormReturn} from 'react-hook-form';
 
-export const AddProductComponent: FC<{
+export const EditProductComponent: FC<{
 	form: UseFormReturn<
 		{name: string; description?: string | undefined; category: string; images?: File[]},
 		any,
 		undefined
 	>;
-}> = ({form}) => {
-	const [_, setImages] = useAtom(addImagesAtom);
+
+	inventory?: Inventory | null;
+}> = ({form, inventory}) => {
+	const [images, setImages] = useAtom(editImagesAtom);
+
+	const initiateImages = () => {
+		setImages({
+			removed: [],
+			new: [],
+			current: inventory?.images,
+		});
+	};
+
+	useEffect(() => {
+		initiateImages();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onDrop = (acceptedFiles: File[]) => {
-		setImages(acceptedFiles);
+		setImages({
+			...images,
+			new: acceptedFiles,
+		});
 		form.setValue('images', acceptedFiles);
 	};
 
@@ -26,7 +45,7 @@ export const AddProductComponent: FC<{
 		<Card x-chunk='dashboard-07-chunk-0'>
 			<CardHeader>
 				<CardTitle>Product Details</CardTitle>
-				<CardDescription>Add a new product to your store</CardDescription>
+				<CardDescription>Edit Product</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className='grid gap-6'>
@@ -73,7 +92,7 @@ export const AddProductComponent: FC<{
 										'image/*': ['.png'],
 									}}
 									multiple={true}
-									maxFiles={6}
+									maxFiles={5 - ((images?.current?.length || 0) + (images?.new?.length || 0))}
 									maxSize={3000000}
 									onDropAccepted={(items) => onDrop(items)}>
 									{({getRootProps, getInputProps}) => (
@@ -85,15 +104,6 @@ export const AddProductComponent: FC<{
 
 												{form?.getValues('images') ? (
 													<div className='flex flex-initial justify-items-start flex-row gap-5'>
-														{/* <Image
-															src={URL.createObjectURL(form?.getValues('logo'))}
-															width={100}
-															height={100}
-															alt='store'
-															style={{
-																borderRadius: '15%',
-															}}
-														/> */}
 														<div className='flex flex-col justify-center items-center'>
 															<p>{`Drag 'n' drop your images here, or click to select files`}</p>
 														</div>
@@ -120,4 +130,4 @@ export const AddProductComponent: FC<{
 	);
 };
 
-export default AddProductComponent;
+export default EditProductComponent;

@@ -68,7 +68,7 @@ const CategoriesTable: FC<{category: Category[]; storeId: string}> = ({category,
 
 	return (
 		<div className='flex flex-col my-5'>
-			<div className='rounded-md border'>
+			<div>
 				<DataTable columns={columns} data={categories} searchColumn='name' searchPlaceholder='Search category name' black />
 			</div>
 		</div>

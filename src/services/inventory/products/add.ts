@@ -1,7 +1,8 @@
 
+import { Option } from "@/atoms/inventory/options"
 import { Variant } from "@/atoms/inventory/variants"
 import InventoryClient from "@/config/axios-inventory"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { toast } from "sonner"
 
@@ -20,6 +21,7 @@ export interface ProductProps {
     categoryId: string
     files: File[]
     variants: VariantProps[]
+    options: Option[]
 }
 
 export interface AddProduct {
@@ -34,6 +36,7 @@ const addProduct = async ({ data, token }: AddProduct) => {
     formData.append('storeId', data.storeId);
     formData.append('categoryId', data.categoryId);
     formData.append('variants', JSON.stringify(data.variants));
+    formData.append('options', JSON.stringify(data.options));
     for (let i = 0; i < data.files.length; i++) {
         formData.append('files', data.files[i]);
     }
@@ -44,14 +47,21 @@ const addProduct = async ({ data, token }: AddProduct) => {
     return response;
 }
 
-const useAddProduct = () => {
+const useAddProduct = (successFn: () => void) => {
+
+    const queryClient = useQueryClient()
+
+
     return useMutation({
         mutationFn: addProduct,
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["inventory"] })
             toast("Product Added", {
                 icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
             })
+
+            successFn()
         }
     })
 }

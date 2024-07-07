@@ -4,7 +4,7 @@ import {ChevronLeft, Loader2} from 'lucide-react';
 import Link from 'next/link';
 import {FC} from 'react';
 
-const ProductHeader: FC<{isPending: boolean; storeId: string}> = ({isPending, storeId}) => {
+const ProductHeader: FC<{isPending: boolean; storeId: string; edit?: boolean}> = ({isPending, storeId, edit}) => {
 	return (
 		<div className='flex items-center gap-4'>
 			<Link href={`/inventory/${storeId}`}>
@@ -13,7 +13,9 @@ const ProductHeader: FC<{isPending: boolean; storeId: string}> = ({isPending, st
 					<span className='sr-only'>Back</span>
 				</Button>
 			</Link>
-			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>Add Product</h1>
+			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
+				{edit ? 'Edit Product' : 'Add Product'}
+			</h1>
 			<Badge variant='outline' className='ml-auto sm:ml-0'>
 				New
 			</Badge>

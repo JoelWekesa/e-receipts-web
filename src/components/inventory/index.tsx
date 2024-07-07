@@ -3,19 +3,29 @@ import Link from 'next/link';
 import {FC, useState} from 'react';
 import CategoryIndex, {CategoryProps} from './category';
 import {Store} from '@/models/store';
+import AddProduct from './add';
+import StoreInventory from './store/inventory';
+import {Inventory} from '@/models/inventory/inventory';
+import {useAtom} from 'jotai';
+import inventoryAtom from '@/atoms/inventory/inventory';
+import EditProduct from './edit';
 
 export interface InventoryProps {
 	categoryProps: CategoryProps;
 	store: Store;
+	inventory: Inventory[];
 }
 
 const InventoryComponent: FC<{data: InventoryProps}> = ({
 	data: {
 		categoryProps: {categories, storeId},
 		store,
+		inventory,
 	},
 }) => {
 	const [activeTab, setActiveTab] = useState('category');
+
+	const [data, setData] = useAtom(inventoryAtom);
 
 	return (
 		<div className='flex min-h-screen w-full flex-col'>
@@ -32,13 +42,19 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 							Categories
 						</Link>
 						<Link
-							href={`/inventory/all/${storeId}`}
+							href='#'
 							className={`font-semibold ${activeTab === 'inventory' ? 'text-primary' : 'text-muted-foreground'}`}
-							onClick={() => setActiveTab('inventory')}>
+							onClick={() => {
+								setActiveTab('inventory');
+								setData({
+									inventory: null,
+									path: 'inventory',
+								});
+							}}>
 							Inventory
 						</Link>
 						<Link
-							href={`/inventory/add/${storeId}`}
+							href='#'
 							className={`font-semibold ${activeTab === 'product' ? 'text-primary' : 'text-muted-foreground'}`}
 							onClick={() => setActiveTab('product')}>
 							Add Inventory
@@ -71,8 +87,13 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 
 					<div className='grid gap-6'>
 						<h1 className='text-3xl font-semibold'>{store.name}</h1>
+						{activeTab === 'product' && <AddProduct categories={categories} storeId={storeId} />}
+
+						{activeTab === 'inventory' && data?.path === 'inventory' && <StoreInventory item={{storeId, inventory}} />}
 
 						{activeTab === 'category' && <CategoryIndex data={{categories, storeId}} />}
+
+						{data?.path === 'edit' && <EditProduct categories={categories} storeId={storeId} inventory={data?.inventory} />}
 					</div>
 				</div>
 			</main>
