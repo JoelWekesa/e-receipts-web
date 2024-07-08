@@ -9,6 +9,9 @@ import {Inventory} from '@/models/inventory/inventory';
 import {useAtom} from 'jotai';
 import inventoryAtom from '@/atoms/inventory/inventory';
 import EditProduct from './edit';
+import ViewProductComponent from './see';
+import ViewProductVariantsComponent from './see/variants';
+import optionsAtom from '@/atoms/inventory/options';
 
 export interface InventoryProps {
 	categoryProps: CategoryProps;
@@ -26,6 +29,8 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 	const [activeTab, setActiveTab] = useState('category');
 
 	const [data, setData] = useAtom(inventoryAtom);
+
+	const [_, setOptions] = useAtom(optionsAtom);
 
 	return (
 		<div className='flex min-h-screen w-full flex-col'>
@@ -50,13 +55,23 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 									inventory: null,
 									path: 'inventory',
 								});
+
+								setOptions([]);
 							}}>
 							Inventory
 						</Link>
 						<Link
 							href='#'
 							className={`font-semibold ${activeTab === 'product' ? 'text-primary' : 'text-muted-foreground'}`}
-							onClick={() => setActiveTab('product')}>
+							onClick={() => {
+								setActiveTab('product');
+								setData({
+									inventory: null,
+									path: 'inventory',
+								});
+
+								setOptions([]);
+							}}>
 							Add Inventory
 						</Link>
 						<Link
@@ -94,6 +109,10 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 						{activeTab === 'category' && <CategoryIndex data={{categories, storeId}} />}
 
 						{data?.path === 'edit' && <EditProduct categories={categories} storeId={storeId} inventory={data?.inventory} />}
+
+						{data?.path === 'view' && <ViewProductComponent />}
+
+						{data?.path === 'variants' && <ViewProductVariantsComponent />}
 					</div>
 				</div>
 			</main>
