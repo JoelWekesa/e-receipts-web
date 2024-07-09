@@ -15,6 +15,8 @@ import SelectProductCategory from '../add/category';
 import ProductHeader from '../add/productheader';
 import {EditProductComponent} from './product';
 import EditProductImages from './productimages';
+import EditVariantTypes from './variant-types';
+import optionsAtom from '@/atoms/inventory/options';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -45,6 +47,7 @@ const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inve
 	inventory,
 }) => {
 	const [data, __] = useAtom(inventoryAtom);
+	const [options, ___] = useAtom(optionsAtom);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -75,6 +78,7 @@ const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inve
 				description: data.description || '',
 				removed: images?.removed || [],
 				id: inventory?.id || '',
+				options,
 			},
 
 			token,
@@ -104,9 +108,9 @@ const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inve
 					<EditProductImages />
 				</div>
 			</div>
-			{/* <EditVariantTypes />
-			<AddVariant />
-			<EditProductVariant /> */}
+			<EditVariantTypes />
+			{/* <AddVariant /> */}
+			{/* <EditProductVariant /> */}
 		</div>
 	);
 };

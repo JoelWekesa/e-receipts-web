@@ -1,17 +1,18 @@
 'use client';
+import inventoryAtom from '@/atoms/inventory/inventory';
+import optionsAtom from '@/atoms/inventory/options';
+import {Inventory} from '@/models/inventory/inventory';
+import {Store} from '@/models/store';
+import {useAtom} from 'jotai';
 import Link from 'next/link';
 import {FC, useState} from 'react';
-import CategoryIndex, {CategoryProps} from './category';
-import {Store} from '@/models/store';
 import AddProduct from './add';
-import StoreInventory from './store/inventory';
-import {Inventory} from '@/models/inventory/inventory';
-import {useAtom} from 'jotai';
-import inventoryAtom from '@/atoms/inventory/inventory';
+import CategoryIndex, {CategoryProps} from './category';
 import EditProduct from './edit';
+import EditVariantComponent from './edit-variant';
 import ViewProductComponent from './see';
 import ViewProductVariantsComponent from './see/variants';
-import optionsAtom from '@/atoms/inventory/options';
+import StoreInventory from './store/inventory';
 
 export interface InventoryProps {
 	categoryProps: CategoryProps;
@@ -113,6 +114,8 @@ const InventoryComponent: FC<{data: InventoryProps}> = ({
 						{data?.path === 'view' && <ViewProductComponent />}
 
 						{data?.path === 'variants' && <ViewProductVariantsComponent />}
+
+						{data?.path === 'edit-variant' && <EditVariantComponent />}
 					</div>
 				</div>
 			</main>

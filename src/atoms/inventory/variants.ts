@@ -1,18 +1,10 @@
-import { atom } from "jotai"
+import { Variant } from "@/models/inventory/inventory";
+import { atom } from "jotai";
 
-interface Item {
-    name: string;
-    value: string;
-}
 
-export interface Variant {
-    name: Item[]
-    description?: string
-    price: string
-    quantity: string
-    warnLevel?: string
-}
 
 const variantsAtom = atom<Variant[]>([])
+
+export const variantAtom = atom<Variant | null>(null)
 
 export default variantsAtom

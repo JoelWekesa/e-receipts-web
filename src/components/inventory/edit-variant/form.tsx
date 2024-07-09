@@ -1,5 +1,5 @@
 import optionsAtom from '@/atoms/inventory/options';
-import variantsAtom from '@/atoms/inventory/variants';
+import PageLoader from '@/components/shared/pageloader';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from '@/components/ui/command';
@@ -8,11 +8,16 @@ import {Input} from '@/components/ui/input';
 import {Popover, PopoverContent} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
+import {Variant} from '@/models/inventory/inventory';
+import useVariant from '@/services/inventory/variants/get-variant';
+import useUpdateVariant from '@/services/inventory/variants/update';
 import {positiveNumberRegex} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {PopoverTrigger} from '@radix-ui/react-popover';
 import {useAtom} from 'jotai';
-import {Check, ChevronsUpDown, PlusCircle} from 'lucide-react';
+import {Check, ChevronsUpDown, Edit, Loader2} from 'lucide-react';
+import {useSession} from 'next-auth/react';
+import {FC} from 'react';
 import {useFieldArray, useForm} from 'react-hook-form';
 import {z} from 'zod';
 
@@ -33,19 +38,23 @@ const formSchema = z.object({
 	description: z.string().optional(),
 });
 
-const AddVariant = () => {
+const EditVariant: FC<{variant: Variant}> = ({variant}) => {
+	const {data, isLoading} = useVariant({id: variant?.id || '', variant});
+
+	const {data: session} = useSession({required: true});
+
+	const token = session?.accessToken || '';
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: [],
-			price: '',
-			quantity: '',
-			warnLevel: '',
-			description: '',
+			name: data?.name || [],
+			price: (data?.price || 0).toString(),
+			quantity: (data?.quantity || 0).toString(),
+			warnLevel: (data?.warnLevel || 0).toString(),
+			description: data?.description || '',
 		},
 	});
-
-	const [variants, setVariants] = useAtom(variantsAtom);
 
 	const {update} = useFieldArray({
 		name: 'name',
@@ -54,18 +63,26 @@ const AddVariant = () => {
 
 	const [options, _] = useAtom(optionsAtom);
 
+	const {mutate: edit, isPending} = useUpdateVariant();
+
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		const curr = {
 			...data,
+			id: variant?.id || '',
 			price: Number(data.price),
 			quantity: Number(data.quantity),
 			warnLevel: Number(data.warnLevel),
+			inventoryId: variant?.inventoryId || '',
+			storeId: variant?.storeId || '',
 		};
 
-		setVariants([...variants, {...curr, inventoryId: ''}]);
-		form.reset();
-		form.reset();
+		edit({
+			variant: curr,
+			token,
+		});
 	};
+
+	if (isLoading) return <PageLoader />;
 
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>
@@ -201,7 +218,8 @@ const AddVariant = () => {
 					</CardContent>
 					<CardFooter>
 						<Button type='submit'>
-							<PlusCircle className='h-3.5 w-3.5' /> Add Variant
+							{isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+							<Edit className='h-3.5 w-3.5' /> Update Variant
 						</Button>
 					</CardFooter>
 				</form>
@@ -210,4 +228,4 @@ const AddVariant = () => {
 	);
 };
 
-export default AddVariant;
+export default EditVariant;

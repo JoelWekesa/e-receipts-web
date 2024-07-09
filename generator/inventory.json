@@ -1,0 +1,104 @@
+[
+	{
+		"id": "t1jwfm8z5ghti8gwfjazehz8",
+		"name": "2024 mac book pro",
+		"description": "Apple Mac Book Pro",
+		"storeId": "clya3il4i0001ve7u045v0120",
+		"categoryId": "clya3jena00011188671ovilt",
+		"images": [
+			"https://receipts-ke.s3.amazonaws.com/inventory/5ad843d9-e3ce-45c8-bc17-216100fe5fbf.jpeg",
+			"https://receipts-ke.s3.amazonaws.com/inventory/fc7e2cd2-1702-4003-855f-a0639d94d054.jpeg",
+			"https://receipts-ke.s3.amazonaws.com/inventory/fef5c76a-0fe1-4892-bd13-a1f8e6471ce6.jpeg",
+			"https://receipts-ke.s3.amazonaws.com/inventory/4975fd71-ff24-4eab-902e-56203220f278.jpg"
+		],
+		"createdAt": "2024-07-06T12:34:32.248Z",
+		"updatedAt": "2024-07-07T16:46:21.712Z",
+		"updatedById": null,
+		"userId": "105157591631821260735",
+		"store": {
+			"id": "clya3il4i0001ve7u045v0120",
+			"name": "iStore"
+		},
+		"category": {
+			"id": "clya3jena00011188671ovilt",
+			"name": "laptops"
+		},
+		"Variant": [
+			{
+				"id": "clya3wpmi000d11881o7t3w5u",
+				"name": [
+					{
+						"name": "color",
+						"value": "black"
+					},
+					{
+						"name": "RAM",
+						"value": "128gb"
+					},
+					{
+						"name": "ROM",
+						"value": "2tb"
+					}
+				],
+				"description": "Apple Mac Book Pro",
+				"price": 500000,
+				"quantity": 20,
+				"inventoryId": "t1jwfm8z5ghti8gwfjazehz8",
+				"warnLevel": 2,
+				"storeId": "clya3il4i0001ve7u045v0120",
+				"createdAt": "2024-07-06T12:34:32.248Z",
+				"updatedAt": "2024-07-06T12:34:32.248Z"
+			},
+			{
+				"id": "clya3wpmi000e11886dbax2e1",
+				"name": [
+					{
+						"name": "color",
+						"value": "silver"
+					},
+					{
+						"name": "RAM",
+						"value": "128gb"
+					},
+					{
+						"name": "ROM",
+						"value": "1tb"
+					}
+				],
+				"description": "Apple Mac Book Pro",
+				"price": 500000,
+				"quantity": 20,
+				"inventoryId": "t1jwfm8z5ghti8gwfjazehz8",
+				"warnLevel": 2,
+				"storeId": "clya3il4i0001ve7u045v0120",
+				"createdAt": "2024-07-06T12:34:32.248Z",
+				"updatedAt": "2024-07-06T12:34:32.248Z"
+			},
+			{
+				"id": "clya3wpmi000f11889x4rrr44",
+				"name": [
+					{
+						"name": "color",
+						"value": "gold"
+					},
+					{
+						"name": "RAM",
+						"value": "128gb"
+					},
+					{
+						"name": "ROM",
+						"value": "1tb"
+					}
+				],
+				"description": "Apple Mac Book Pro",
+				"price": 490000,
+				"quantity": 20,
+				"inventoryId": "t1jwfm8z5ghti8gwfjazehz8",
+				"warnLevel": 2,
+				"storeId": "clya3il4i0001ve7u045v0120",
+				"createdAt": "2024-07-06T12:34:32.248Z",
+				"updatedAt": "2024-07-06T12:34:32.248Z"
+			}
+		]
+	}
+]

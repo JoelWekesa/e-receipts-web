@@ -1,7 +1,7 @@
 
 import { Option } from "@/atoms/inventory/options"
-import { Variant } from "@/atoms/inventory/variants"
 import InventoryClient from "@/config/axios-inventory"
+import { Variant } from "@/models/inventory/inventory"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { toast } from "sonner"
@@ -55,7 +55,14 @@ const useAddProduct = (successFn: () => void) => {
     return useMutation({
         mutationFn: addProduct,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["inventory"] })
+            const invalidate = [
+                queryClient.invalidateQueries({ queryKey: ["inventory"] }),
+                queryClient.invalidateQueries({ queryKey: ["inventory-variants"] })
+            ]
+
+
+            await Promise.all(invalidate)
+
             toast("Product Added", {
                 icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),

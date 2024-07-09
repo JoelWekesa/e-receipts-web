@@ -1,8 +1,9 @@
 'use client';
 import inventoryAtom from '@/atoms/inventory/inventory';
-import {Variant} from '@/atoms/inventory/variants';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
+import {Variant} from '@/models/inventory/inventory';
+import useInventoryVariants from '@/services/inventory/variants/by-inventory';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
@@ -23,14 +24,14 @@ const columns: ColumnDef<Variant>[] = [
 			);
 		},
 
-		cell: ({row}) => {
+		cell: ({row: {original: row}}) => {
 			return (
 				<div className='flex justify-end pr-5'>
 					<div
 						className={`flex flex-col gap-1 w-full border border-dotted border-primary/50 rounded-md p-2 ${
-							parseInt(row.original.quantity) <= parseInt(row.original.warnLevel || '0') ? ' text-red-500' : ''
+							row.quantity <= row.warnLevel ? ' text-red-500' : ''
 						}`}>
-						{row.original.name.map((item, index) => (
+						{row.name.map((item, index) => (
 							<div key={index} className='flex flex-row justify-between'>
 								<span>{item.name}</span>
 								<span className='ml-2'>{item.value}</span>
@@ -55,13 +56,10 @@ const columns: ColumnDef<Variant>[] = [
 			);
 		},
 
-		cell: ({row}) => {
+		cell: ({row: {original: row}}) => {
 			return (
-				<div
-					className={`flex justify-end pr-5 ${
-						parseInt(row.original.quantity) <= parseInt(row.original.warnLevel || '0') ? ' text-red-500' : ''
-					}`}>
-					{row.original.quantity}
+				<div className={`flex justify-end pr-5 ${row.quantity <= row.warnLevel ? ' text-red-500' : ''}`}>
+					{row.quantity}
 				</div>
 			);
 		},
@@ -79,13 +77,10 @@ const columns: ColumnDef<Variant>[] = [
 				</div>
 			);
 		},
-		cell: ({row}) => {
+		cell: ({row: {original: row}}) => {
 			return (
-				<div
-					className={`flex justify-end pr-5 ${
-						parseInt(row.original.quantity) <= parseInt(row.original.warnLevel || '0') ? ' text-red-500 ' : ''
-					}`}>
-					{currencyFormat.format(+row.original.price)}
+				<div className={`flex justify-end pr-5 ${row.quantity <= row.warnLevel ? ' text-red-500 ' : ''}`}>
+					{currencyFormat.format(+row.price)}
 				</div>
 			);
 		},
@@ -104,13 +99,10 @@ const columns: ColumnDef<Variant>[] = [
 			);
 		},
 
-		cell: ({row}) => {
+		cell: ({row: {original: row}}) => {
 			return (
-				<div
-					className={`flex justify-end pr-5 ${
-						parseInt(row.original.quantity) <= parseInt(row.original.warnLevel || '0') ? ' text-red-500' : ''
-					}`}>
-					{row.original.warnLevel}
+				<div className={`flex justify-end pr-5 ${row.quantity <= row.warnLevel ? ' text-red-500' : ''}`}>
+					{row.warnLevel}
 				</div>
 			);
 		},
@@ -121,12 +113,16 @@ const columns: ColumnDef<Variant>[] = [
 		header: () => {
 			return <div className='flex justify-end'>Actions</div>;
 		},
-		cell: () => {
+		cell: ({row: {original: row}}) => {
+			console.log({
+				id: row.id || '',
+			});
 			return (
 				<div className='flex justify-end pr-5'>
 					<SeeInventoryDropDown
 						drop={{
 							label: 'Manage Variant',
+							variant: row || null,
 						}}>
 						<Button variant='ghost' size='icon'>
 							<MoreHorizontal className='mr-2 h-4 w-4' />
@@ -141,14 +137,10 @@ const columns: ColumnDef<Variant>[] = [
 const SeeProductVariants = () => {
 	const [data, _] = useAtom(inventoryAtom);
 
-	const vars = data?.inventory?.Variant || [];
-
-	const variants: Variant[] = vars.map((item) => ({
-		...item,
-		price: item.price.toString(),
-		quantity: item.quantity.toString(),
-		warnLevel: item.warnLevel.toString(),
-	}));
+	const {data: variants = []} = useInventoryVariants({
+		id: data?.inventory?.id || '',
+		variants: data?.inventory?.Variant || [],
+	});
 
 	return (
 		<div className='pt-5 rounded-md border'>

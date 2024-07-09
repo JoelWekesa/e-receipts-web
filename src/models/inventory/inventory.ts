@@ -15,13 +15,16 @@ export interface Inventory {
 }
 
 export interface Variant {
-    id: string;
+    id?: string;
     name: Name[];
-    description: string;
+    description?: string;
     price: number;
     quantity: number;
     inventoryId: string;
     warnLevel: number;
+    storeId?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface Name {

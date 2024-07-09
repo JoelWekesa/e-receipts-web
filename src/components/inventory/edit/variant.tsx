@@ -1,13 +1,13 @@
 'use client';
 import inventoryAtom from '@/atoms/inventory/inventory';
-import variantsAtom, {Variant} from '@/atoms/inventory/variants';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
+import {Variant} from '@/models/inventory/inventory';
+import useInventoryVariants from '@/services/inventory/variants/by-inventory';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
 import {ArrowUpDown} from 'lucide-react';
-import {useEffect} from 'react';
 
 const columns: ColumnDef<Variant>[] = [
 	{
@@ -94,13 +94,12 @@ const columns: ColumnDef<Variant>[] = [
 ];
 
 const EditProductVariant = () => {
-	const [variants, setVariants] = useAtom(variantsAtom);
-
 	const [data, _] = useAtom(inventoryAtom);
 
-	useEffect(() => {
-		setVariants(data?.inventory?.Variant?.length ? (data?.inventory?.Variant as any[]) : []);
-	}, [data, setVariants]);
+	const {data: variants} = useInventoryVariants({
+		id: data?.inventory?.id || '',
+		variants: data?.inventory?.Variant || [],
+	});
 
 	return (
 		<div className='pt-5 rounded-md border'>

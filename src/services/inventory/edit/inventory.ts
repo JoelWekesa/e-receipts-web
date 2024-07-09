@@ -1,3 +1,4 @@
+import { Option } from "@/atoms/inventory/options";
 import InventoryClient from "@/config/axios-inventory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -10,6 +11,7 @@ interface Edit {
     category: string;
     removed: string[];
     id: string
+    options: Option[]
 }
 
 
@@ -25,6 +27,7 @@ const editInventory = async ({ data, token }: { data: Edit; token: string }) => 
     });
 
     formData.append('remove_images', JSON.stringify(data.removed));
+    formData.append('options', JSON.stringify(data.options));
 
     const response = await InventoryClient({
         token,
@@ -43,7 +46,13 @@ const useEditInventory = () => {
         mutationFn: editInventory,
 
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["inventory"] })
+            const invalidate = [
+                queryClient.invalidateQueries({ queryKey: ["inventory"] }),
+                queryClient.invalidateQueries({ queryKey: ["inventory-variants"] })
+            ]
+
+
+            await Promise.all(invalidate)
             toast("Inventory Updated", {
                 icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),

@@ -1,8 +1,8 @@
-import React from 'react';
+'use client';
 import ProductDetails from './details';
 import SeeProductHeader from './header';
-import SeeProductImages from './productimages';
 import SeeProductOptions from './options';
+import SeeProductImages from './productimages';
 import SeeProductVariants from './variant';
 
 const ViewProductComponent = () => {

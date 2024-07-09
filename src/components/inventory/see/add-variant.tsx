@@ -1,18 +1,29 @@
+import inventoryAtom from '@/atoms/inventory/inventory';
+import {openAddVariant} from '@/atoms/inventory/open-add-varaint';
 import optionsAtom from '@/atoms/inventory/options';
 import variantsAtom from '@/atoms/inventory/variants';
 import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from '@/components/ui/command';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
-import {Popover, PopoverContent} from '@/components/ui/popover';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
+import useAddVariant from '@/services/inventory/variants/add';
 import {positiveNumberRegex} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {PopoverTrigger} from '@radix-ui/react-popover';
 import {useAtom} from 'jotai';
-import {Check, ChevronsUpDown, PlusCircle} from 'lucide-react';
+import {Check, ChevronsUpDown, Loader2} from 'lucide-react';
+import {useSession} from 'next-auth/react';
 import {useFieldArray, useForm} from 'react-hook-form';
 import {z} from 'zod';
 
@@ -33,7 +44,7 @@ const formSchema = z.object({
 	description: z.string().optional(),
 });
 
-const AddVariant = () => {
+const AddVariant = () =>{
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -45,7 +56,11 @@ const AddVariant = () => {
 		},
 	});
 
+	const [open, setOpen] = useAtom(openAddVariant);
+
 	const [variants, setVariants] = useAtom(variantsAtom);
+
+	const [inventory, __] = useAtom(inventoryAtom);
 
 	const {update} = useFieldArray({
 		name: 'name',
@@ -54,29 +69,51 @@ const AddVariant = () => {
 
 	const [options, _] = useAtom(optionsAtom);
 
+	const {data: session} = useSession({
+		required: true,
+	});
+
+	const token = session?.accessToken || '';
+
+	const successFn = () => {
+		setOpen(false);
+		form.reset();
+	};
+
+	const {mutate: add, isPending} = useAddVariant(successFn);
+
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		const curr = {
 			...data,
 			price: Number(data.price),
 			quantity: Number(data.quantity),
 			warnLevel: Number(data.warnLevel),
+			inventoryId: inventory?.inventory?.id || '',
+			storeId: inventory?.inventory?.storeId || '',
 		};
 
-		setVariants([...variants, {...curr, inventoryId: ''}]);
-		form.reset();
-		form.reset();
+		add({data: curr, token});
+
+		setVariants([...variants, {...curr, inventoryId: inventory?.inventory?.id || ''}]);
+		// form.reset();
+	};
+
+	const handleClose = () => {
+		setOpen(false);
 	};
 
 	return (
-		<Card x-chunk='dashboard-07-chunk-0'>
-			<CardHeader>
-				<CardTitle>Product Variant</CardTitle>
-				<CardDescription>Add a new product variant</CardDescription>
-			</CardHeader>
-
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(handleSubmit)}>
-					<CardContent>
+		<Dialog open={open}>
+			<DialogTrigger asChild>
+				<Button onClick={() => setOpen(true)}>Add Variant</Button>
+			</DialogTrigger>
+			<DialogContent className='sm:max-w-[625px] overflow-y-auto max-h-screen'>
+				<DialogHeader>
+					<DialogTitle>Product Variant</DialogTitle>
+					<DialogDescription>Add a new product variant</DialogDescription>
+				</DialogHeader>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(handleSubmit)}>
 						<div className='grid gap-6'>
 							<div className='grid gap-3'>
 								<div className='grid gap-2 grid-cols-2'>
@@ -198,15 +235,20 @@ const AddVariant = () => {
 								/>
 							</div>
 						</div>
-					</CardContent>
-					<CardFooter>
-						<Button type='submit'>
-							<PlusCircle className='h-3.5 w-3.5' /> Add Variant
-						</Button>
-					</CardFooter>
-				</form>
-			</Form>
-		</Card>
+
+						<DialogFooter className='my-4'>
+							<Button type='button' variant='destructive' onClick={handleClose}>
+								Cancel
+							</Button>
+							<Button type='submit'>
+								{isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+								Add Variant
+							</Button>
+						</DialogFooter>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
 	);
 };
 

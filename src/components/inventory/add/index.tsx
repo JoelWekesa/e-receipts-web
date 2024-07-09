@@ -1,5 +1,6 @@
 'use client';
 import addImagesAtom from '@/atoms/inventory/addimage';
+import optionsAtom from '@/atoms/inventory/options';
 import variantsAtom from '@/atoms/inventory/variants';
 import {Form} from '@/components/ui/form';
 import {Category} from '@/models/inventory/category';
@@ -7,7 +8,7 @@ import useAddProduct from '@/services/inventory/products/add';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
 import {useSession} from 'next-auth/react';
-import {FC, useMemo} from 'react';
+import {FC} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import AddVariant from './add-variant';
@@ -17,7 +18,6 @@ import ProductHeader from './productheader';
 import ProductImages from './productimages';
 import ProductVariant from './variant';
 import VariantTypes from './variant-types';
-import optionsAtom from '@/atoms/inventory/options';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -73,17 +73,6 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 
 	const {mutate: add, isPending} = useAddProduct(handleSuccess);
 
-	const fVariants = useMemo(
-		() =>
-			variants.map((variant) => ({
-				...variant,
-				warnLevel: variant.warnLevel ? parseInt(variant.warnLevel) : 0,
-				price: variant.price ? parseFloat(variant.price) : 0,
-				quantity: variant.quantity ? parseInt(variant.quantity) : 0,
-			})),
-		[variants]
-	);
-
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		add({
 			data: {
@@ -91,7 +80,7 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 				description: data.description || '',
 				categoryId: data.category,
 				files: images,
-				variants: fVariants,
+				variants,
 				storeId,
 				options,
 			},
