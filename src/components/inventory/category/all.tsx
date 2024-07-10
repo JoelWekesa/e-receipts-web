@@ -1,3 +1,4 @@
+'use client';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
 import {Category} from '@/models/inventory/category';

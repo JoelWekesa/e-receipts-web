@@ -1,19 +1,22 @@
-import inventoryAtom from '@/atoms/inventory/inventory';
+'use client';
 import optionsAtom, {Option} from '@/atoms/inventory/options';
-import PageLoader from '@/components/shared/pageloader';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
-import useInventoryOptions from '@/services/inventory/options/all';
+import {Option as Opt} from '@/models/inventory/option';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Separator} from '@radix-ui/react-dropdown-menu';
 import {useAtom} from 'jotai';
 import {PlusCircle, Trash2} from 'lucide-react';
-import {ChangeEvent, useEffect, useMemo, useState} from 'react';
+import {ChangeEvent, FC, useEffect, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 import {z} from 'zod';
+
+interface Props {
+	opts: Opt[];
+}
 
 const validationSchema = z.object({
 	name: z
@@ -29,9 +32,7 @@ const validationSchema = z.object({
 	variants: z.array(z.string()),
 });
 
-const EditVariantTypes = () => {
-	const [inventory, __] = useAtom(inventoryAtom);
-
+const EditVariantTypes: FC<Props> = ({opts}) => {
 	const form = useForm<z.infer<typeof validationSchema>>({
 		resolver: zodResolver(validationSchema),
 		defaultValues: {
@@ -59,23 +60,21 @@ const EditVariantTypes = () => {
 		}
 	}, [variant, form, items]);
 
-	const {data = [], isLoading} = useInventoryOptions({inventoryId: inventory?.inventory?.id || ''});
-
 	const [options, setOptions] = useAtom(optionsAtom);
 
-	const fetchedVariants: Option[] = useMemo(
+	const fOptions: Option[] = useMemo(
 		() =>
-			data.map((item) => ({
+			opts.map((item) => ({
 				name: item.name,
-				id: item.id,
 				options: item.options,
+				id: item.id,
 			})),
-		[data]
+		[opts]
 	);
 
 	useEffect(() => {
-		setOptions(fetchedVariants);
-	}, [fetchedVariants, setOptions]);
+		setOptions(fOptions);
+	}, [fOptions, setOptions]);
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const val = event.target.value;
@@ -125,10 +124,6 @@ const EditVariantTypes = () => {
 
 		setVariant('');
 	};
-
-	if (isLoading) {
-		return <PageLoader />;
-	}
 
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>

@@ -1,16 +1,14 @@
-import inventoryAtom from '@/atoms/inventory/inventory';
 import optionsAtom, {Option} from '@/atoms/inventory/options';
-import PageLoader from '@/components/shared/pageloader';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import useInventoryOptions from '@/services/inventory/options/all';
+import {VariantTypes} from '@/models/inventory/variant-types';
 import {useAtom} from 'jotai';
-import {useEffect, useMemo} from 'react';
+import {FC, useEffect, useMemo} from 'react';
 
-const SeeProductOptions = () => {
-	const [item, _] = useAtom(inventoryAtom);
+interface Props {
+	data: VariantTypes[];
+}
 
-	const {data = [], isLoading} = useInventoryOptions({inventoryId: item?.inventory?.id || ''});
-
+const SeeProductOptions: FC<Props> = ({data}) => {
 	const [options, setOptions] = useAtom(optionsAtom);
 
 	const fetchedVariants: Option[] = useMemo(
@@ -27,18 +25,12 @@ const SeeProductOptions = () => {
 		setOptions(fetchedVariants);
 	}, [fetchedVariants, setOptions]);
 
-	if (isLoading) {
-		return <PageLoader />;
-	}
-
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>
 			<CardHeader>
 				<CardTitle>Product Options </CardTitle>
 				<CardDescription>
-					<div>
-						Add variations of this product. Offer your customers different options for color, format, size, shape, etc.
-					</div>
+					<div>Offer your customers different options for color, format, size, shape, etc.</div>
 				</CardDescription>
 				<CardContent>
 					<div className={`flex flex-col gap-2 min-w-full ${options?.length > 0 ? 'my-8 ' : 'hidden'}`}>

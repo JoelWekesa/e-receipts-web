@@ -1,7 +1,7 @@
 'use client';
 import {Edit, Trash2} from 'lucide-react';
 
-import {variantAtom} from '@/atoms/inventory/variants';
+import {Dialog, DialogContent} from '@/components/ui/dialog';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,10 +12,8 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {Variant} from '@/models/inventory/inventory';
-import {useAtom} from 'jotai';
+import Link from 'next/link';
 import {FC, ReactNode, useState} from 'react';
-import inventoryAtom from '@/atoms/inventory/inventory';
-import {Dialog, DialogContent} from '@/components/ui/dialog';
 import DeleteVariant from './delete-variant';
 
 interface Drop {
@@ -24,23 +22,12 @@ interface Drop {
 }
 
 const SeeInventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {label, variant}, children}) => {
-	const [_, setVariant] = useAtom(variantAtom);
-
-	const [data, setInventory] = useAtom(inventoryAtom);
-
 	const [open, setOpen] = useState(false);
 
 	const handleClick = () => {
 		setOpen(!open);
 	};
 
-	const handleEdit = () => {
-		setInventory({
-			inventory: data?.inventory || null,
-			path: 'edit-variant',
-		});
-		setVariant(variant);
-	};
 	return (
 		<Dialog open={open}>
 			<DropdownMenu>
@@ -49,10 +36,12 @@ const SeeInventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {lab
 					<DropdownMenuLabel>{label} </DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						<DropdownMenuItem className='cursor-pointer' onClick={handleEdit}>
-							<Edit className='mr-2 h-4 w-4' />
-							<span>Edit Variant </span>
-						</DropdownMenuItem>
+						<Link href={`/inventory/variants/edit/${variant.id}`}>
+							<DropdownMenuItem className='cursor-pointer'>
+								<Edit className='mr-2 h-4 w-4' />
+								<span>Edit Variant </span>
+							</DropdownMenuItem>
+						</Link>
 
 						<DropdownMenuItem className='cursor-pointer' onClick={handleClick}>
 							<Trash2 className='mr-2 h-4 w-4' color='red' />

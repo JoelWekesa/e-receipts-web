@@ -1,6 +1,5 @@
 'use client';
 import editImagesAtom from '@/atoms/inventory/images';
-import inventoryAtom from '@/atoms/inventory/inventory';
 import {Form} from '@/components/ui/form';
 import {Category} from '@/models/inventory/category';
 import {Inventory} from '@/models/inventory/inventory';
@@ -17,6 +16,13 @@ import {EditProductComponent} from './product';
 import EditProductImages from './productimages';
 import EditVariantTypes from './variant-types';
 import optionsAtom from '@/atoms/inventory/options';
+import {Option} from '@/models/inventory/option';
+
+interface Props {
+	categories: Category[];
+	inventory: Inventory;
+	opts: Option[];
+}
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -41,20 +47,15 @@ const formSchema = z.object({
 		.optional(),
 });
 
-const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inventory | null}> = ({
-	categories,
-	storeId,
-	inventory,
-}) => {
-	const [data, __] = useAtom(inventoryAtom);
-	const [options, ___] = useAtom(optionsAtom);
+const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
+	const [options, __] = useAtom(optionsAtom);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			category: data?.inventory?.category?.id || '',
-			name: data?.inventory?.name || '',
-			description: data?.inventory?.description || '',
+			category: inventory.category.id,
+			name: inventory.name,
+			description: inventory.description,
 		},
 
 		mode: 'onChange',
@@ -89,7 +90,7 @@ const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inve
 		<div className='grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleSubmit)}>
-					<ProductHeader isPending={isPending} storeId={storeId} edit />
+					<ProductHeader isPending={isPending} edit />
 				</form>
 			</Form>
 
@@ -97,20 +98,17 @@ const EditProduct: FC<{categories: Category[]; storeId: string; inventory?: Inve
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
 					<Form {...form}>
 						<form className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-							<EditProductComponent form={form} inventory={data?.inventory} />
+							<EditProductComponent form={form} inventory={inventory} />
 							<SelectProductCategory categories={categories} form={form} />
 							{/* <Button type='submit'>Save and Continue</Button> */}
 						</form>
 					</Form>
 				</div>
 				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-					{/* <ProductStatus /> */}
 					<EditProductImages />
 				</div>
 			</div>
-			<EditVariantTypes />
-			{/* <AddVariant /> */}
-			{/* <EditProductVariant /> */}
+			<EditVariantTypes opts={opts} />
 		</div>
 	);
 };

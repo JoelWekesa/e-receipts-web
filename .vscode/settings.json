@@ -20,6 +20,7 @@
 		"topcustomersvolume",
 		"topstores",
 		"upsert",
+		"varaint",
 		"weeklysales",
 		"yearlysales"
 	]

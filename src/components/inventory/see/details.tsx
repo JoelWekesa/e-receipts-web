@@ -1,17 +1,18 @@
-import inventoryAtom from '@/atoms/inventory/inventory';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Separator} from '@/components/ui/separator';
-import {useAtom} from 'jotai';
-import React from 'react';
+import {Inventory} from '@/models/inventory/inventory';
+import {FC} from 'react';
 
-const ProductDetails = () => {
-	const [data, _] = useAtom(inventoryAtom);
+interface Props {
+	inventory: Inventory;
+}
 
+const ProductDetails: FC<Props> = ({inventory}) => {
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>
 			<CardHeader>
 				<CardTitle>Product Details</CardTitle>
-				<CardDescription>{`Seeing product details for ${data?.inventory?.name}`}</CardDescription>
+				<CardDescription>{`Seeing product details for ${inventory.name}`}</CardDescription>
 			</CardHeader>
 
 			<Separator />
@@ -21,7 +22,7 @@ const ProductDetails = () => {
 						<div className='flex flex-col gap-2'>
 							<div className=''>Product Description</div>
 							<div>
-								<p className='text-[0.8rem] text-muted-foreground'>{data?.inventory?.description}</p>
+								<p className='text-[0.8rem] text-muted-foreground'>{inventory.description}</p>
 							</div>
 						</div>
 					</div>
@@ -30,7 +31,7 @@ const ProductDetails = () => {
 						<div className='flex flex-col gap-2'>
 							<div className=''>Product Category</div>
 							<div>
-								<p className='text-[0.8rem] text-muted-foreground'>{data?.inventory?.category?.name}</p>
+								<p className='text-[0.8rem] text-muted-foreground'>{inventory?.category?.name}</p>
 							</div>
 						</div>
 					</div>

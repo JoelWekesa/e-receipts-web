@@ -16,7 +16,7 @@ export const EditProductComponent: FC<{
 		undefined
 	>;
 
-	inventory?: Inventory | null;
+	inventory: Inventory;
 }> = ({form, inventory}) => {
 	const [images, setImages] = useAtom(editImagesAtom);
 

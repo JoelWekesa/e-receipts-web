@@ -1,6 +1,5 @@
-import inventoryAtom from '@/atoms/inventory/inventory';
+'use client';
 import {openAddVariant} from '@/atoms/inventory/open-add-varaint';
-import optionsAtom from '@/atoms/inventory/options';
 import variantsAtom from '@/atoms/inventory/variants';
 import {Button} from '@/components/ui/button';
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from '@/components/ui/command';
@@ -18,14 +17,22 @@ import {Input} from '@/components/ui/input';
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
+import {Inventory} from '@/models/inventory/inventory';
+import {Option} from '@/models/inventory/option';
 import useAddVariant from '@/services/inventory/variants/add';
 import {positiveNumberRegex} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
 import {Check, ChevronsUpDown, Loader2} from 'lucide-react';
 import {useSession} from 'next-auth/react';
+import {FC} from 'react';
 import {useFieldArray, useForm} from 'react-hook-form';
 import {z} from 'zod';
+
+interface Props {
+	options: Option[];
+	inventory: Inventory;
+}
 
 const formSchema = z.object({
 	name: z.array(z.object({name: z.string(), value: z.string()})),
@@ -44,7 +51,7 @@ const formSchema = z.object({
 	description: z.string().optional(),
 });
 
-const AddVariant = () =>{
+const AddVariant: FC<Props> = ({options, inventory}) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -60,14 +67,12 @@ const AddVariant = () =>{
 
 	const [variants, setVariants] = useAtom(variantsAtom);
 
-	const [inventory, __] = useAtom(inventoryAtom);
-
 	const {update} = useFieldArray({
 		name: 'name',
 		control: form.control,
 	});
 
-	const [options, _] = useAtom(optionsAtom);
+	// const [options, _] = useAtom(optionsAtom);
 
 	const {data: session} = useSession({
 		required: true,
@@ -88,13 +93,13 @@ const AddVariant = () =>{
 			price: Number(data.price),
 			quantity: Number(data.quantity),
 			warnLevel: Number(data.warnLevel),
-			inventoryId: inventory?.inventory?.id || '',
-			storeId: inventory?.inventory?.storeId || '',
+			inventoryId: inventory?.id || '',
+			storeId: inventory?.storeId || '',
 		};
 
 		add({data: curr, token});
 
-		setVariants([...variants, {...curr, inventoryId: inventory?.inventory?.id || ''}]);
+		setVariants([...variants, {...curr, inventoryId: inventory?.id || ''}]);
 		// form.reset();
 	};
 

@@ -93,7 +93,7 @@ const AddProduct: FC<{categories: Category[]; storeId: string}> = ({categories, 
 		<div className='grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleSubmit)}>
-					<ProductHeader isPending={isPending} storeId={storeId} />
+					<ProductHeader isPending={isPending} />
 				</form>
 			</Form>
 

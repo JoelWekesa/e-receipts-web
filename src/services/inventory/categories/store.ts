@@ -1,3 +1,4 @@
+'use client'
 import InventoryClient from "@/config/axios-inventory"
 import { Category } from "@/models/inventory/category"
 import { useQuery } from "@tanstack/react-query"

@@ -1,11 +1,13 @@
-import inventoryAtom from '@/atoms/inventory/inventory';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {useAtom} from 'jotai';
+import {Inventory} from '@/models/inventory/inventory';
 import Image from 'next/image';
+import {FC} from 'react';
 
-const SeeProductImages = () => {
-	const [data, _] = useAtom(inventoryAtom);
+interface Props {
+	inventory: Inventory;
+}
 
+const SeeProductImages: FC<Props> = ({inventory}) => {
 	return (
 		<Card className='overflow-hidden' x-chunk='dashboard-07-chunk-4'>
 			<CardHeader>
@@ -15,7 +17,7 @@ const SeeProductImages = () => {
 			<CardContent>
 				<div className='grid gap-2'>
 					<div className='grid grid-cols-3 gap-2'>
-						{data?.inventory?.images?.map((image, index) => (
+						{inventory?.images?.map((image, index) => (
 							<Image
 								alt='Product image'
 								className='aspect-square w-full rounded-md object-cover'

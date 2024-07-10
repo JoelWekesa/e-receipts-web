@@ -1,14 +1,17 @@
 'use client';
-import inventoryAtom from '@/atoms/inventory/inventory';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
-import {Variant} from '@/models/inventory/inventory';
+import {Inventory, Variant} from '@/models/inventory/inventory';
 import useInventoryVariants from '@/services/inventory/variants/by-inventory';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
-import {useAtom} from 'jotai';
 import {ArrowUpDown, MoreHorizontal} from 'lucide-react';
+import {FC} from 'react';
 import SeeInventoryDropDown from './see-dropdown';
+
+interface Props {
+	inventory: Inventory;
+}
 
 const columns: ColumnDef<Variant>[] = [
 	{
@@ -28,7 +31,7 @@ const columns: ColumnDef<Variant>[] = [
 			return (
 				<div className='flex justify-end pr-5'>
 					<div
-						className={`flex flex-col gap-1 w-full border border-dotted border-primary/50 rounded-md p-2 ${
+						className={`flex flex-col gap-1 w-full border border-dotted border-primary/50 rounded-md p-2  ${
 							row.quantity <= row.warnLevel ? ' text-red-500' : ''
 						}`}>
 						{row.name.map((item, index) => (
@@ -134,17 +137,15 @@ const columns: ColumnDef<Variant>[] = [
 	},
 ];
 
-const SeeProductVariants = () => {
-	const [data, _] = useAtom(inventoryAtom);
-
+const SeeProductVariants: FC<Props> = ({inventory}) => {
 	const {data: variants = []} = useInventoryVariants({
-		id: data?.inventory?.id || '',
-		variants: data?.inventory?.Variant || [],
+		id: inventory?.id || '',
+		variants: inventory?.Variant || [],
 	});
 
 	return (
 		<div className='pt-5 rounded-md border'>
-			<DataTable columns={columns} data={variants} searchColumn='name' searchPlaceholder='Search by variant name' />
+			<DataTable columns={columns} data={variants} searchColumn='name' searchPlaceholder='Search by variant name' black />
 		</div>
 	);
 };

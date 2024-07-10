@@ -1,10 +1,12 @@
+'use client';
 import addImagesAtom from '@/atoms/inventory/addimage';
+import optionsAtom from '@/atoms/inventory/options';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
 import {useAtom} from 'jotai';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import Dropzone from 'react-dropzone';
 import {UseFormReturn} from 'react-hook-form';
 
@@ -16,6 +18,13 @@ export const AddProductComponent: FC<{
 	>;
 }> = ({form}) => {
 	const [_, setImages] = useAtom(addImagesAtom);
+	const [__, setOptions] = useAtom(optionsAtom);
+
+	useEffect(() => {
+		setImages([]);
+		setOptions([]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onDrop = (acceptedFiles: File[]) => {
 		setImages(acceptedFiles);
@@ -56,7 +65,7 @@ export const AddProductComponent: FC<{
 								<FormItem>
 									<FormLabel>Product Description</FormLabel>
 									<FormControl>
-										<Textarea id='description' placeholder='Product Name' {...field} />
+										<Textarea id='description' placeholder='Product Description' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -70,11 +79,12 @@ export const AddProductComponent: FC<{
 							render={() => (
 								<Dropzone
 									accept={{
-										'image/*': ['.png'],
+										'': ['.png', '.jpg', '.jpeg'],
 									}}
 									multiple={true}
 									maxFiles={6}
 									maxSize={3000000}
+									useFsAccessApi={false}
 									onDropAccepted={(items) => onDrop(items)}>
 									{({getRootProps, getInputProps}) => (
 										<div className='w-full flex justify-center items-center'>

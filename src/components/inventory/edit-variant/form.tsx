@@ -1,4 +1,4 @@
-import optionsAtom from '@/atoms/inventory/options';
+'use client';
 import PageLoader from '@/components/shared/pageloader';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
@@ -9,17 +9,22 @@ import {Popover, PopoverContent} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
 import {Variant} from '@/models/inventory/inventory';
+import {Option} from '@/models/inventory/option';
 import useVariant from '@/services/inventory/variants/get-variant';
 import useUpdateVariant from '@/services/inventory/variants/update';
 import {positiveNumberRegex} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {PopoverTrigger} from '@radix-ui/react-popover';
-import {useAtom} from 'jotai';
 import {Check, ChevronsUpDown, Edit, Loader2} from 'lucide-react';
 import {useSession} from 'next-auth/react';
 import {FC} from 'react';
 import {useFieldArray, useForm} from 'react-hook-form';
 import {z} from 'zod';
+
+interface Props {
+	variant: Variant;
+	options: Option[];
+}
 
 const formSchema = z.object({
 	name: z.array(z.object({name: z.string(), value: z.string()})),
@@ -38,7 +43,7 @@ const formSchema = z.object({
 	description: z.string().optional(),
 });
 
-const EditVariant: FC<{variant: Variant}> = ({variant}) => {
+const EditVariant: FC<Props> = ({variant, options}) => {
 	const {data, isLoading} = useVariant({id: variant?.id || '', variant});
 
 	const {data: session} = useSession({required: true});
@@ -60,8 +65,6 @@ const EditVariant: FC<{variant: Variant}> = ({variant}) => {
 		name: 'name',
 		control: form.control,
 	});
-
-	const [options, _] = useAtom(optionsAtom);
 
 	const {mutate: edit, isPending} = useUpdateVariant();
 

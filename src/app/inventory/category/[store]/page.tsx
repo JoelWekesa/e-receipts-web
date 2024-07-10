@@ -1,10 +1,9 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import AddProduct from '@/components/inventory/add';
+import CategoryIndex from '@/components/inventory/category';
 import InventoryLayout from '@/components/inventory/inventory-layout';
 import InventoryClient from '@/config/axios-inventory';
 import {getServerSession} from 'next-auth';
-import React from 'react';
 
 const getCategories = async ({storeId, token}: {storeId: string; token: string}) => {
 	const response = await InventoryClient({
@@ -16,7 +15,7 @@ const getCategories = async ({storeId, token}: {storeId: string; token: string})
 	return response;
 };
 
-const AddInventoryPage = async ({params}: {params: {store: string}}) => {
+const CategoryPage = async ({params}: {params: {store: string}}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -36,11 +35,11 @@ const AddInventoryPage = async ({params}: {params: {store: string}}) => {
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-1'>
 				<InventoryLayout storeId={storeId}>
-					<AddProduct categories={categories} storeId={storeId} />
+					<CategoryIndex data={{categories, storeId}} />
 				</InventoryLayout>
 			</div>
 		</>
 	);
 };
 
-export default AddInventoryPage;
+export default CategoryPage;

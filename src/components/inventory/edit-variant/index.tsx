@@ -1,16 +1,23 @@
-import {variantAtom} from '@/atoms/inventory/variants';
-import {useAtom} from 'jotai';
-import EditVariant from './form';
-import SeeProductHeader from '../see/header';
 
-const EditVariantComponent = () => {
-	const [data, _] = useAtom(variantAtom);
+import { Inventory, Variant } from '@/models/inventory/inventory';
+import {Option} from '@/models/inventory/option';
+import {FC} from 'react';
+import SeeProductHeader from '../see/header';
+import EditVariant from './form';
+
+interface Props {
+	inventory: Inventory;
+	variant: Variant;
+	options: Option[];
+}
+
+const EditVariantComponent: FC<Props> = ({inventory, variant, options}) => {
 	return (
 		<div className='gap-4'>
 			<div className='my-4'>
-				<SeeProductHeader hide />
+				<SeeProductHeader hide inventory={inventory} />
 			</div>
-			<EditVariant variant={data!} />
+			<EditVariant variant={variant} options={options} />
 		</div>
 	);
 };
