@@ -54,6 +54,7 @@ const nextConfig = {
 	},
 
 	transpilePackages: ['@radix-ui/react-alert-dialog'],
+	output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
 };
 
 module.exports = nextConfig;

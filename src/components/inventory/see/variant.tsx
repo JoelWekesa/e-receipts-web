@@ -117,9 +117,6 @@ const columns: ColumnDef<Variant>[] = [
 			return <div className='flex justify-end'>Actions</div>;
 		},
 		cell: ({row: {original: row}}) => {
-			console.log({
-				id: row.id || '',
-			});
 			return (
 				<div className='flex justify-end pr-5'>
 					<SeeInventoryDropDown

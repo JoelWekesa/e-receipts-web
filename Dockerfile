@@ -4,6 +4,8 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
+ENV BUILD_STANDALONE true
+
 
 # Install dependencies only when needed
 FROM base AS deps

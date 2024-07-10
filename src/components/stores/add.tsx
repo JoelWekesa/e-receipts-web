@@ -185,9 +185,10 @@ const AddStore: FC<{token: string}> = ({token}) => {
 								render={() => (
 									<Dropzone
 										accept={{
-											'image/*': ['.png'],
+											'': ['.png', '.jpg', '.jpeg'],
 										}}
-										multiple={true}
+										useFsAccessApi={false}
+										multiple={false}
 										maxSize={3000000}
 										onDropAccepted={(items) => form.setValue('logo', items[0])}>
 										{({getRootProps, getInputProps}) => (
