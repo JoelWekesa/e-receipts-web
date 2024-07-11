@@ -1,5 +1,5 @@
 'use client';
-import {CreditCard, Settings, ShoppingCart, User} from 'lucide-react';
+import {Edit, Eye, ReceiptText, ShoppingCart} from 'lucide-react';
 
 import {storeAtom} from '@/atoms/store';
 import {
@@ -9,7 +9,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {Store} from '@/models/store';
@@ -38,31 +37,27 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<Link href={`/receipts/create?id=${drop.store.id}`}>
-						<DropdownMenuItem>
-							<User className='mr-2 h-4 w-4' />
+						<DropdownMenuItem className='cursor-pointer'>
+							<ReceiptText className='mr-2 h-4 w-4' />
 							<span>Create Receipt</span>
-							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
 						</DropdownMenuItem>
 					</Link>
 					<SheetTrigger asChild>
-						<DropdownMenuItem onClick={handleClick}>
-							<CreditCard className='mr-2 h-4 w-4' />
+						<DropdownMenuItem onClick={handleClick} className='cursor-pointer'>
+							<Eye className='mr-2 h-4 w-4' />
 							<span>View Store</span>
-							<DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
 						</DropdownMenuItem>
 					</SheetTrigger>
 					<Link href={`/stores/update?id=${drop.store.id}`}>
-						<DropdownMenuItem>
-							<Settings className='mr-2 h-4 w-4' />
+						<DropdownMenuItem className='cursor-pointer'>
+							<Edit className='mr-2 h-4 w-4' />
 							<span>Edit Store</span>
-							<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
 						</DropdownMenuItem>
 					</Link>
 					<Link href={`/inventory/${drop.store.id}`}>
-						<DropdownMenuItem>
+						<DropdownMenuItem className='cursor-pointer'>
 							<ShoppingCart className='mr-2 h-4 w-4' />
 							<span>Manage Inventory</span>
-							<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
 						</DropdownMenuItem>
 					</Link>
 				</DropdownMenuGroup>

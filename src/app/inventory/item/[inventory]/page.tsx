@@ -6,6 +6,7 @@ import InventoryClient from '@/config/axios-inventory';
 import {Inventory} from '@/models/inventory/inventory';
 import {Option} from '@/models/inventory/option';
 import {getServerSession} from 'next-auth';
+import {Total} from '@/models/inventory/total';
 
 const getInventory = async ({id, token}: {id: string; token: string}) => {
 	const response: Inventory = await InventoryClient({
@@ -26,6 +27,15 @@ const getInventoryOptions = async ({id, token}: {id: string; token: string}) => 
 	return response;
 };
 
+const getInventoryTotal = async ({id, token}: {id: string; token: string}) => {
+	const response: Total = await InventoryClient({
+		token,
+	})
+		.get(`inventory/value?id=${id}`)
+		.then((res) => res.data);
+	return response;
+};
+
 const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 	const session = await getServerSession(options);
 
@@ -33,7 +43,11 @@ const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 
 	const id = params.inventory;
 
-	const [inventory, data] = await Promise.all([getInventory({id, token}), getInventoryOptions({id, token})]);
+	const [inventory, data, total] = await Promise.all([
+		getInventory({id, token}),
+		getInventoryOptions({id, token}),
+		getInventoryTotal({id, token}),
+	]);
 
 	return (
 		<>
@@ -46,7 +60,7 @@ const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-1'>
 				<InventoryLayout storeId={inventory.storeId}>
-					<ViewProductComponent inventory={inventory} data={data} />
+					<ViewProductComponent inventory={inventory} data={data} total={total} />
 				</InventoryLayout>
 			</div>
 		</>

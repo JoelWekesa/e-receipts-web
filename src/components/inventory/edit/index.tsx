@@ -1,9 +1,12 @@
 'use client';
 import editImagesAtom from '@/atoms/inventory/images';
+import optionsAtom from '@/atoms/inventory/options';
 import {Form} from '@/components/ui/form';
 import {Category} from '@/models/inventory/category';
 import {Inventory} from '@/models/inventory/inventory';
+import {Option} from '@/models/inventory/option';
 import useEditInventory from '@/services/inventory/edit/inventory';
+import useSingleInventory from '@/services/inventory/single/single';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
 import {useSession} from 'next-auth/react';
@@ -15,8 +18,6 @@ import ProductHeader from '../add/productheader';
 import {EditProductComponent} from './product';
 import EditProductImages from './productimages';
 import EditVariantTypes from './variant-types';
-import optionsAtom from '@/atoms/inventory/options';
-import {Option} from '@/models/inventory/option';
 
 interface Props {
 	categories: Category[];
@@ -48,14 +49,19 @@ const formSchema = z.object({
 });
 
 const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
+	const {data: inventoryItem} = useSingleInventory({
+		id: inventory.id,
+		inventory,
+	});
+
 	const [options, __] = useAtom(optionsAtom);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			category: inventory.category.id,
-			name: inventory.name,
-			description: inventory.description,
+			category: inventoryItem.category.id,
+			name: inventoryItem.name,
+			description: inventoryItem.description,
 		},
 
 		mode: 'onChange',
@@ -78,7 +84,7 @@ const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
 				images: images?.new || [],
 				description: data.description || '',
 				removed: images?.removed || [],
-				id: inventory?.id || '',
+				id: inventoryItem?.id || '',
 				options,
 			},
 
@@ -98,7 +104,7 @@ const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
 					<Form {...form}>
 						<form className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-							<EditProductComponent form={form} inventory={inventory} />
+							<EditProductComponent form={form} inventory={inventoryItem} />
 							<SelectProductCategory categories={categories} form={form} />
 							{/* <Button type='submit'>Save and Continue</Button> */}
 						</form>

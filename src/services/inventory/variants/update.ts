@@ -36,8 +36,6 @@ const useUpdateVariant = () => {
                 icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
             })
-
-
         }
     })
 }

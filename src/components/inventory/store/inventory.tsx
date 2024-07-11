@@ -9,6 +9,9 @@ import {ArrowUpDown, Edit} from 'lucide-react';
 import Image from 'next/image';
 import {FC} from 'react';
 import InventoryDropDown from './dropdown';
+import InvValue from '../value/value';
+import {Total} from '@/models/inventory/total';
+import useInvValue from '@/services/inventory/values/store';
 
 const columns: ColumnDef<Inventory>[] = [
 	{
@@ -117,13 +120,22 @@ const columns: ColumnDef<Inventory>[] = [
 interface Q {
 	storeId: string;
 	inventory: Inventory[];
+	total: Total;
 }
 
-const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data}}) => {
+const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total}}) => {
 	const {data: inventory} = useInventory({storeId, inventory: data});
 
+	const url = `inventory/store/value?storeId=${storeId}`;
+
+	const {data: tot} = useInvValue({
+		url,
+		initialData: total,
+	});
+
 	return (
-		<div>
+		<div className='flex flex-col gap-4'>
+			<InvValue title='Inventory Value' description='Total store inventory value' value={tot} url={url} />
 			<DataTable
 				columns={columns}
 				data={inventory}

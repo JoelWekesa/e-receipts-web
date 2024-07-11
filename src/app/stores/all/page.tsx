@@ -2,6 +2,7 @@ import {options} from '@/app/api/auth/[...nextauth]/options';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
 import ApiClient from '@/config/axios';
+import InventoryClient from '@/config/axios-inventory';
 import {Store} from '@/models/store';
 import {getServerSession} from 'next-auth';
 
@@ -16,14 +17,28 @@ async function getData({token}: {token: string}): Promise<Store[]> {
 	return res;
 }
 
+const getTotals = async ({token}: {token: string}) => {
+	const res = await InventoryClient({
+		token,
+	})
+		.get('inventory/all/value')
+		.then((res) => res.data)
+		.catch((err) => {
+			throw new Error(err);
+		});
+
+	return res;
+};
+
 const StoresPage = async () => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken;
 
-	const data = await getData({
-		token: token ? token : '',
-	});
+	const [data, total] = await Promise.all([
+		getData({token: token ? token : ''}),
+		getTotals({token: token ? token : ''}),
+	]);
 
 	return (
 		<>
@@ -36,7 +51,7 @@ const StoresPage = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<UserStores initialData={data} token={token ? token : ''} />
+				<UserStores initialData={data} token={token ? token : ''} total={total} />
 			</div>
 		</>
 	);

@@ -25,13 +25,27 @@ import {Input} from '../ui/input';
 import {Sheet, SheetClose, SheetContent, SheetFooter} from '../ui/sheet';
 import StoreButtonDropDown from './dropdown';
 import StoreComponent from './store';
+import {Total} from '@/models/inventory/total';
+import useInvValue from '@/services/inventory/values/store';
+import InvValue from '../inventory/value/value';
 
-const UserStores = ({initialData, token}: StoreFetch) => {
+export interface Props extends StoreFetch {
+	total: Total;
+}
+
+const UserStores = ({initialData, token, total}: Props) => {
 	const [open, setOpen] = useState(false);
 
 	const {data, isLoading} = useUserStores({initialData, token});
 
 	const [store, setStore] = useAtom(storeAtom);
+
+	const url = 'inventory/all/value';
+
+	const {data: tot} = useInvValue({
+		url,
+		initialData: total,
+	});
 
 	const router = useRouter();
 
@@ -152,6 +166,7 @@ const UserStores = ({initialData, token}: StoreFetch) => {
 		<div className='flex p-3 flex-col'>
 			<Sheet>
 				<div className='m-3 p-5 rounded-md border'>
+					<InvValue title='Inventory Value' description='Total inventory value across all stores' value={tot} url={url} />
 					<DataTable columns={columns} data={data || []} searchColumn='name' searchPlaceholder='Search by store name...' />
 					<DeleteDialog open={open} setOpen={handleDeleteDialog} token={token} />
 				</div>

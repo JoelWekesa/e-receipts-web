@@ -24,7 +24,7 @@ const useInventory = ({ storeId, inventory }: Q) => {
     })
 
     return useQuery({
-        queryKey: ['inventory', storeId],
+        queryKey: ['inventory', { storeId }],
         queryFn: () => getInventory({ storeId, token: session?.accessToken || '' }),
         initialData: inventory
     })
