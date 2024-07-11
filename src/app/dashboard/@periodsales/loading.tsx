@@ -1,8 +1,7 @@
-import PageLoader from '@/components/shared/pageloader';
-import React from 'react';
+import ComponentLoader from '@/components/shared/componentloader';
 
 const Loading = () => {
-	return <PageLoader component />;
+	return <ComponentLoader />;
 };
 
 export default Loading;

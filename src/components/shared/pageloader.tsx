@@ -1,11 +1,30 @@
-import React, {FC} from 'react';
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/nZDEIahLEl8
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
+import {Skeleton} from '@/components/ui/skeleton';
+import {FC} from 'react';
 
 const PageLoader: FC<{component?: boolean}> = ({component}) => {
 	return (
-		<div className={`flex items-center justify-center ${component ? 'h-full' : 'h-screen'} text-center`}>
-			<div className='flex flex-col items-center justify-center space-y-2'>
-				<div className='rounded-full border-4 border-gray-100 border-solid w-14 h-14 animate-pulse dark:border-gray-900' />
-				<p className='text-2xl font-semibold tracking-tighter text-gray-500 animate-pulse dark:text-gray-400'>Loading</p>
+		<div className={`flex ${component ? 'h-full' : 'min-h-[100dvh]'} flex-col bg-background`}>
+			<div className='container mx-auto flex-1 px-4 py-12 sm:px-6 lg:px-8'>
+				<div className='grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr]'>
+					<div className='space-y-4'>
+						<Skeleton className='h-12 w-full rounded-md' />
+						<Skeleton className='h-8 w-full rounded-md' />
+						<Skeleton className='h-8 w-full rounded-md' />
+						<Skeleton className='h-8 w-full rounded-md' />
+					</div>
+					<div className='space-y-4'>
+						<Skeleton className='h-12 w-full rounded-md' />
+						<Skeleton className='h-32 w-full rounded-md' />
+						<Skeleton className='h-12 w-full rounded-md' />
+						<Skeleton className='h-12 w-full rounded-md' />
+						<Skeleton className='h-12 w-full rounded-md' />
+					</div>
+				</div>
 			</div>
 		</div>
 	);
