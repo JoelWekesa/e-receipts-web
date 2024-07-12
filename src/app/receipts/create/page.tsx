@@ -1,6 +1,8 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import {PreviewBox} from '@/components/templates/supermarket/show';
 import ApiClient from '@/config/axios';
+import InventoryClient from '@/config/axios-inventory';
+import {Product} from '@/models/inventory/product';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
 import {getServerSession} from 'next-auth';
@@ -36,23 +38,37 @@ async function getData({id, token}: GetData): Promise<Store> {
 	return res;
 }
 
+const getStoresProduct = async ({token, storeId}: {token: string; storeId: string}) => {
+	const products: Product[] = await InventoryClient({
+		token,
+	})
+		.get(`inventory/store/variants?storeId=${storeId}`)
+		.then((res) => res.data);
+
+	return products;
+};
+
 const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
 	const session = await getServerSession(options);
 
-	const token = session?.accessToken;
+	const token = session?.accessToken || '';
 
 	console.log({token});
 
-	const id = searchParams?.id;
+	const id = searchParams?.id || '';
 
-	const data = await getData({
-		token: token ? token : '',
-		id: id as string,
-	});
+	const [data, products] = await Promise.all([
+		getData({
+			id: id as string,
+			token: token,
+		}),
+
+		getStoresProduct({token: token, storeId: id as string}),
+	]);
 
 	return (
 		<div className='p-3'>
-			<PreviewBox store={data} token={token ? token : ''} />
+			<PreviewBox store={data} token={token} products={products} />
 		</div>
 	);
 };

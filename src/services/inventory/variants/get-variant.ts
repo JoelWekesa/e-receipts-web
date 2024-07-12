@@ -30,7 +30,7 @@ const useVariant = ({ id, variant }: VariantProps) => {
     const token = session?.accessToken || ''
 
     return useQuery({
-        queryKey: ['variant', id],
+        queryKey: ['inventory', { id, variant: 'variant' }],
         queryFn: () => getVariant({ id, token }),
         enabled: !!token && !!id,
         initialData: variant

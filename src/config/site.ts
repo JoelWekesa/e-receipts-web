@@ -1,12 +1,12 @@
 export const siteConfig = {
 	name: 'E-Receipts',
-	url: 'https://ui.shadcn.com',
+	url: 'https://joelwekesa.com',
 	ogImage: 'https://ui.shadcn.com/og.jpg',
 	description:
-		'Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.',
+		'The most comprehensive E-Receipts Platform. Say goodbye to messy wallets, fading ink, and lost receipts! E-Receipts revolutionizes the way businesses send and customers receive receipts.',
 	links: {
-		twitter: 'https://twitter.com/shadcn',
-		github: 'https://github.com/shadcn-ui/ui',
+		twitter: 'https://x.com/joelwekesa_',
+		github: 'https://github.com/JoelWekesa',
 	},
 };
 

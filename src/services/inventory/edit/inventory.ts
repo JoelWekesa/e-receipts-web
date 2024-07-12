@@ -48,7 +48,6 @@ const useEditInventory = () => {
         onSuccess: async () => {
             const invalidate = [
                 queryClient.invalidateQueries({ queryKey: ["inventory"] }),
-                queryClient.invalidateQueries({ queryKey: ["inventory-variants"] })
             ]
 
 

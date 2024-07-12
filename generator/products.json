@@ -1,0 +1,269 @@
+[
+	{
+		"id": "clyh1kl9b0001otl4engue6df",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "8gb"
+			},
+			{
+				"name": "ROM",
+				"value": "512gb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			}
+		],
+		"variant_name": "iPhone 15 Pro - RAM: 8gb, ROM: 512gb, Color: midnight",
+		"description": "iPhone 15 Pro",
+		"price": 225000,
+		"quantity": 12,
+		"inventoryId": "d8rmxmad3vs64lyabf9wsf6a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T09:03:30.717Z",
+		"updatedAt": "2024-07-11T10:53:22.189Z",
+		"inventory": {
+			"id": "d8rmxmad3vs64lyabf9wsf6a",
+			"name": "iPhone 15 Pro",
+			"nameId": "iphone-15-pro",
+			"description": "iPhone 15 Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0xw220001xaxtzjh2en8q",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/7384c16b-41b1-44d6-96cb-a65d42414623.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/b1255ec7-0322-4f2b-b959-8d927615f3ea.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/7126ea54-b5f6-4ac2-a965-e02472f81c63.jpeg"
+			],
+			"createdAt": "2024-07-11T09:03:30.717Z",
+			"updatedAt": "2024-07-11T09:03:30.717Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	},
+	{
+		"id": "clyh1kl9b0000otl4e75836pt",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "8gb"
+			},
+			{
+				"name": "ROM",
+				"value": "1tb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			}
+		],
+		"variant_name": "iPhone 15 Pro - RAM: 8gb, ROM: 1tb, Color: midnight",
+		"description": "iPhone 15 Pro",
+		"price": 250000,
+		"quantity": 6,
+		"inventoryId": "d8rmxmad3vs64lyabf9wsf6a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T09:03:30.717Z",
+		"updatedAt": "2024-07-11T09:03:30.821Z",
+		"inventory": {
+			"id": "d8rmxmad3vs64lyabf9wsf6a",
+			"name": "iPhone 15 Pro",
+			"nameId": "iphone-15-pro",
+			"description": "iPhone 15 Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0xw220001xaxtzjh2en8q",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/7384c16b-41b1-44d6-96cb-a65d42414623.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/b1255ec7-0322-4f2b-b959-8d927615f3ea.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/7126ea54-b5f6-4ac2-a965-e02472f81c63.jpeg"
+			],
+			"createdAt": "2024-07-11T09:03:30.717Z",
+			"updatedAt": "2024-07-11T09:03:30.717Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	},
+	{
+		"id": "clyh1kl9b0002otl43y1x72fh",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "8gb"
+			},
+			{
+				"name": "ROM",
+				"value": "256gb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			}
+		],
+		"variant_name": "iPhone 15 Pro - RAM: 8gb, ROM: 256gb, Color: midnight",
+		"description": "iPhone 15 Pro",
+		"price": 200000,
+		"quantity": 5,
+		"inventoryId": "d8rmxmad3vs64lyabf9wsf6a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T09:03:30.717Z",
+		"updatedAt": "2024-07-11T09:49:13.667Z",
+		"inventory": {
+			"id": "d8rmxmad3vs64lyabf9wsf6a",
+			"name": "iPhone 15 Pro",
+			"nameId": "iphone-15-pro",
+			"description": "iPhone 15 Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0xw220001xaxtzjh2en8q",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/7384c16b-41b1-44d6-96cb-a65d42414623.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/b1255ec7-0322-4f2b-b959-8d927615f3ea.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/7126ea54-b5f6-4ac2-a965-e02472f81c63.jpeg"
+			],
+			"createdAt": "2024-07-11T09:03:30.717Z",
+			"updatedAt": "2024-07-11T09:03:30.717Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	},
+	{
+		"id": "clygvf1zl00026ojb3t4zmwd4",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "32gb"
+			},
+			{
+				"name": "ROM",
+				"value": "512gb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			},
+			{
+				"name": "Size",
+				"value": "13"
+			}
+		],
+		"variant_name": "2024 Mac Book Pro - RAM: 32gb, ROM: 512gb, Color: midnight, Size: 13",
+		"description": "2024 Mac Book Pro",
+		"price": 400000,
+		"quantity": 8,
+		"inventoryId": "eiw3cd7ul7m6k5hqtbnnei3a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T06:11:14.767Z",
+		"updatedAt": "2024-07-11T11:42:22.622Z",
+		"inventory": {
+			"id": "eiw3cd7ul7m6k5hqtbnnei3a",
+			"name": "2024 Mac Book Pro",
+			"nameId": "2024-mac-book-pro",
+			"description": "2024 Mac Book Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0y05e0003xaxts1pdfmzt",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/cc2f18bd-67d9-4b2e-acf8-a23c448d6a6e.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/48ceb597-c3db-4213-848a-ce9bdfe0726f.jpg"
+			],
+			"createdAt": "2024-07-11T06:11:14.767Z",
+			"updatedAt": "2024-07-11T06:11:14.767Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	},
+	{
+		"id": "clygvf1zl00006ojb0te90g5p",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "128gb"
+			},
+			{
+				"name": "ROM",
+				"value": "2tb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			},
+			{
+				"name": "Size",
+				"value": "17"
+			}
+		],
+		"variant_name": "2024 Mac Book Pro - RAM: 128gb, ROM: 2tb, Color: midnight, Size: 17",
+		"description": "2024 Mac Book Pro",
+		"price": 500000,
+		"quantity": 25,
+		"inventoryId": "eiw3cd7ul7m6k5hqtbnnei3a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T06:11:14.767Z",
+		"updatedAt": "2024-07-11T11:43:41.715Z",
+		"inventory": {
+			"id": "eiw3cd7ul7m6k5hqtbnnei3a",
+			"name": "2024 Mac Book Pro",
+			"nameId": "2024-mac-book-pro",
+			"description": "2024 Mac Book Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0y05e0003xaxts1pdfmzt",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/cc2f18bd-67d9-4b2e-acf8-a23c448d6a6e.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/48ceb597-c3db-4213-848a-ce9bdfe0726f.jpg"
+			],
+			"createdAt": "2024-07-11T06:11:14.767Z",
+			"updatedAt": "2024-07-11T06:11:14.767Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	},
+	{
+		"id": "clygvf1zl00016ojbf2rrd3kq",
+		"name": [
+			{
+				"name": "RAM",
+				"value": "64gb"
+			},
+			{
+				"name": "ROM",
+				"value": "1tb"
+			},
+			{
+				"name": "Color",
+				"value": "midnight"
+			},
+			{
+				"name": "Size",
+				"value": "14"
+			}
+		],
+		"variant_name": "2024 Mac Book Pro - RAM: 64gb, ROM: 1tb, Color: midnight, Size: 14",
+		"description": "2024 Mac Book Pro",
+		"price": 450000,
+		"quantity": 40,
+		"inventoryId": "eiw3cd7ul7m6k5hqtbnnei3a",
+		"warnLevel": 1,
+		"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+		"createdAt": "2024-07-11T06:11:14.767Z",
+		"updatedAt": "2024-07-11T11:40:09.946Z",
+		"inventory": {
+			"id": "eiw3cd7ul7m6k5hqtbnnei3a",
+			"name": "2024 Mac Book Pro",
+			"nameId": "2024-mac-book-pro",
+			"description": "2024 Mac Book Pro",
+			"storeId": "clyg0xb5s0003usxfxxcgnp5h",
+			"categoryId": "clyg0y05e0003xaxts1pdfmzt",
+			"images": [
+				"https://receipts-ke.s3.amazonaws.com/inventory/cc2f18bd-67d9-4b2e-acf8-a23c448d6a6e.jpeg",
+				"https://receipts-ke.s3.amazonaws.com/inventory/48ceb597-c3db-4213-848a-ce9bdfe0726f.jpg"
+			],
+			"createdAt": "2024-07-11T06:11:14.767Z",
+			"updatedAt": "2024-07-11T06:11:14.767Z",
+			"updatedById": null,
+			"userId": "105157591631821260735"
+		}
+	}
+]

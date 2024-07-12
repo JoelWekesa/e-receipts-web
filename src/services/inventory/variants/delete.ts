@@ -28,14 +28,11 @@ const useDeleteVariant = (successFn: () => void) => {
         onSuccess: async () => {
 
             await queryClient.invalidateQueries({ queryKey: ["inventory"] }),
-            await queryClient.invalidateQueries({ queryKey: ["variant"] }),
-            await queryClient.invalidateQueries({ queryKey: ["inventoryOptions"] }),
-            await queryClient.invalidateQueries({ queryKey: ["inventory-variants"] })
 
-            toast("Variant Deleted", {
-                icon: "✅",
-                description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-            })
+                toast("Variant Deleted", {
+                    icon: "✅",
+                    description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                })
 
             successFn()
         }

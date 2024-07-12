@@ -31,9 +31,6 @@ const useAddVariant = (successFn: () => void) => {
         onSuccess: async () => {
             const invalidate = [
                 queryClient.invalidateQueries({ queryKey: ["inventory"] }),
-                queryClient.invalidateQueries({ queryKey: ["variant"] }),
-                queryClient.invalidateQueries({ queryKey: ["inventoryOptions"] }),
-                queryClient.invalidateQueries({ queryKey: ["inventory-variants"] })
             ]
             await Promise.all(invalidate)
             toast("Variant Added", {

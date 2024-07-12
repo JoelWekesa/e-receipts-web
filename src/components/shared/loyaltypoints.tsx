@@ -19,6 +19,7 @@ import {Input} from '../ui/input';
 import {Progress} from '../ui/progress';
 import LoyaltyControlItems from './loyaltycontrolitems';
 import {Checkbox} from '../ui/checkbox';
+import inventoryTypeAtom from '@/atoms/receiptgen/inventory-type';
 
 const formSchema = z
 	.object({
@@ -45,6 +46,7 @@ const LoyaltyPointsComponent: FC<{storeId: string; token: string}> = ({storeId, 
 	const [payment, setPayment] = useAtom(paymentAtom);
 	const [control_units, setControlUnits] = useAtom(controlUnitAtom);
 	const [loyalty, setLoyaltyPoints] = useAtom(loyaltyAtom);
+	const [_, setInventoryTypeAtom] = useAtom(inventoryTypeAtom);
 
 	const successFn = () => {
 		setClientDetails({
@@ -70,6 +72,7 @@ const LoyaltyPointsComponent: FC<{storeId: string; token: string}> = ({storeId, 
 			},
 		});
 		setPath(Path.CLIENT_DETAILS);
+		setInventoryTypeAtom(true);
 	};
 
 	const {mutate, isPending} = useAddReceipt(successFn);

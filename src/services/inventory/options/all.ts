@@ -20,7 +20,7 @@ const useInventoryOptions = ({ inventoryId, initialData }: { inventoryId: string
 
 
     return useQuery({
-        queryKey: ['inventoryOptions', { inventoryId }],
+        queryKey: ['inventory', { inventoryId, options: 'options' }],
         queryFn: () => getInventoryOptions({ inventoryId, token }),
         enabled: !!token && !!inventoryId,
         initialData

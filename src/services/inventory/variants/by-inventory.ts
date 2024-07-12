@@ -21,7 +21,7 @@ const useInventoryVariants = ({ id, variants }: Var) => {
     const token = session?.accessToken || ''
 
     return useQuery({
-        queryKey: ['inventory-variants', { id }],
+        queryKey: ['inventory', { id, variants: 'variants' }],
         queryFn: () => inventoryVariants({ id, token }),
         enabled: !!token && !!id,
         initialData: variants

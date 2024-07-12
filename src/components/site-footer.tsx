@@ -1,4 +1,4 @@
-import { siteConfig } from '@/config/site';
+import {siteConfig} from '@/config/site';
 
 export function SiteFooter() {
 	return (
@@ -11,9 +11,9 @@ export function SiteFooter() {
 						target='_blank'
 						rel='noreferrer'
 						className='font-medium underline underline-offset-4'>
-						shadcn
+						Joel Wekesa
 					</a>
-					. The source code is available on{' '}
+					. See my Github profile for more projects{' '}
 					<a
 						href={siteConfig.links.github}
 						target='_blank'

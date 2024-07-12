@@ -30,6 +30,7 @@ const useAddReceipt = (successFn: () => void) => {
                 queryClient.invalidateQueries({ queryKey: ["count"], }),
                 queryClient.invalidateQueries({ queryKey: ["top-stores"], }),
                 queryClient.invalidateQueries({ queryKey: ["top-customers"], }),
+                queryClient.invalidateQueries({ queryKey: ["inventory"], }),
                 queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.dailysales], }),
                 queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.weeklysales], }),
                 queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.monthlysales], }),
