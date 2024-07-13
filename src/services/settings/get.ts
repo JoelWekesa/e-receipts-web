@@ -1,14 +1,8 @@
 
 import { Setting } from '@/models/setting';
 import { useQuery } from "@tanstack/react-query";
-import ApiClient from '../../config/axios';
 import { useSession } from 'next-auth/react';
-
-const getSetting = async (token: string) => {
-    const setting: Setting = await ApiClient(token).get("settings").then(res => res.data)
-
-    return setting
-}
+import { getSetting } from '../page/settings/get-setting';
 
 
 const useSetting = (setting?: Setting) => {

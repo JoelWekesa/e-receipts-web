@@ -14,7 +14,7 @@ import {
 	DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-export function MainNav() {
+export const MainNav = () => {
 	const pathname = usePathname();
 
 	return (
@@ -96,4 +96,4 @@ export function MainNav() {
 			</nav>
 		</div>
 	);
-}
+};
