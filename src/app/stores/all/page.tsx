@@ -4,6 +4,9 @@ import UserStores from '@/components/stores/user';
 import ApiClient from '@/config/axios';
 import InventoryClient from '@/config/axios-inventory';
 import {Store} from '@/models/store';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
 
 async function getData({token}: {token: string}): Promise<Store[]> {
@@ -33,11 +36,14 @@ const getTotals = async ({token}: {token: string}) => {
 const StoresPage = async () => {
 	const session = await getServerSession(options);
 
-	const token = session?.accessToken;
+	const token = session?.accessToken || '';
 
-	const [data, total] = await Promise.all([
-		getData({token: token ? token : ''}),
-		getTotals({token: token ? token : ''}),
+	const [data, total, teams, stores, permissions] = await Promise.all([
+		getData({token}),
+		getTotals({token}),
+		getTeams({token}),
+		userStores(token),
+		getPermissions({token}),
 	]);
 
 	return (
@@ -45,8 +51,7 @@ const StoresPage = async () => {
 			<div className='hidden flex-col md:flex'>
 				<div className='border-b'>
 					<div className='flex h-16 items-center px-4'>
-						<TeamSwitcher />
-						{/* <MainNav className='mx-6' /> */}
+						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 					</div>
 				</div>
 			</div>

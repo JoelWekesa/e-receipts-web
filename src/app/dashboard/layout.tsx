@@ -1,11 +1,16 @@
-import { MainNav } from '@/components/dashboard/MainNav';
+import {MainNav} from '@/components/dashboard/MainNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import { Card, CardContent } from '@/components/ui/card';
-import { FC, ReactNode } from 'react';
+import {Card, CardContent} from '@/components/ui/card';
+import {FC, ReactNode} from 'react';
 
-import { SiteHeader } from '@/components/site-header';
-import { siteConfig } from '@/config/site';
-import { Metadata, Viewport } from 'next';
+import {SiteHeader} from '@/components/site-header';
+import {siteConfig} from '@/config/site';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
+import {Metadata, Viewport} from 'next';
+import {getServerSession} from 'next-auth';
+import {options} from '../api/auth/[...nextauth]/options';
 
 export const metadata: Metadata = {
 	title: {
@@ -66,7 +71,17 @@ const DashBoardLayout: FC<{
 	period_all_annual_month: ReactNode;
 	top: ReactNode;
 	receipts: ReactNode;
-}> = ({periodtotals, periodsales, period_all_annual_month, top, receipts}) => {
+}> = async ({periodtotals, periodsales, period_all_annual_month, top, receipts}) => {
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken || '';
+
+	const [stores, teams, permissions] = await Promise.all([
+		userStores(token),
+		getTeams({token}),
+		getPermissions({token}),
+	]);
+
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
@@ -76,7 +91,7 @@ const DashBoardLayout: FC<{
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
-									<TeamSwitcher />
+									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 									<MainNav className='mx-6' />
 								</div>
 							</div>

@@ -92,8 +92,8 @@ export const EditProductComponent: FC<{
 										'image/*': ['.png'],
 									}}
 									multiple={true}
-									maxFiles={5 - ((images?.current?.length || 0) + (images?.new?.length || 0))}
-									maxSize={3000000}
+									maxFiles={9 - ((images?.current?.length || 0) + (images?.new?.length || 0))}
+									maxSize={5000000}
 									onDropAccepted={(items) => onDrop(items)}>
 									{({getRootProps, getInputProps}) => (
 										<div className='w-full flex justify-center items-center'>

@@ -3,6 +3,8 @@ import SettingsComponent from '@/components/settings/settings';
 import ApiClient from '@/config/axios';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
 import {options} from '../api/auth/[...nextauth]/options';
 
@@ -22,17 +24,18 @@ async function getData({token}: {token: string}) {
 const Settings = async () => {
 	const session = await getServerSession(options);
 
-	const token = session?.accessToken;
+	const token = session?.accessToken || '';
 
-	const {setting, stores} = await getData({
-		token: token ? token : '',
-	});
+	const [data, teams, permissions] = await Promise.all([getData({token}), getTeams({token}), getPermissions({token})]);
+
+	const {setting, stores} = data;
+
 	return (
 		<>
 			<div className='hidden flex-col md:flex'>
 				<div className='border-b'>
 					<div className='flex h-16 items-center px-4'>
-						<TeamSwitcher />
+						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 					</div>
 				</div>
 			</div>

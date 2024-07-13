@@ -82,8 +82,8 @@ export const AddProductComponent: FC<{
 										'': ['.png', '.jpg', '.jpeg'],
 									}}
 									multiple={true}
-									maxFiles={6}
-									maxSize={3000000}
+									maxFiles={9}
+									maxSize={5000000}
 									useFsAccessApi={false}
 									onDropAccepted={(items) => onDrop(items)}>
 									{({getRootProps, getInputProps}) => (

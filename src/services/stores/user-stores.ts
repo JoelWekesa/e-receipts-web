@@ -8,10 +8,7 @@ export interface StoreFetch {
     token: string;
 }
 
-
-
-
-export const userStores = async (token: string) => {
+const userStores = async (token: string) => {
     const stores: Store[] = await ApiClient(token).get("stores/stores").then(res => res.data)
     return stores
 }

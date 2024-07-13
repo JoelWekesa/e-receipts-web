@@ -2,13 +2,13 @@ import {options} from '@/app/api/auth/[...nextauth]/options';
 import {MainNav} from '@/components/dashboard/MainNav';
 import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
-import StoreHomeComponent from '@/components/stores';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
+import React from 'react';
 
-const HomePage = async () => {
+const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -18,6 +18,12 @@ const HomePage = async () => {
 		userStores(token),
 		getPermissions({token}),
 	]);
+
+	const {team: teamId} = params;
+
+	console.log({
+		teamId,
+	});
 
 	return (
 		<>
@@ -33,12 +39,11 @@ const HomePage = async () => {
 				</div>
 			</div>
 
-			{/* <div>{JSON.stringify(session)}</div> */}
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<StoreHomeComponent token={token} />
+				<div>{JSON.stringify(session)}</div>
 			</div>
 		</>
 	);
 };
 
-export default HomePage;
+export default TeamLandingPage;

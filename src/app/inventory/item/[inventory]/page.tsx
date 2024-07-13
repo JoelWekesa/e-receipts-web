@@ -7,6 +7,10 @@ import {Inventory} from '@/models/inventory/inventory';
 import {Option} from '@/models/inventory/option';
 import {getServerSession} from 'next-auth';
 import {Total} from '@/models/inventory/total';
+import {MemberTeam} from '@/models/teams/member-team';
+import ApiClient from '@/config/axios';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getPermissions} from '@/services/page/teams/permissions';
 
 const getInventory = async ({id, token}: {id: string; token: string}) => {
 	const response: Inventory = await InventoryClient({
@@ -36,6 +40,13 @@ const getInventoryTotal = async ({id, token}: {id: string; token: string}) => {
 	return response;
 };
 
+const getTeams = async ({token}: {token: string}) => {
+	const response: MemberTeam[] = await ApiClient(token)
+		.get('teams/my-teams')
+		.then((res) => res.data);
+	return response;
+};
+
 const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 	const session = await getServerSession(options);
 
@@ -43,10 +54,13 @@ const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 
 	const id = params.inventory;
 
-	const [inventory, data, total] = await Promise.all([
+	const [inventory, data, total, teams, stores, permissions] = await Promise.all([
 		getInventory({id, token}),
 		getInventoryOptions({id, token}),
 		getInventoryTotal({id, token}),
+		getTeams({token}),
+		userStores(token),
+		getPermissions({token}),
 	]);
 
 	return (
@@ -54,7 +68,7 @@ const InventoryItemPage = async ({params}: {params: {inventory: string}}) => {
 			<div className='hidden flex-col md:flex'>
 				<div className='border-b'>
 					<div className='flex h-16 items-center px-4'>
-						<TeamSwitcher />
+						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 					</div>
 				</div>
 			</div>

@@ -4,7 +4,12 @@ import {CaretSortIcon, CheckIcon, PlusCircledIcon} from '@radix-ui/react-icons';
 import * as React from 'react';
 
 import {cn} from '@/lib/utils';
+import {Store} from '@/models/store';
+import {MemberTeam} from '@/models/teams/member-team';
+import {Permission} from '@/models/teams/permissions';
 import {useSession} from 'next-auth/react';
+import {usePathname, useRouter} from 'next/navigation';
+import AddTeamComponent from '../teams/add/add-team';
 import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
 import {Button} from '../ui/button';
 import {
@@ -16,19 +21,8 @@ import {
 	CommandList,
 	CommandSeparator,
 } from '../ui/command';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '../ui/dialog';
-import {Input} from '../ui/input';
-import {Label} from '../ui/label';
+import {Dialog, DialogTrigger} from '../ui/dialog';
 import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '../ui/select';
 const groupsP = [
 	{
 		label: 'Personal Account',
@@ -58,10 +52,24 @@ type Team = (typeof groupsP)[number]['teams'][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface TeamSwitcherProps extends PopoverTriggerProps {
+	teams: MemberTeam[];
+	stores: Store[];
+	permissions: Permission[];
+}
 
-export default function TeamSwitcher({className}: TeamSwitcherProps) {
+export default function TeamSwitcher({className, teams, stores, permissions}: TeamSwitcherProps) {
 	const {data: user} = useSession();
+
+	const fTeams: Team[] = React.useMemo(() => {
+		return teams.map((team) => {
+			return {
+				label: team.team.name,
+				value: team.teamId,
+			};
+		});
+	}, [teams]);
+
 	const groups = [
 		{
 			label: 'Personal Account',
@@ -74,21 +82,39 @@ export default function TeamSwitcher({className}: TeamSwitcherProps) {
 		},
 		{
 			label: 'Teams',
-			teams: [
-				{
-					label: 'Acme Inc.',
-					value: 'acme-inc',
-				},
-				{
-					label: 'Monsters Inc.',
-					value: 'monsters',
-				},
-			],
+			teams: fTeams,
 		},
 	];
 	const [open, setOpen] = React.useState(false);
 	const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
 	const [selectedTeam, setSelectedTeam] = React.useState<Team>(groups[0].teams[0]);
+
+	const pathName = usePathname();
+	const router = useRouter();
+
+	React.useEffect(() => {
+		const regex = /^\/teams(\/|$)/;
+
+		if (regex.test(pathName)) {
+			const l = pathName.split('/').length;
+			const teamId = pathName.split('/')[l - 1];
+
+			if (teamId) {
+				const team = fTeams.find((t) => t.value === teamId);
+				if (team) {
+					setSelectedTeam(team);
+				}
+			}
+		}
+	}, [pathName, fTeams]);
+
+	const handleRedirect = (value: string) => {
+		if (value === 'personal') {
+			router.push('/dashboard');
+		} else {
+			router.push(`/teams/${value}`);
+		}
+	};
 
 	return (
 		<Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -113,6 +139,7 @@ export default function TeamSwitcher({className}: TeamSwitcherProps) {
 						<CommandList>
 							<CommandInput placeholder='Search team...' />
 							<CommandEmpty>No team found.</CommandEmpty>
+
 							{groups.map((group) => (
 								<CommandGroup key={group.label} heading={group.label}>
 									{group.teams.map((team) => (
@@ -121,6 +148,7 @@ export default function TeamSwitcher({className}: TeamSwitcherProps) {
 											onSelect={() => {
 												setSelectedTeam(team);
 												setOpen(false);
+												handleRedirect(team.value);
 											}}
 											className='text-sm'>
 											<Avatar className='mr-2 h-5 w-5'>
@@ -154,42 +182,7 @@ export default function TeamSwitcher({className}: TeamSwitcherProps) {
 					</Command>
 				</PopoverContent>
 			</Popover>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Create team</DialogTitle>
-					<DialogDescription>Add a new team to manage products and customers.</DialogDescription>
-				</DialogHeader>
-				<div>
-					<div className='space-y-4 py-2 pb-4'>
-						<div className='space-y-2'>
-							<Label htmlFor='name'>Team name</Label>
-							<Input id='name' placeholder='Acme Inc.' />
-						</div>
-						<div className='space-y-2'>
-							<Label htmlFor='plan'>Subscription plan</Label>
-							<Select>
-								<SelectTrigger>
-									<SelectValue placeholder='Select a plan' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value='free'>
-										<span className='font-medium'>Free</span> - <span className='text-muted-foreground'>Trial for two weeks</span>
-									</SelectItem>
-									<SelectItem value='pro'>
-										<span className='font-medium'>Pro</span> - <span className='text-muted-foreground'>$9/month per user</span>
-									</SelectItem>
-								</SelectContent>
-							</Select>
-						</div>
-					</div>
-				</div>
-				<DialogFooter>
-					<Button variant='outline' onClick={() => setShowNewTeamDialog(false)}>
-						Cancel
-					</Button>
-					<Button type='submit'>Continue</Button>
-				</DialogFooter>
-			</DialogContent>
+			<AddTeamComponent stores={stores} permissions={permissions} close={() => setShowNewTeamDialog(false)} />
 		</Dialog>
 	);
 }

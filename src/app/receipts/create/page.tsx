@@ -55,7 +55,7 @@ const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string 
 
 	console.log({token});
 
-	const id = searchParams?.id || '';
+	const id = searchParams?.id;
 
 	const [data, products] = await Promise.all([
 		getData({
