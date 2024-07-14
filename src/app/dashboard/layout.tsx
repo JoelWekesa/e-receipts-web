@@ -1,16 +1,24 @@
-import {MainNav} from '@/components/dashboard/MainNav';
-import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import {Card, CardContent} from '@/components/ui/card';
 import {FC, ReactNode} from 'react';
 
 import {SiteHeader} from '@/components/site-header';
+import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
+import dynamic from 'next/dynamic';
 import {options} from '../api/auth/[...nextauth]/options';
+
+const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
+const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/TeamSwitcher'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
 
 export const metadata: Metadata = {
 	title: {
@@ -91,8 +99,8 @@ const DashBoardLayout: FC<{
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
-									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<MainNav className='mx-6' />
+									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
+									<DynamicMainNav className='mx-6' />
 								</div>
 							</div>
 						</div>

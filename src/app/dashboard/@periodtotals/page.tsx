@@ -1,12 +1,20 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import DailyTotals from '@/components/dashboard/totals/daily';
-import WeeklyTotals from '@/components/dashboard/totals/weekly';
 import {buttonVariants} from '@/components/ui/button';
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
+import {Skeleton} from '@/components/ui/skeleton';
 import ApiClient from '@/config/axios';
 import {Period} from '@/services/receipts/businessperiod';
 import {getServerSession} from 'next-auth';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+
+const DynamicWeeklyTotals = dynamic(() => import('../../../components/dashboard/totals/weekly'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
+const DynamicDailyTotals = dynamic(() => import('../../../components/dashboard/totals/daily'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
 
 const durations = [Period.day, Period.week, Period.month, Period.year, Period.alltime];
 
@@ -58,8 +66,8 @@ const PeriodTotals = async () => {
 					</Link>
 				</CardFooter>
 			</Card>
-			<DailyTotals daily={data.total_daily} />
-			<WeeklyTotals weekly={data.total_weekly} />
+			<DynamicDailyTotals daily={data.total_daily} />
+			<DynamicWeeklyTotals weekly={data.total_weekly} />
 		</div>
 	);
 };

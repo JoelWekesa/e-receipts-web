@@ -1,8 +1,8 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import TopsComponent from '@/components/dashboard/top/tops';
+import {Skeleton} from '@/components/ui/skeleton';
 import ApiClient from '@/config/axios';
 import {getServerSession} from 'next-auth';
-import React from 'react';
+import dynamic from 'next/dynamic';
 
 const topUrls = [
 	process.env.NEXT_PUBLIC_API_URL + 'receipts/topstores',
@@ -23,6 +23,10 @@ const getAllData = async ({token}: {token: string}) => {
 	return {topStores, topCustomers};
 };
 
+const DynamicTopsComponent = dynamic(() => import('../../../components/dashboard/top/tops'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
 const Top = async () => {
 	const session = await getServerSession(options);
 
@@ -30,7 +34,7 @@ const Top = async () => {
 		token: session?.accessToken || '',
 	});
 
-	return <TopsComponent topStores={data.topStores} topCustomers={data.topCustomers} />;
+	return <DynamicTopsComponent topStores={data.topStores} topCustomers={data.topCustomers} />;
 };
 
 export default Top;

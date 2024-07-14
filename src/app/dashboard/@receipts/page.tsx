@@ -1,9 +1,9 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import ReceiptsDistributionComponent from '@/components/dashboard/receipts/distribution';
+import {Skeleton} from '@/components/ui/skeleton';
 import ApiClient from '@/config/axios';
 import {durations} from '@/utils/durations';
 import {getServerSession} from 'next-auth';
-import React from 'react';
+import dynamic from 'next/dynamic';
 
 const countPeriodUrls = durations.map(
 	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/countall?period=' + duration
@@ -31,6 +31,10 @@ const getAllData = async ({token}: {token: string}) => {
 	};
 };
 
+const DynamicReceiptsDistribution = dynamic(() => import('../../../components/dashboard/receipts/distribution'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
 const Receipts = async () => {
 	const session = await getServerSession(options);
 
@@ -39,7 +43,7 @@ const Receipts = async () => {
 	});
 
 	return (
-		<ReceiptsDistributionComponent
+		<DynamicReceiptsDistribution
 			todayCount={data.total_daily}
 			weekCount={data.total_weekly}
 			monthCount={data.total_monthly}

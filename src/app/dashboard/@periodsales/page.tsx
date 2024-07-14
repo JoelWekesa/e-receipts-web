@@ -1,8 +1,13 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import PeriodSales from '@/components/dashboard/sales/periodsales';
+import {Skeleton} from '@/components/ui/skeleton';
 import ApiClient from '@/config/axios';
 import {durations} from '@/utils/durations';
 import {getServerSession} from 'next-auth';
+import dynamic from 'next/dynamic';
+
+const DynamicPeriodSales = dynamic(() => import('../../../components/dashboard/sales/periodsales'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
 
 const receiptPeriodUrls = durations.map(
 	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/store?period=' + duration
@@ -39,7 +44,7 @@ const PeriodSalesPage = async () => {
 	});
 
 	return (
-		<PeriodSales
+		<DynamicPeriodSales
 			receiptsDay={data.receiptsDay}
 			receiptsWeek={data.receiptsWeek}
 			receiptsMonth={data.receiptsMonth}

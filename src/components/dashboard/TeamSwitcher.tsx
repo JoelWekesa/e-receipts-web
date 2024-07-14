@@ -64,7 +64,7 @@ export default function TeamSwitcher({className, teams, stores, permissions}: Te
 	const fTeams: Team[] = React.useMemo(() => {
 		return teams.map((team) => {
 			return {
-				label: team.team.name,
+				label: team.team.name + ' - ' + team.team.store.name,
 				value: team.teamId,
 			};
 		});
