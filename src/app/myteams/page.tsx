@@ -46,7 +46,7 @@ const MyTeams = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<DynamicMyTeamsComponent data={mine} />
+				<DynamicMyTeamsComponent data={mine} stores={stores} permissions={permissions} />
 			</div>
 		</>
 	);
