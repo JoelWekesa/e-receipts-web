@@ -5,7 +5,9 @@ import {PendingInvite} from '@/models/teams/pending-invites';
 import usePendingInvites from '@/services/teams/pending-invites';
 import {ColumnDef} from '@tanstack/react-table';
 import {ArrowUpDown} from 'lucide-react';
-import {FC} from 'react';
+import {FC, useState} from 'react';
+import DeleteInvite from './delete';
+import {Dialog, DialogContent} from '@/components/ui/dialog';
 
 interface Props {
 	invites: PendingInvite[];
@@ -13,6 +15,15 @@ interface Props {
 
 const PendingInvitesComponent: FC<Props> = ({invites}) => {
 	const {data: pending} = usePendingInvites({invites});
+
+	const [open, setOpen] = useState(false);
+
+	const [invite, setInvite] = useState<PendingInvite>();
+
+	const handleClick = (invite?: PendingInvite) => {
+		setInvite(invite);
+		setOpen(!open);
+	};
 
 	const columns: ColumnDef<PendingInvite>[] = [
 		{
@@ -93,10 +104,10 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 				return <div className='flex justify-end'>Action</div>;
 			},
 
-			cell: () => {
+			cell: ({row}) => {
 				return (
 					<div className='flex justify-end'>
-						<Button variant='destructive' size='sm'>
+						<Button variant='destructive' size='sm' onClick={() => handleClick(row.original)}>
 							Cancel
 						</Button>
 					</div>
@@ -106,11 +117,16 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 	];
 
 	return (
-		<div className='flex p-3 flex-col'>
-			<div className='m-3 p-5 rounded-md border'>
-				<DataTable columns={columns} data={pending} searchColumn='name' searchPlaceholder='Search by team name...' />
+		<Dialog open={open}>
+			<div className='flex p-3 flex-col'>
+				<div className='m-3 p-5 rounded-md border'>
+					<DataTable columns={columns} data={pending} searchColumn='name' searchPlaceholder='Search by team name...' />
+				</div>
 			</div>
-		</div>
+			<DialogContent>
+				<DeleteInvite handleClick={handleClick} invite={invite} />
+			</DialogContent>
+		</Dialog>
 	);
 };
 
