@@ -9,15 +9,18 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import {Total} from '@/models/inventory/total';
 import {Store} from '@/models/store';
+import useInvValue from '@/services/inventory/values/store';
 import useDeleteStore from '@/services/stores/delete';
 import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
-import {ArrowUpDown, Edit, Loader2} from 'lucide-react';
+import {ArrowUpDown, Loader2, MoreHorizontal} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {FC, useState} from 'react';
+import InvValue from '../inventory/value/value';
 import {DataTable} from '../shared/datatable';
 import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
@@ -25,9 +28,6 @@ import {Input} from '../ui/input';
 import {Sheet, SheetClose, SheetContent, SheetFooter} from '../ui/sheet';
 import StoreButtonDropDown from './dropdown';
 import StoreComponent from './store';
-import {Total} from '@/models/inventory/total';
-import useInvValue from '@/services/inventory/values/store';
-import InvValue from '../inventory/value/value';
 
 export interface Props extends StoreFetch {
 	total: Total;
@@ -129,9 +129,8 @@ const UserStores = ({initialData, token, total}: Props) => {
 								label: 'Store Actions',
 								store: row.original,
 							}}>
-							<Button onClick={() => handleEditStore(row.original)}>
-								<Edit className='mr-2 h-4 w-4' />
-								Store Actions
+							<Button onClick={() => handleEditStore(row.original)} size='icon' variant='ghost'>
+								<MoreHorizontal className='mr-2 h-4 w-4' />
 							</Button>
 						</StoreButtonDropDown>
 					</div>

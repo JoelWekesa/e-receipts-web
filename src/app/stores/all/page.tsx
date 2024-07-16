@@ -1,4 +1,5 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
+import {MainNav} from '@/components/dashboard/MainNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
 import ApiClient from '@/config/axios';
@@ -52,6 +53,7 @@ const StoresPage = async () => {
 				<div className='border-b'>
 					<div className='flex h-16 items-center px-4'>
 						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
+						<MainNav className='mx-6' />
 					</div>
 				</div>
 			</div>

@@ -86,20 +86,13 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 
 		{
 			accessorKey: 'action',
-			header: ({column}) => {
-				return (
-					<div className='flex justify-end'>
-						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-							Actions
-							<ArrowUpDown className='ml-2 h-4 w-4' />
-						</Button>
-					</div>
-				);
+			header: () => {
+				return <div className='flex justify-end'>Action</div>;
 			},
 
 			cell: ({row}) => {
 				return (
-					<div className='flex justify-end mr-5'>
+					<div className='flex justify-end'>
 						<MineDropDown
 							drop={{
 								label: 'Team Actions',
@@ -107,12 +100,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 								stores: allStores || [],
 								permissions,
 							}}>
-							<Button
-								variant='ghost'
-								size='icon'
-								onClick={() => {
-									console.log(row.original);
-								}}>
+							<Button variant='ghost' size='icon'>
 								<MoreHorizontal className='mr-2 h-4 w-4' />
 							</Button>
 						</MineDropDown>

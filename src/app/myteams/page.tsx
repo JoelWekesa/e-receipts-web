@@ -4,6 +4,7 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getMineTeams} from '@/services/page/teams/mine';
+import {getPendingInvites} from '@/services/page/teams/pending-invites';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
@@ -16,7 +17,7 @@ const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/Tea
 	loading: () => <Skeleton className='h-8 w-full' />,
 });
 
-const DynamicMyTeamsComponent = dynamic(() => import('../../components/teams/mine'), {
+const DynamicTeamsTabs = dynamic(() => import('../../components/teams/tabs'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
@@ -25,11 +26,12 @@ const MyTeams = async () => {
 
 	const token = session?.accessToken || '';
 
-	const [teams, stores, permissions, mine] = await Promise.all([
+	const [teams, stores, permissions, mine, invites] = await Promise.all([
 		getTeams({token}),
 		userStores(token),
 		getPermissions({token}),
 		getMineTeams({token}),
+		getPendingInvites({token}),
 	]);
 
 	return (
@@ -46,7 +48,7 @@ const MyTeams = async () => {
 				</div>
 			</div>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<DynamicMyTeamsComponent data={mine} stores={stores} permissions={permissions} />
+				<DynamicTeamsTabs data={mine} stores={stores} permissions={permissions} invites={invites} />
 			</div>
 		</>
 	);

@@ -19,6 +19,7 @@ const useSendInvite = (successFn: () => void) => {
 
     const invalidate = [
         queryClient.invalidateQueries({ queryKey: ["teams"] }),
+        queryClient.invalidateQueries({ queryKey: ["pending-invites"] }),
     ]
 
     return useMutation({

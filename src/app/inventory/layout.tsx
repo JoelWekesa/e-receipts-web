@@ -1,6 +1,13 @@
 import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/config/site';
 import {Metadata, Viewport} from 'next';
+import {Skeleton} from '@/components/ui/skeleton';
+import dynamic from 'next/dynamic';
+import {getServerSession} from 'next-auth';
+import {options} from '../api/auth/[...nextauth]/options';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
 
 export const metadata: Metadata = {
 	title: {
@@ -55,17 +62,46 @@ export const viewport: Viewport = {
 	],
 };
 
-interface StoreLayoutProps {
+interface InventoryLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function StoresLayout({children}: StoreLayoutProps) {
+const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/TeamSwitcher'), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
+const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
+	loading: () => <Skeleton className='h-10 w-full' />,
+});
+
+export default async function InventoryLayout({children}: InventoryLayoutProps) {
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken || '';
+
+	const [stores, teams, permissions] = await Promise.all([
+		userStores(token),
+		getTeams({token}),
+		getPermissions({token}),
+	]);
+
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
 					<SiteHeader show={false} />
-					<main className='flex-1'>{children}</main>
+					<main className='flex-1'>
+						<div className='hidden flex-col md:flex'>
+							<div className='border-b'>
+								<div className='flex h-16 items-center px-4'>
+									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
+									<DynamicMainNav className='mx-6' />
+								</div>
+							</div>
+						</div>
+
+						{children}
+					</main>
 				</div>
 			</div>
 		</>

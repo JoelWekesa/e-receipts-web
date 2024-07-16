@@ -1,17 +1,17 @@
 'use client';
-import {DataTable} from '@/components/shared/datatable';
-import {Button} from '@/components/ui/button';
-import {Inventory} from '@/models/inventory/inventory';
+import { DataTable } from '@/components/shared/datatable';
+import { Button } from '@/components/ui/button';
+import { Inventory } from '@/models/inventory/inventory';
+import { Total } from '@/models/inventory/total';
 import useInventory from '@/services/inventory/all/getinventory';
-import {ColumnDef} from '@tanstack/react-table';
-import dayjs from 'dayjs';
-import {ArrowUpDown, Edit} from 'lucide-react';
-import Image from 'next/image';
-import {FC} from 'react';
-import InventoryDropDown from './dropdown';
-import InvValue from '../value/value';
-import {Total} from '@/models/inventory/total';
 import useInvValue from '@/services/inventory/values/store';
+import { ColumnDef } from '@tanstack/react-table';
+import dayjs from 'dayjs';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import Image from 'next/image';
+import { FC } from 'react';
+import InvValue from '../value/value';
+import InventoryDropDown from './dropdown';
 
 const columns: ColumnDef<Inventory>[] = [
 	{
@@ -100,15 +100,14 @@ const columns: ColumnDef<Inventory>[] = [
 		},
 		cell: ({row}) => {
 			return (
-				<div className='flex justify-end pr-5'>
+				<div className='flex justify-end'>
 					<InventoryDropDown
 						drop={{
 							label: 'Manage Inventory',
 							inventory: row.original,
 						}}>
-						<Button>
-							<Edit className='mr-2 h-4 w-4' />
-							Manage
+						<Button variant='ghost' size='icon'>
+							<MoreHorizontal className='mr-2 h-4 w-4' />
 						</Button>
 					</InventoryDropDown>
 				</div>
