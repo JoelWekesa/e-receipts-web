@@ -14,13 +14,13 @@ import {Store} from '@/models/store';
 import useInvValue from '@/services/inventory/values/store';
 import useDeleteStore from '@/services/stores/delete';
 import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
+import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
 import {ArrowUpDown, Loader2, MoreHorizontal} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {FC, useState} from 'react';
-import InvValue from '../inventory/value/value';
 import {DataTable} from '../shared/datatable';
 import {LoadingSpinner} from '../shared/spinner';
 import {Button} from '../ui/button';
@@ -165,8 +165,14 @@ const UserStores = ({initialData, token, total}: Props) => {
 		<div className='flex p-3 flex-col'>
 			<Sheet>
 				<div className='m-3 p-5 rounded-md border'>
-					<InvValue title='Inventory Value' description='Total inventory value across all stores' value={tot} url={url} />
-					<DataTable columns={columns} data={data || []} searchColumn='name' searchPlaceholder='Search by store name...' />
+					<DataTable
+						columns={columns}
+						data={data || []}
+						searchColumn='name'
+						searchPlaceholder='Search by store name...'
+						title='Inventory Value'
+						subtitle={`Total inventory value across all stores ${currencyFormat.format(tot?.total || 0)}`}
+					/>
 					<DeleteDialog open={open} setOpen={handleDeleteDialog} token={token} />
 				</div>
 				<SheetContent>

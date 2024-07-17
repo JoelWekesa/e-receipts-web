@@ -1,16 +1,16 @@
 'use client';
-import { DataTable } from '@/components/shared/datatable';
-import { Button } from '@/components/ui/button';
-import { Inventory } from '@/models/inventory/inventory';
-import { Total } from '@/models/inventory/total';
+import {DataTable} from '@/components/shared/datatable';
+import {Button} from '@/components/ui/button';
+import {Inventory} from '@/models/inventory/inventory';
+import {Total} from '@/models/inventory/total';
 import useInventory from '@/services/inventory/all/getinventory';
 import useInvValue from '@/services/inventory/values/store';
-import { ColumnDef } from '@tanstack/react-table';
+import currencyFormat from '@/utils/currency';
+import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import {ArrowUpDown, MoreHorizontal} from 'lucide-react';
 import Image from 'next/image';
-import { FC } from 'react';
-import InvValue from '../value/value';
+import {FC} from 'react';
 import InventoryDropDown from './dropdown';
 
 const columns: ColumnDef<Inventory>[] = [
@@ -133,14 +133,15 @@ const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total}}
 	});
 
 	return (
-		<div className='flex flex-col gap-4'>
-			<InvValue title='Inventory Value' description='Total store inventory value' value={tot} url={url} />
+		<div className='flex flex-col gap-4 border border-solid rounded-md'>
 			<DataTable
 				columns={columns}
 				data={inventory}
 				searchColumn='name'
 				searchPlaceholder='Search by inventory name...'
 				black
+				title='Inventory Value'
+				subtitle={`Total store inventory value ${currencyFormat.format(tot?.total || 0)}`}
 			/>
 		</div>
 	);

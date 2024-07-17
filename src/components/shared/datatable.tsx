@@ -14,7 +14,7 @@ import {
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon} from '@radix-ui/react-icons';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
 
@@ -24,6 +24,8 @@ interface DataTableProps<TData, TValue> {
 	searchColumn?: string;
 	searchPlaceholder: string;
 	black?: boolean;
+	title?: string;
+	subtitle?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -32,6 +34,8 @@ export function DataTable<TData, TValue>({
 	searchColumn,
 	searchPlaceholder,
 	black,
+	title,
+	subtitle,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -53,6 +57,12 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className={`rounded-md ${black && 'bg-[#000000]'}`}>
+			{title && (
+				<div className='mb-6 p-5'>
+					<h2 className='text-2xl font-bold text-primary'>{title}</h2>
+					{subtitle && <p className='text-muted-foreground text-sm'>{subtitle}</p>}
+				</div>
+			)}
 			<div className='flex items-center py-4 px-4'>
 				<Input
 					placeholder={searchPlaceholder}

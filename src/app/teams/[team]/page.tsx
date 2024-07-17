@@ -1,12 +1,10 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import {MainNav} from '@/components/dashboard/MainNav';
-import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
-import React from 'react';
 
 const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 	const session = await getServerSession(options);
@@ -32,9 +30,6 @@ const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 					<div className='flex h-16 items-center px-4'>
 						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 						<MainNav className='mx-6' />
-						<div className='ml-auto flex items-center space-x-4'>
-							<Search />
-						</div>
 					</div>
 				</div>
 			</div>

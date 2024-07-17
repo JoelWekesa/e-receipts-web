@@ -27,7 +27,8 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 
 	const columns: ColumnDef<PendingInvite>[] = [
 		{
-			accessorKey: 'team',
+			accessorKey: 'name',
+			accessorFn: (row) => row.team.name,
 			header: ({column}) => {
 				return (
 					<div className='flex justify-start'>
@@ -82,6 +83,8 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 
 		{
 			accessorKey: 'permission',
+
+			accessorFn: (row) => row.team.permission.permission,
 			header: ({column}) => {
 				return (
 					<div className='flex justify-end'>
@@ -117,16 +120,16 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 	];
 
 	return (
-		<Dialog open={open}>
-			<div className='flex p-3 flex-col'>
-				<div className='m-3 p-5 rounded-md border'>
-					<DataTable columns={columns} data={pending} searchColumn='name' searchPlaceholder='Search by team name...' />
-				</div>
+		<>
+			<div className='m-3 p-5 rounded-md border'>
+				<DataTable columns={columns} data={pending} searchColumn='name' searchPlaceholder='Search by team name...' />
 			</div>
-			<DialogContent>
-				<DeleteInvite handleClick={handleClick} invite={invite} />
-			</DialogContent>
-		</Dialog>
+			<Dialog open={open}>
+				<DialogContent>
+					<DeleteInvite handleClick={handleClick} invite={invite} />
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

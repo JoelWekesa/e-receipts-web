@@ -1,6 +1,5 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import {MainNav} from '@/components/dashboard/MainNav';
-import {Search} from '@/components/dashboard/Search';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import StoreHomeComponent from '@/components/stores';
 import {userStores} from '@/services/page/stores/user-stores';
@@ -26,9 +25,6 @@ const HomePage = async () => {
 					<div className='flex h-16 items-center px-4'>
 						<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
 						<MainNav className='mx-6' />
-						<div className='ml-auto flex items-center space-x-4'>
-							<Search />
-						</div>
 					</div>
 				</div>
 			</div>

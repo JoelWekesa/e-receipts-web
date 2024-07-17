@@ -1,5 +1,5 @@
 'use client';
-import {Edit, Send, Trash2} from 'lucide-react';
+import {Edit, Send, Trash2, User2} from 'lucide-react';
 
 import {
 	DropdownMenu,
@@ -18,6 +18,7 @@ import EditTeamComponent from './edit/edit-team';
 import {Permission} from '@/models/teams/permissions';
 import {Store} from '@/models/store';
 import DeleteTeam from './delete/delete';
+import Link from 'next/link';
 
 interface Drop {
 	label: string;
@@ -67,6 +68,13 @@ const MineDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, children}) =
 							<Edit className='mr-2 h-4 w-4' />
 							<span>Edit Team</span>
 						</DropdownMenuItem>
+
+						<Link href={`/myteams/${drop.team.id}`}>
+							<DropdownMenuItem className='cursor-pointer'>
+								<User2 className='mr-2 h-4 w-4' />
+								<span>Manage Members</span>
+							</DropdownMenuItem>
+						</Link>
 
 						<DropdownMenuItem className='cursor-pointer' onClick={handleDelete}>
 							<Trash2 className='mr-2 h-4 w-4' color='red' />
