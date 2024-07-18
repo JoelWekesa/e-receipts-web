@@ -14,7 +14,7 @@ export enum PeriodSalesEnum {
 }
 
 const receiptPeriodUrls = durations.map(
-    (duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/store?period=' + duration
+    (duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/stores?period=' + duration
 );
 
 async function getData({ token: token, url }: { token: string; url: string }) {

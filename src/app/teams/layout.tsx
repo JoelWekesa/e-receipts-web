@@ -1,4 +1,3 @@
-import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/config/site';
 import {Metadata, Viewport} from 'next';
 
@@ -60,14 +59,5 @@ interface StoreLayoutProps {
 }
 
 export default function AcceptLayout({children}: StoreLayoutProps) {
-	return (
-		<>
-			<div vaul-drawer-wrapper=''>
-				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader show={false} />
-					<main className='flex-1'>{children}</main>
-				</div>
-			</div>
-		</>
-	);
+	return <>{children}</>;
 }

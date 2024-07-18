@@ -31,7 +31,7 @@ export const useTopStores = (initialData: TopStore[]) => {
 
 
     return useQuery({
-        queryKey: [TopEnum.topstores],
+        queryKey: ["top", { id: TopEnum.topstores }],
         queryFn: async () => await getData({ token: token || '', url: topUrls[0] || '' }),
         enabled: !!token,
         initialData
@@ -47,7 +47,7 @@ export const useTopCustomers = (initialData: TopCustomers[]) => {
 
 
     return useQuery({
-        queryKey: [TopEnum.topcustomers],
+        queryKey: ["top", { id: TopEnum.topcustomers }],
         queryFn: async () => await getData({ token: token || '', url: topUrls[1] || '' }),
         enabled: !!token,
         initialData

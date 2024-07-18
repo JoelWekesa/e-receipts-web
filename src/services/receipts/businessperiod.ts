@@ -19,7 +19,7 @@ interface BusinessPeriod {
 }
 const getBusinessPeriod = async ({ period, token }: { period: Period, token: string }) => {
 
-    const receipts: Receipt[] = await ApiClient(token).get("receipts/store?period=" + period).then(res => res.data)
+    const receipts: Receipt[] = await ApiClient(token).get("receipts/stores?period=" + period).then(res => res.data)
 
     return receipts
 

@@ -10,7 +10,7 @@ const DynamicPeriodSales = dynamic(() => import('../../../components/dashboard/s
 });
 
 const receiptPeriodUrls = durations.map(
-	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/store?period=' + duration
+	(duration) => process.env.NEXT_PUBLIC_API_URL + 'receipts/stores?period=' + duration
 );
 
 async function getData({token, url}: {token: string; url: string}) {
