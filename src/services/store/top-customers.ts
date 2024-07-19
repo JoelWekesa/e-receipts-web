@@ -13,7 +13,7 @@ const useStoreTopCustomers = ({ storeId, customers }: { storeId: string, custome
 
 
     return useQuery({
-        queryKey: [`top-${storeId}`, { id: 'topcustomers', storeId }],
+        queryKey: ['top', { id: 'topcustomers', storeId }],
         queryFn: async () =>
             await getStoreTopCustomers({
                 storeId,

@@ -1,15 +1,10 @@
 'use client';
 import {Count} from '@/models/receipts/count';
-import {
-	useAllTimeReceiptCount,
-	useDailyReceiptCount,
-	useMonthlyReceiptCount,
-	useWeeklyReceiptCount,
-	useYearlyReceiptCount,
-} from '@/services/receipts/distribution';
 import {Separator} from '@radix-ui/react-dropdown-menu';
 import {FC} from 'react';
 import ReceiptDistribution from '../ReceiptDistribution';
+import {useReceiptsDistribution} from '@/services/receipts/distribution';
+import {Period} from '@/services/receipts/businessperiod';
 
 const ReceiptsDistributionComponent: FC<{
 	todayCount: Count;
@@ -18,11 +13,26 @@ const ReceiptsDistributionComponent: FC<{
 	yearCount: Count;
 	alltimeCount: Count;
 }> = ({todayCount, weekCount, monthCount, yearCount, alltimeCount}) => {
-	const {data: daily} = useDailyReceiptCount(todayCount);
-	const {data: weekly} = useWeeklyReceiptCount(weekCount);
-	const {data: monthly} = useMonthlyReceiptCount(monthCount);
-	const {data: yearly} = useYearlyReceiptCount(yearCount);
-	const {data: alltime} = useAllTimeReceiptCount(alltimeCount);
+	const {data: daily} = useReceiptsDistribution({
+		period: Period.day,
+		count: todayCount,
+	});
+	const {data: weekly} = useReceiptsDistribution({
+		period: Period.week,
+		count: weekCount,
+	});
+	const {data: monthly} = useReceiptsDistribution({
+		period: Period.month,
+		count: monthCount,
+	});
+	const {data: yearly} = useReceiptsDistribution({
+		period: Period.year,
+		count: yearCount,
+	});
+	const {data: alltime} = useReceiptsDistribution({
+		period: Period.alltime,
+		count: alltimeCount,
+	});
 
 	return (
 		<div className='grid gap-3'>

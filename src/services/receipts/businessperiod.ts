@@ -35,7 +35,7 @@ const useBusinessPeriod = ({ period, receipts }: BusinessPeriod) => {
 
 
     return useQuery({
-        queryKey: ['business-period', period],
+        queryKey: ['receipts', { period, id: 'business-period' }],
         queryFn: () => getBusinessPeriod({
             period,
             token: token || '',

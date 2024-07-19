@@ -20,14 +20,6 @@ const Receipts = async ({params}: {params: {id: string}}) => {
 		durations.map((period) => storeReceiptsCount({storeId, period, token}))
 	);
 
-	console.log({
-		today,
-		week,
-		month,
-		year,
-		alltime,
-	});
-
 	return (
 		<DynamicReceiptsDistribution
 			todayCount={today}

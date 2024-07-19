@@ -1,10 +1,8 @@
 import { AddReceipt } from "@/models/receipts/add";
-import ApiClient from '../../config/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/components/ui/use-toast";
-import dayjs from 'dayjs'
-import { PeriodSalesEnum } from "../sales/periodsales";
-import { Counts } from "./distribution";
+import dayjs from 'dayjs';
+import { toast } from "sonner";
+import ApiClient from '../../config/axios';
 import { TopEnum } from "../top/top";
 
 interface Receipt {
@@ -19,7 +17,6 @@ const addReceipt = async ({ data, token }: Receipt) => {
 
 
 const useAddReceipt = (successFn: () => void) => {
-    const { toast } = useToast()
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: addReceipt,
@@ -31,24 +28,15 @@ const useAddReceipt = (successFn: () => void) => {
                 queryClient.invalidateQueries({ queryKey: ["top"], }),
                 queryClient.invalidateQueries({ queryKey: ["inventory"], }),
                 queryClient.invalidateQueries({ queryKey: ["receipts"], }),
-                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.dailysales], }),
-                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.weeklysales], }),
-                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.monthlysales], }),
-                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.yearlysales], }),
-                queryClient.invalidateQueries({ queryKey: [PeriodSalesEnum.alltime], }),
-                queryClient.invalidateQueries({ queryKey: [Counts.daily_count], }),
-                queryClient.invalidateQueries({ queryKey: [Counts.weekly_count], }),
-                queryClient.invalidateQueries({ queryKey: [Counts.monthly_count], }),
-                queryClient.invalidateQueries({ queryKey: [Counts.yearly_count], }),
-                queryClient.invalidateQueries({ queryKey: [Counts.alltime_count], }),
+                queryClient.invalidateQueries({ queryKey: ["distribution"], }),
                 queryClient.invalidateQueries({ queryKey: [TopEnum.topstores], }),
                 queryClient.invalidateQueries({ queryKey: [TopEnum.topcustomers], }),
             ])
 
             successFn()
-            toast({
-                title: "Receipt successfully sent",
+            toast("Receipt successfully sent", {
                 description: dayjs(data?.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅"
             })
         },
         onError: (err: any) => {

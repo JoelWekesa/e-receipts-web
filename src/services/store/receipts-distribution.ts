@@ -19,7 +19,7 @@ const useStoreReceiptsDistribution = ({ count, storeId, period }: Props) => {
 
 
     return useQuery({
-        queryKey: [`distribution-${storeId}`, { storeId, period, id: "store-distribution" }],
+        queryKey: ['distribution', { storeId, period, id: "store-distribution" }],
         queryFn: async () =>
             await storeReceiptsCount({
                 storeId,

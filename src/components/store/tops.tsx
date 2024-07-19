@@ -3,7 +3,7 @@ import {FC} from 'react';
 
 import {TopCustomers} from '@/models/store';
 import useStoreTopCustomers from '@/services/store/top-customers';
-import TopCustomersComponent from '../dashboard/TopCustomers';
+import TopCustomersComponent from './shared/top-customers';
 
 interface Props {
 	topCustomers: TopCustomers[];

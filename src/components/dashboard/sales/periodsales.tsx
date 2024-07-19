@@ -3,15 +3,10 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/compo
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {Receipt} from '@/models/receipts/receipt';
 import {Period} from '@/services/receipts/businessperiod';
-import {
-	useAllTimeSales,
-	useDailySales,
-	useMonthlySales,
-	useWeeklySales,
-	useYearlySales,
-} from '@/services/sales/periodsales';
+
 import {FC} from 'react';
 import SalesTable from '../tables/sales';
+import usePeriodSales from '@/services/sales/periodsales';
 
 const PeriodSales: FC<{
 	receiptsDay: Receipt[];
@@ -20,11 +15,11 @@ const PeriodSales: FC<{
 	receiptsYear: Receipt[];
 	allReceipts: Receipt[];
 }> = ({receiptsDay, receiptsWeek, receiptsMonth, receiptsYear, allReceipts}) => {
-	const {data: daily} = useDailySales(receiptsDay);
-	const {data: weekly} = useWeeklySales(receiptsWeek);
-	const {data: monthly} = useMonthlySales(receiptsMonth);
-	const {data: yearly} = useYearlySales(receiptsYear);
-	const {data: allTime} = useAllTimeSales(allReceipts);
+	const {data: daily} = usePeriodSales({period: Period.day, sales: receiptsDay});
+	const {data: weekly} = usePeriodSales({period: Period.week, sales: receiptsWeek});
+	const {data: monthly} = usePeriodSales({period: Period.month, sales: receiptsMonth});
+	const {data: yearly} = usePeriodSales({period: Period.year, sales: receiptsYear});
+	const {data: allTime} = usePeriodSales({period: Period.alltime, sales: allReceipts});
 
 	return (
 		<Tabs defaultValue={Period.day} className='hidden lg:block'>

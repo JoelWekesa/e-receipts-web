@@ -5,7 +5,7 @@ import {Receipt} from '@/models/receipts/receipt';
 import {Period} from '@/services/receipts/businessperiod';
 import useStorePeriodSales from '@/services/store/period-sales';
 import {FC} from 'react';
-import SalesTable from '../dashboard/tables/sales';
+import StoreSalesTable from './shared/sales-table';
 
 const StorePeriodSales: FC<{
 	receiptsDay: Receipt[];
@@ -60,7 +60,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`Today's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={daily} period={Period.day} />
+						<StoreSalesTable sales={daily} period={Period.day} storeId={storeId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -71,7 +71,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This week's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={weekly} period={Period.week} />
+						<StoreSalesTable sales={weekly} period={Period.week} storeId={storeId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -82,7 +82,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This month's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={monthly} period={Period.month} />
+						<StoreSalesTable sales={monthly} period={Period.month} storeId={storeId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -93,7 +93,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This year's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={yearly} period={Period.year} />
+						<StoreSalesTable sales={yearly} period={Period.year} storeId={storeId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -104,7 +104,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`All time sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={allTime} period={Period.alltime} />
+						<StoreSalesTable sales={allTime} period={Period.alltime} storeId={storeId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
