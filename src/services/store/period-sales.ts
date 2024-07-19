@@ -18,7 +18,7 @@ const useStorePeriodSales = ({ period, storeId, sales }: Props) => {
     const token = session?.accessToken || ''
 
     return useQuery({
-        queryKey: ['receipts', { period, storeId }],
+        queryKey: [`sales-${period}-${storeId}`, { period, storeId, id: "store-period-sales" }],
         queryFn: async () => await getStorePeriodSales({
             token,
             storeId,
@@ -27,7 +27,7 @@ const useStorePeriodSales = ({ period, storeId, sales }: Props) => {
 
         enabled: !!token && !!storeId,
 
-        initialData: sales
+        initialData: sales,
     })
 
 }

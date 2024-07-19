@@ -17,14 +17,14 @@ const useStorePeriodTotals = ({ period, storeId, totals }: Props) => {
     const token = session?.accessToken || ''
 
     return useQuery({
-        queryKey: ['totals', { period, storeId }],
+        queryKey: [`totals-${period}-${storeId}`, { period, storeId, id: "store-period-totals" }],
         queryFn: async () => await getStorePeriodTotals({
             period,
             storeId,
             token
         }),
         enabled: !!token,
-        initialData: totals
+        initialData: totals,
     })
 }
 

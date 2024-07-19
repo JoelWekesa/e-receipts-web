@@ -17,7 +17,7 @@ import useUserStores, {StoreFetch} from '@/services/stores/user-stores';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
-import {ArrowUpDown, Loader2, MoreHorizontal} from 'lucide-react';
+import {ArrowUpDown, LayoutDashboard, Loader2, MoreHorizontal, Trash2} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {FC, useState} from 'react';
@@ -28,6 +28,7 @@ import {Input} from '../ui/input';
 import {Sheet, SheetClose, SheetContent, SheetFooter} from '../ui/sheet';
 import StoreButtonDropDown from './dropdown';
 import StoreComponent from './store';
+import Link from 'next/link';
 
 export interface Props extends StoreFetch {
 	total: Total;
@@ -152,11 +153,6 @@ const UserStores = ({initialData, token, total}: Props) => {
 		setStore(store);
 	};
 
-	const handleEdit = () => {
-		router.push('/stores/update?id=' + store?.id);
-		setStore(store);
-	};
-
 	const handleDeleteDialog = () => {
 		setOpen(!open);
 	};
@@ -180,10 +176,14 @@ const UserStores = ({initialData, token, total}: Props) => {
 					<SheetFooter>
 						<SheetClose asChild>
 							<div className='flex flex-row gap-3 mt-2'>
-								<Button variant='secondary' onClick={handleEdit}>
-									Edit
-								</Button>
-								<Button variant='destructive' onClick={handleDeleteDialog}>
+								<Link href={`/store/dashboard/${store?.id}`}>
+									<Button size='sm'>
+										<LayoutDashboard className='h-4 w-4 mr-2' />
+										Go to Dashboard
+									</Button>
+								</Link>
+								<Button variant='destructive' onClick={handleDeleteDialog} size='sm'>
+									<Trash2 className='h-4 w-4 mr-2' />
 									Delete
 								</Button>
 							</div>

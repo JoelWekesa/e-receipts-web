@@ -41,7 +41,11 @@ const ReactQueryProvider: FC<{children: React.ReactNode}> = ({children}) => {
 	//       render if it suspends and there is no boundary
 	const queryClient = getQueryClient();
 
-	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+	return (
+		<QueryClientProvider client={queryClient}>
+			{children}
+		</QueryClientProvider>
+	);
 };
 
 export default ReactQueryProvider;
