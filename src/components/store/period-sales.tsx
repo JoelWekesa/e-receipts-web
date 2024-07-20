@@ -6,6 +6,7 @@ import {Period} from '@/services/receipts/businessperiod';
 import useStorePeriodSales from '@/services/store/period-sales';
 import {FC} from 'react';
 import StoreSalesTable from './shared/sales-table';
+import {Store} from '@/models/store';
 
 const StorePeriodSales: FC<{
 	receiptsDay: Receipt[];
@@ -13,8 +14,8 @@ const StorePeriodSales: FC<{
 	receiptsMonth: Receipt[];
 	receiptsYear: Receipt[];
 	allReceipts: Receipt[];
-	storeId: string;
-}> = ({receiptsDay, receiptsWeek, receiptsMonth, receiptsYear, allReceipts, storeId}) => {
+	store: Store;
+}> = ({receiptsDay, receiptsWeek, receiptsMonth, receiptsYear, allReceipts, store: {id: storeId, name}}) => {
 	const {data: daily} = useStorePeriodSales({
 		period: Period.day,
 		storeId,
@@ -57,7 +58,7 @@ const StorePeriodSales: FC<{
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sales</CardTitle>
-						<CardDescription>{`Today's sales from all your stores.`}</CardDescription>
+						<CardDescription>{`Today's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<StoreSalesTable sales={daily} period={Period.day} storeId={storeId} />
@@ -68,7 +69,7 @@ const StorePeriodSales: FC<{
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sales</CardTitle>
-						<CardDescription>{`This week's sales from all your stores.`}</CardDescription>
+						<CardDescription>{`This week's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<StoreSalesTable sales={weekly} period={Period.week} storeId={storeId} />
@@ -79,7 +80,7 @@ const StorePeriodSales: FC<{
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sales</CardTitle>
-						<CardDescription>{`This month's sales from all your stores.`}</CardDescription>
+						<CardDescription>{`This month's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<StoreSalesTable sales={monthly} period={Period.month} storeId={storeId} />
@@ -90,7 +91,7 @@ const StorePeriodSales: FC<{
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sales</CardTitle>
-						<CardDescription>{`This year's sales from all your stores.`}</CardDescription>
+						<CardDescription>{`This year's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<StoreSalesTable sales={yearly} period={Period.year} storeId={storeId} />
@@ -101,7 +102,7 @@ const StorePeriodSales: FC<{
 				<Card x-chunk='dashboard-05-chunk-3'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sales</CardTitle>
-						<CardDescription>{`All time sales from all your stores.`}</CardDescription>
+						<CardDescription>{`All time sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<StoreSalesTable sales={allTime} period={Period.alltime} storeId={storeId} />

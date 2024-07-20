@@ -1,5 +1,6 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import {Skeleton} from '@/components/ui/skeleton';
+import {getStore} from '@/services/page/stores/store/get-store';
 import {getStorePeriodSales} from '@/services/page/stores/store/period-sales';
 import {Period} from '@/services/receipts/businessperiod';
 import {getServerSession} from 'next-auth';
@@ -45,12 +46,15 @@ const PeriodSalesPage = async ({params}: {params: {id: string}}) => {
 		period: Period.alltime,
 	});
 
-	const [day, week, month, year, all] = await Promise.all([
+	const str = getStore({token, id: storeId});
+
+	const [day, week, month, year, all, store] = await Promise.all([
 		receiptsDay,
 		receiptsWeek,
 		receiptsMonth,
 		receiptsYear,
 		allReceipts,
+		str,
 	]);
 
 	return (
@@ -60,7 +64,7 @@ const PeriodSalesPage = async ({params}: {params: {id: string}}) => {
 			receiptsMonth={month}
 			receiptsYear={year}
 			allReceipts={all}
-			storeId={storeId}
+			store={store}
 		/>
 	);
 };

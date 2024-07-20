@@ -187,7 +187,7 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 										<FormMessage />
 									</FormItem>
 								)}
-							/>,
+							/>
 						</div>
 						<div className='grid gap-3'>
 							<FormField
