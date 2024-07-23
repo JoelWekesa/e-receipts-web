@@ -8,12 +8,8 @@ import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-const DynamicWeeklyTotals = dynamic(() => import('../../../components/dashboard/totals/weekly'), {
-	loading: () => <Skeleton className='h-10 w-full' />,
-});
-
-const DynamicDailyTotals = dynamic(() => import('../../../components/dashboard/totals/daily'), {
-	loading: () => <Skeleton className='h-10 w-full' />,
+const DynamicStoresTotal = dynamic(() => import('../../../components/dashboard/totals/totals'), {
+	loading: () => <Skeleton />,
 });
 
 const durations = [Period.day, Period.week, Period.month, Period.year, Period.alltime];
@@ -66,8 +62,20 @@ const PeriodTotals = async () => {
 					</Link>
 				</CardFooter>
 			</Card>
-			<DynamicDailyTotals daily={data.total_daily} />
-			<DynamicWeeklyTotals weekly={data.total_weekly} />
+			<DynamicStoresTotal
+				totals={data.total_daily}
+				period={Period.day}
+				title='Today'
+				subTitle='Today'
+				subTitle1='Yesterday'
+			/>
+			<DynamicStoresTotal
+				totals={data.total_weekly}
+				period={Period.week}
+				title='This week'
+				subTitle='This week'
+				subTitle1='Last Week'
+			/>
 		</div>
 	);
 };

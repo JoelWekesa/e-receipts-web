@@ -2,7 +2,7 @@
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
 import {Receipt} from '@/models/receipts/receipt';
-import useBusinessPeriod, {Period} from '@/services/receipts/businessperiod';
+import {Period} from '@/services/receipts/businessperiod';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
@@ -19,15 +19,10 @@ interface Item {
 	date: Date;
 }
 
-const SalesTable: FC<{receipts: Receipt[]; period: Period}> = ({receipts, period}) => {
-	const {data = []} = useBusinessPeriod({
-		period,
-		receipts,
-	});
-
+const SalesTable: FC<{receipts: Receipt[]; period: Period}> = ({receipts}) => {
 	const items = useMemo(
 		() =>
-			data.map((receipt) => ({
+			receipts.map((receipt) => ({
 				logo: receipt.store.logo,
 				store: receipt.store.name,
 				client: receipt.name,
@@ -35,7 +30,7 @@ const SalesTable: FC<{receipts: Receipt[]; period: Period}> = ({receipts, period
 				amount: receipt.Payment[0].mpesa + receipt.Payment[0].cash,
 				date: receipt.createdAt,
 			})),
-		[data]
+		[receipts]
 	);
 
 	const columns: ColumnDef<Item>[] = [

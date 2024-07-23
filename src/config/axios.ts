@@ -25,6 +25,7 @@ const ApiClient = (token: string) => {
 		},
 		(error) => {
 
+			console.log(error)
 
 			toast("An Error Occurred", {
 				description: error?.response?.data?.message || "Something went wrong!",

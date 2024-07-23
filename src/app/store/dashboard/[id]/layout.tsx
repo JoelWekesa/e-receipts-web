@@ -11,8 +11,6 @@ import dynamic from 'next/dynamic';
 import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
 
-export const revalidate = 1;
-
 const DynamicMainNav = dynamic(() => import('../../../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });

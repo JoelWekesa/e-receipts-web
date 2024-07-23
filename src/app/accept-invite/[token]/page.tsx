@@ -4,8 +4,6 @@ import ApiClient from '@/config/axios';
 import {getServerSession} from 'next-auth';
 import React from 'react';
 
-export const revalidate = 0;
-
 const acceptInvitation = async ({token, acceptToken}: {token: string; acceptToken: string}) => {
 	const response = await ApiClient(token)
 		.get(`teams/accept?token=${acceptToken}`)
