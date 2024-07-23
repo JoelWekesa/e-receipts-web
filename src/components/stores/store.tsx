@@ -23,7 +23,7 @@ const StoreComponent = () => {
 						placeholder='blur'
 						blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
 					/>
-					<p className='tracking-widest text-3xl ml-auto break-words'>{store?.name}</p>
+					<p className='tracking-widest text-3xl ml-auto break-words'>{store?.displayName}</p>
 				</div>
 			</Wrapper>
 			<Wrapper>

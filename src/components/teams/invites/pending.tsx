@@ -59,7 +59,7 @@ const PendingInvitesComponent: FC<Props> = ({invites}) => {
 			},
 
 			cell: ({row}) => {
-				return <div className='flex justify-end mr-5'>{row.original.team.store.name}</div>;
+				return <div className='flex justify-end mr-5'>{row.original.team.store.displayName}</div>;
 			},
 		},
 

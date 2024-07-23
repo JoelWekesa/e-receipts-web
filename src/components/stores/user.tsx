@@ -81,6 +81,10 @@ const UserStores = ({initialData, token, total}: Props) => {
 					</Button>
 				);
 			},
+
+			cell: ({row}) => {
+				return <div className='flex'>{row.original.displayName}</div>;
+			},
 		},
 
 		{

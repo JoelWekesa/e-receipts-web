@@ -47,7 +47,7 @@ const AddTeamComponent: FC<Props> = ({stores, permissions, close}) => {
 
 	const {data: uStores} = useUserStores({initialData: stores, token});
 
-	const fStores = useMemo(() => uStores.map((store) => ({label: store.name, value: store.id})), [uStores]);
+	const fStores = useMemo(() => uStores.map((store) => ({label: store.displayName, value: store.id})), [uStores]);
 
 	const fPermissions = useMemo(
 		() => permissions.map((permission) => ({label: permission.permission, value: permission.id})),

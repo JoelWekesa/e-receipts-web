@@ -45,7 +45,7 @@ const SettingsComponent: FC<{stores: Store[]; setting: Setting; token: string}> 
 	};
 
 	const storeItems = stores.map((store) => ({
-		label: store.name,
+		label: store.displayName,
 		value: store.id,
 	}));
 

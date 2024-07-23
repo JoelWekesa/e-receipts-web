@@ -15,5 +15,5 @@ export interface Permission {
 }
 
 export interface Store {
-    name: string;
+    displayName: string;
 }

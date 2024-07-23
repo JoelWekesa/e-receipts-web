@@ -12,6 +12,7 @@ export interface StoreFromTeam {
 export interface Store {
     id: string;
     name: string;
+    displayName: string;
     address: string;
     phone: string;
     email: string;

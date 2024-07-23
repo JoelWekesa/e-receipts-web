@@ -1,14 +1,14 @@
 export interface MemberTeam {
-    id:     string;
+    id: string;
     teamId: string;
     userId: string;
-    team:   Team;
+    team: Team;
 }
 
 export interface Team {
-    name:       string;
+    name: string;
     permission: Permission;
-    store:      Store;
+    store: Store;
 }
 
 export interface Permission {
@@ -16,5 +16,5 @@ export interface Permission {
 }
 
 export interface Store {
-    name: string;
+    displayName: string;
 }

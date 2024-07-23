@@ -24,7 +24,7 @@ const SalesTable: FC<{receipts: Receipt[]; period: Period}> = ({receipts}) => {
 		() =>
 			receipts.map((receipt) => ({
 				logo: receipt.store.logo,
-				store: receipt.store.name,
+				store: receipt.store.displayName,
 				client: receipt.name,
 				phone: receipt.phone,
 				amount: receipt.Payment[0].mpesa + receipt.Payment[0].cash,

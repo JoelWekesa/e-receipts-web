@@ -41,7 +41,7 @@ const PeriodTotals = async ({params}: {params: {id: string}}) => {
 		<div className='grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4'>
 			<Card className='sm:col-span-2' x-chunk='dashboard-05-chunk-0'>
 				<CardHeader className='pb-3'>
-					<CardTitle>{store.name}</CardTitle>
+					<CardTitle>{store.displayName}</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
 						Introducing our sleek, streamlined dashboard: Your one-stop destination for all your business digital receipts.
 					</CardDescription>

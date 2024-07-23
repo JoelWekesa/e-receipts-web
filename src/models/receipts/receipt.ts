@@ -44,7 +44,7 @@ export interface ReceiptItem {
 
 
 export interface Store {
-    name: string;
+    displayName: string;
     phone: string;
     email: string;
     logo: string;

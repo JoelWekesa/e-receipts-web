@@ -10,7 +10,7 @@ const TopStores: FC<{topStores: TopStore[]}> = ({topStores}) => {
 			<ul className='grid gap-3'>
 				{topStores.map((item, index) => (
 					<li className='flex items-center justify-between' key={index}>
-						<span className='text-muted-foreground'>{item.name}</span>
+						<span className='text-muted-foreground'>{item.displayName}</span>
 						<span>{currencyFormat.format(item.amount)}</span>
 					</li>
 				))}

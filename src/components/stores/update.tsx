@@ -22,8 +22,9 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
+	const nameRegex = /^[a-zA-Z][a-zA-Z0-9_.]{2,15}$/;
 	const formSchema = z.object({
-		name: z.string().min(1, {message: 'Name is required'}),
+		name: z.string().min(3, {message: 'Name is required'}).regex(nameRegex, {message: 'Invalid name'}),
 		address: z.string().min(1, {message: 'Address is required'}),
 		phone: z.string().min(1, {message: 'Phone is required'}).regex(regex, {message: 'Invalid phone number'}),
 		email: z.string().min(1, {message: 'Email is required'}).email({message: 'Invalid email'}),
@@ -51,7 +52,7 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: data?.name,
+			name: data?.displayName,
 			address: data?.address,
 			phone: data?.phone,
 			email: data?.email,
@@ -94,8 +95,13 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 											<Input placeholder='Shop Name' {...field} />
 										</FormControl>
 										<FormDescription>
-											{`This is your store's public display name.  You can only change this once every
-								30 days.`}
+											<div className='px-2 mx-2'>
+												<ol>
+													<li>Must be between 3 and 15 characters</li>
+													<li>Must start with a letter</li>
+													<li>Can contain letters, numbers, underscores and periods</li>
+												</ol>
+											</div>
 										</FormDescription>
 										<FormMessage />
 									</FormItem>

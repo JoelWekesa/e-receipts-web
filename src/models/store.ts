@@ -3,6 +3,7 @@
 export interface Store {
     id: string;
     name: string;
+    displayName: string;
     address: string;
     phone: string;
     email: string;
@@ -17,7 +18,7 @@ export interface Store {
 }
 
 export interface TopStore {
-    name: string;
+    displayName: string;
     amount: number;
 }
 

@@ -62,7 +62,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			},
 
 			cell: ({row}) => {
-				return <div className='flex justify-end mr-5'>{row.original.store.name}</div>;
+				return <div className='flex justify-end mr-5'>{row.original.store.displayName}</div>;
 			},
 		},
 
