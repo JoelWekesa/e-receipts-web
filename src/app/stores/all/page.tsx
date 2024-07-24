@@ -1,14 +1,14 @@
-import {options} from '@/app/api/auth/[...nextauth]/options';
-import {MainNav} from '@/components/dashboard/MainNav';
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import { MainNav } from '@/components/dashboard/MainNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import UserStores from '@/components/stores/user';
 import ApiClient from '@/config/axios';
-import InventoryClient from '@/config/axios-inventory';
-import {Store} from '@/models/store';
-import {userStores} from '@/services/page/stores/user-stores';
-import {getTeams} from '@/services/page/teams/member-teams';
-import {getPermissions} from '@/services/page/teams/permissions';
-import {getServerSession} from 'next-auth';
+import { Store } from '@/models/store';
+import getTotals from '@/services/page/stores/inventory/all';
+import { userStores } from '@/services/page/stores/user-stores';
+import { getTeams } from '@/services/page/teams/member-teams';
+import { getPermissions } from '@/services/page/teams/permissions';
+import { getServerSession } from 'next-auth';
 
 async function getData({token}: {token: string}): Promise<Store[]> {
 	const res = await ApiClient(token)
@@ -20,19 +20,6 @@ async function getData({token}: {token: string}): Promise<Store[]> {
 
 	return res;
 }
-
-const getTotals = async ({token}: {token: string}) => {
-	const res = await InventoryClient({
-		token,
-	})
-		.get('inventory/all/value')
-		.then((res) => res.data)
-		.catch((err) => {
-			throw new Error(err);
-		});
-
-	return res;
-};
 
 const StoresPage = async () => {
 	const session = await getServerSession(options);

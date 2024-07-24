@@ -1,10 +1,12 @@
-import {options} from '@/app/api/auth/[...nextauth]/options';
-import {Card, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {Skeleton} from '@/components/ui/skeleton';
-import {getStore} from '@/services/page/stores/store/get-store';
-import {getStorePeriodTotals} from '@/services/page/stores/store/period-totals';
-import {Period} from '@/services/receipts/businessperiod';
-import {getServerSession} from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import InventoryValue from '@/components/shared/inventory/value';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import getStoreInvValue from '@/services/page/stores/inventory/store';
+import { getStore } from '@/services/page/stores/store/get-store';
+import { getStorePeriodTotals } from '@/services/page/stores/store/period-totals';
+import { Period } from '@/services/receipts/businessperiod';
+import { getServerSession } from 'next-auth';
 import dynamic from 'next/dynamic';
 
 const DynamicStoreTimeTotal = dynamic(() => import('../../../../../components/store/totals'), {
@@ -35,7 +37,12 @@ const PeriodTotals = async ({params}: {params: {id: string}}) => {
 		token,
 	});
 
-	const [weekly, daily, store] = await Promise.all([weeklySales, dailySales, cStore]);
+	const invValue = getStoreInvValue({
+		token,
+		storeId,
+	});
+
+	const [weekly, daily, store, total_inventory] = await Promise.all([weeklySales, dailySales, cStore, invValue]);
 
 	return (
 		<div className='grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4'>
@@ -43,7 +50,7 @@ const PeriodTotals = async ({params}: {params: {id: string}}) => {
 				<CardHeader className='pb-3'>
 					<CardTitle>{store.displayName}</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						Introducing our sleek, streamlined dashboard: Your one-stop destination for all your business digital receipts.
+						<InventoryValue title='Total inventory value' total={total_inventory} />
 					</CardDescription>
 				</CardHeader>
 			</Card>

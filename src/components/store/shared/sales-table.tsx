@@ -2,7 +2,6 @@
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
 import {Receipt} from '@/models/receipts/receipt';
-import useStorePeriodSales from '@/services/store/period-sales';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
@@ -17,27 +16,19 @@ interface Item {
 }
 
 interface Props {
-	period: string;
-	storeId: string;
 	sales: Receipt[];
 }
 
-const StoreSalesTable: FC<Props> = ({sales, period, storeId}) => {
-	const {data = []} = useStorePeriodSales({
-		period,
-		sales,
-		storeId,
-	});
-
+const StoreSalesTable: FC<Props> = ({sales}) => {
 	const items: Item[] = useMemo(
 		() =>
-			data.map((receipt) => ({
+			sales.map((receipt) => ({
 				client: receipt.name,
 				phone: receipt.phone,
 				amount: receipt.Payment[0].mpesa + receipt.Payment[0].cash,
 				date: receipt.createdAt,
 			})),
-		[data]
+		[sales]
 	);
 
 	const columns: ColumnDef<Item>[] = [

@@ -1,12 +1,17 @@
-import { useQuery } from "@tanstack/react-query"
-import { getStorePeriodSales } from "../page/stores/store/period-sales"
-import { useSession } from "next-auth/react"
 import { Receipt } from "@/models/receipts/receipt";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { getCustomStorePeriodSales, getStorePeriodSales } from "../page/stores/store/period-sales";
 
 interface Props {
     period: string;
     storeId: string;
     sales: Receipt[];
+}
+
+interface CustomPeriodProps extends Props {
+    startDate: string
+    endDate: string
 }
 
 const useStorePeriodSales = ({ period, storeId, sales }: Props) => {
@@ -30,6 +35,32 @@ const useStorePeriodSales = ({ period, storeId, sales }: Props) => {
         initialData: sales,
     })
 
+}
+
+
+export const useStoreCustomPeriodSales = ({ period, storeId, sales, startDate, endDate }: CustomPeriodProps) => {
+
+    const { data: session } = useSession({
+        required: true
+    })
+
+    const token = session?.accessToken || ''
+
+
+    return useQuery({
+        queryKey: ['receipts', { period, storeId, startDate, endDate, id: "store-period-sales" }],
+        queryFn: async () => await getCustomStorePeriodSales({
+            token,
+            storeId,
+            period,
+            startDate,
+            endDate
+        }),
+
+        enabled: !!token && !!storeId,
+
+        initialData: sales,
+    })
 }
 
 export default useStorePeriodSales

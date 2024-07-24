@@ -2,7 +2,6 @@
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
 import {Receipt} from '@/models/receipts/receipt';
-import {Period} from '@/services/receipts/businessperiod';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
@@ -19,7 +18,7 @@ interface Item {
 	date: Date;
 }
 
-const SalesTable: FC<{receipts: Receipt[]; period: Period}> = ({receipts}) => {
+const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 	const items = useMemo(
 		() =>
 			receipts.map((receipt) => ({

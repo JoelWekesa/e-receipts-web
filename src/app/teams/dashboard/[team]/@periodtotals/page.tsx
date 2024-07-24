@@ -1,6 +1,8 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
+import InventoryValue from '@/components/shared/inventory/value';
 import {Card, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
+import getStoreInvValue from '@/services/page/stores/inventory/store';
 import {getStorePeriodTotals} from '@/services/page/stores/store/period-totals';
 import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {Period} from '@/services/receipts/businessperiod';
@@ -39,7 +41,12 @@ const PeriodTotals = async ({params}: {params: {team: string}}) => {
 		period: Period.day,
 	});
 
-	const [weekly, daily] = await Promise.all([weeklySales, dailySales]);
+	const invValue = getStoreInvValue({
+		token,
+		storeId,
+	});
+
+	const [weekly, daily, inventoryValue] = await Promise.all([weeklySales, dailySales, invValue]);
 
 	return (
 		<div className='grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4'>
@@ -47,7 +54,7 @@ const PeriodTotals = async ({params}: {params: {team: string}}) => {
 				<CardHeader className='pb-3'>
 					<CardTitle>{storeFromTeam.store.displayName}</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						Introducing our sleek, streamlined dashboard: Your one-stop destination for all your business digital receipts.
+						<InventoryValue title='Total inventory value' total={inventoryValue} />
 					</CardDescription>
 				</CardHeader>
 			</Card>

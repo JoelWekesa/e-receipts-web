@@ -1,8 +1,10 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
+import InventoryValue from '@/components/shared/inventory/value';
 import {buttonVariants} from '@/components/ui/button';
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import ApiClient from '@/config/axios';
+import getTotals from '@/services/page/stores/inventory/all';
 import {Period} from '@/services/receipts/businessperiod';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
@@ -27,9 +29,10 @@ async function getData({token, url}: {token: string; url: string}) {
 }
 
 const getAllData = async ({token}: {token: string}) => {
-	const [total_daily, total_weekly, total_monthly, total_yearly, alltime] = await Promise.all(
-		periodTotalsUrls.map((url) => getData({token, url}))
-	);
+	const [total_daily, total_weekly, total_monthly, total_yearly, alltime, total_inventory] = await Promise.all([
+		...periodTotalsUrls.map((url) => getData({token, url})),
+		getTotals({token}),
+	]);
 
 	return {
 		total_daily,
@@ -37,6 +40,7 @@ const getAllData = async ({token}: {token: string}) => {
 		total_monthly,
 		total_yearly,
 		alltime,
+		total_inventory,
 	};
 };
 
@@ -53,7 +57,7 @@ const PeriodTotals = async () => {
 				<CardHeader className='pb-3'>
 					<CardTitle>My Stores</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						Introducing our sleek, streamlined dashboard: Your one-stop destination for all your business digital receipts.
+						<InventoryValue title='Total inventory value across all stores' total={data.total_inventory} />
 					</CardDescription>
 				</CardHeader>
 				<CardFooter>

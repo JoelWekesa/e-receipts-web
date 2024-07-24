@@ -3,19 +3,34 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/compo
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {Receipt} from '@/models/receipts/receipt';
 import {Period} from '@/services/receipts/businessperiod';
-import useStorePeriodSales from '@/services/store/period-sales';
-import {FC} from 'react';
+import useStorePeriodSales, {useStoreCustomPeriodSales} from '@/services/store/period-sales';
+import {FC, useEffect} from 'react';
 import StoreSalesTable from './shared/sales-table';
 import {Store} from '@/models/store';
+import {useAtom} from 'jotai';
+import dateRangeAtom from '@/atoms/shared/date-range';
+import dayjs from 'dayjs';
+import {DatePickerWithRange} from '../shared/date-range-picker';
 
 const StorePeriodSales: FC<{
 	receiptsDay: Receipt[];
 	receiptsWeek: Receipt[];
 	receiptsMonth: Receipt[];
 	receiptsYear: Receipt[];
+	customPeriodSales: Receipt[];
 	allReceipts: Receipt[];
 	store: Store;
-}> = ({receiptsDay, receiptsWeek, receiptsMonth, receiptsYear, allReceipts, store: {id: storeId, name}}) => {
+}> = ({
+	receiptsDay,
+	receiptsWeek,
+	receiptsMonth,
+	receiptsYear,
+	customPeriodSales,
+	allReceipts,
+	store: {id: storeId, name},
+}) => {
+	const [dates, _] = useAtom(dateRangeAtom);
+
 	const {data: daily} = useStorePeriodSales({
 		period: Period.day,
 		storeId,
@@ -36,11 +51,23 @@ const StorePeriodSales: FC<{
 		storeId,
 		sales: receiptsYear,
 	});
+
+	const {data: custom, refetch} = useStoreCustomPeriodSales({
+		period: Period.custom,
+		storeId,
+		sales: customPeriodSales,
+		startDate: dayjs(dates?.from).format('YYYY-MM-DD'),
+		endDate: dayjs(dates?.to).format('YYYY-MM-DD'),
+	});
 	const {data: allTime} = useStorePeriodSales({
 		period: Period.alltime,
 		storeId,
 		sales: allReceipts,
 	});
+
+	useEffect(() => {
+		refetch();
+	}, [dates, refetch]);
 
 	return (
 		<Tabs defaultValue={Period.day} className='hidden lg:block'>
@@ -50,6 +77,7 @@ const StorePeriodSales: FC<{
 					<TabsTrigger value='week'>Week</TabsTrigger>
 					<TabsTrigger value='month'>Month</TabsTrigger>
 					<TabsTrigger value='year'>Year</TabsTrigger>
+					<TabsTrigger value='custom'>Custom</TabsTrigger>
 					<TabsTrigger value='alltime'>All Time</TabsTrigger>
 				</TabsList>
 			</div>
@@ -61,7 +89,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`Today's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={daily} period={Period.day} storeId={storeId} />
+						<StoreSalesTable sales={daily}  />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -72,7 +100,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This week's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={weekly} period={Period.week} storeId={storeId} />
+						<StoreSalesTable sales={weekly}  />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -83,7 +111,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This month's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={monthly} period={Period.month} storeId={storeId} />
+						<StoreSalesTable sales={monthly}  />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -94,7 +122,25 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This year's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={yearly} period={Period.year} storeId={storeId} />
+						<StoreSalesTable sales={yearly}  />
+					</CardContent>
+				</Card>
+			</TabsContent>
+			<TabsContent value={Period.custom}>
+				<Card x-chunk='dashboard-05-chunk-3'>
+					<CardHeader className='px-7'>
+						<CardTitle>Sales</CardTitle>
+						<CardDescription>
+							<div className='px-3 py-1'>
+								<p>{`Custom date range sales from ${name}`}</p>
+							</div>
+							<div className='px-3 py-1'>
+								<DatePickerWithRange className='w-full' />
+							</div>
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<StoreSalesTable sales={custom}  />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -105,7 +151,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`All time sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={allTime} period={Period.alltime} storeId={storeId} />
+						<StoreSalesTable sales={allTime}  />
 					</CardContent>
 				</Card>
 			</TabsContent>
