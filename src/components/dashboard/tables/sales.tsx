@@ -5,8 +5,9 @@ import {Receipt} from '@/models/receipts/receipt';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import {ArrowUpDown} from 'lucide-react';
+import {ArrowUpDown, Eye} from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {FC, useMemo} from 'react';
 
 interface Item {
@@ -16,6 +17,7 @@ interface Item {
 	phone: string;
 	amount: number;
 	date: Date;
+	receipt: Receipt;
 }
 
 const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
@@ -28,6 +30,7 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 				phone: receipt.phone,
 				amount: receipt.Payment[0].mpesa + receipt.Payment[0].cash,
 				date: receipt.createdAt,
+				receipt,
 			})),
 		[receipts]
 	);
@@ -35,10 +38,10 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 	const columns: ColumnDef<Item>[] = [
 		{
 			accessorKey: 'logo',
-			header: '',
+			header: () => <div className='hidden xl:block'></div>,
 			cell: ({row}) => {
 				return (
-					<div className='flex'>
+					<div className='hidden xl:block'>
 						<Image
 							src={row.original.logo}
 							width={40}
@@ -57,11 +60,17 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 			accessorKey: 'store',
 			header: ({column}) => {
 				return (
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Store
-						<ArrowUpDown className='ml-2 h-4 w-4' />
-					</Button>
+					<div className='hidden xl:block'>
+						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+							Store
+							<ArrowUpDown className='ml-2 h-4 w-4' />
+						</Button>
+					</div>
 				);
+			},
+
+			cell: ({row}) => {
+				return <div className='hidden xl:block'>{row.original.store}</div>;
 			},
 		},
 
@@ -116,6 +125,23 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 			},
 			cell: ({row}) => {
 				return <div className='flex'>{dayjs(row.original.date).format('ddd DD MMMM YYYY')}</div>;
+			},
+		},
+
+		{
+			accessorKey: 'receipt',
+			header: '',
+			cell: ({row}) => {
+				return (
+					<div className='flex flex-row gap-2'>
+						<Link href={`/receipts/receipt/${row.original.receipt.id}`}>
+							<Button size='sm'>
+								<Eye className='mr-2 h-4 w-4' />
+								View
+							</Button>
+						</Link>
+					</div>
+				);
 			},
 		},
 	];

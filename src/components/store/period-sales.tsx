@@ -20,6 +20,8 @@ const StorePeriodSales: FC<{
 	customPeriodSales: Receipt[];
 	allReceipts: Receipt[];
 	store: Store;
+	isTeam?: boolean;
+	teamId?: string;
 }> = ({
 	receiptsDay,
 	receiptsWeek,
@@ -28,6 +30,8 @@ const StorePeriodSales: FC<{
 	customPeriodSales,
 	allReceipts,
 	store: {id: storeId, name},
+	isTeam,
+	teamId,
 }) => {
 	const [dates, _] = useAtom(dateRangeAtom);
 
@@ -89,7 +93,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`Today's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={daily}  />
+						<StoreSalesTable sales={daily} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -100,7 +104,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This week's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={weekly}  />
+						<StoreSalesTable sales={weekly} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -111,7 +115,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This month's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={monthly}  />
+						<StoreSalesTable sales={monthly} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -122,7 +126,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`This year's sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={yearly}  />
+						<StoreSalesTable sales={yearly} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -140,7 +144,7 @@ const StorePeriodSales: FC<{
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={custom}  />
+						<StoreSalesTable sales={custom} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -151,7 +155,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`All time sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={allTime}  />
+						<StoreSalesTable sales={allTime} isTeam={isTeam} />
 					</CardContent>
 				</Card>
 			</TabsContent>

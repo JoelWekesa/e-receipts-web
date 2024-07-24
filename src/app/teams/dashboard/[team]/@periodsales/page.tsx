@@ -1,18 +1,13 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import {Skeleton} from '@/components/ui/skeleton';
+import StorePeriodSales from '@/components/store/period-sales';
 import {getStore} from '@/services/page/stores/store/get-store';
 import {getCustomStorePeriodSales, getStorePeriodSales} from '@/services/page/stores/store/period-sales';
 import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {Period} from '@/services/receipts/businessperiod';
 import dayjs from 'dayjs';
-import {getServerSession} from 'next-auth';
-import dynamic from 'next/dynamic';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import {getServerSession} from 'next-auth';
 dayjs.extend(quarterOfYear);
-
-const DynamicPeriodSales = dynamic(() => import('../../../../../components/store/period-sales'), {
-	loading: () => <Skeleton className='h-10 w-full' />,
-});
 
 const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
 	const session = await getServerSession(options);
@@ -78,7 +73,7 @@ const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
 	]);
 
 	return (
-		<DynamicPeriodSales
+		<StorePeriodSales
 			receiptsDay={day}
 			receiptsWeek={week}
 			receiptsMonth={month}
@@ -86,6 +81,8 @@ const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
 			customPeriodSales={custom}
 			allReceipts={all}
 			store={store}
+			isTeam
+			teamId={id}
 		/>
 	);
 };

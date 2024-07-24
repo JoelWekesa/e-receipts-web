@@ -2,7 +2,7 @@
 import {Button} from '@/components/ui/button';
 import Link from 'next/link';
 
-export default function StoresError({error}: {error: Error & {digest?: string}; reset: () => void}) {
+export default function ReceiptError({error}: {error: Error & {digest?: string}; reset: () => void}) {
 	return (
 		<div className='flex flex-col items-center justify-center w-full min-h-[80vh] px-4 text-center space-y-4'>
 			<ServerCrashIcon className='h-20 w-20' />
@@ -15,7 +15,7 @@ export default function StoresError({error}: {error: Error & {digest?: string}; 
 					investigate the issue. Please try again later.`}
 				</p>
 			</div>
-			<Link className='w-full max-w-xs' href='/'>
+			<Link className='w-full max-w-xs' href='#'>
 				<Button size='sm'>Back to safety</Button>
 			</Link>
 		</div>

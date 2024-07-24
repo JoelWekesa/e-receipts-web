@@ -94,10 +94,11 @@ export default function TeamSwitcher({className, teams, stores, permissions}: Te
 
 	React.useEffect(() => {
 		const regex = /^\/teams(\/|$)/;
+		const cuidPattern = /^c[a-z0-9]{24}$/;
 
 		if (regex.test(pathName)) {
-			const l = pathName.split('/').length;
-			const teamId = pathName.split('/')[l - 1];
+			const l = pathName.split('/');
+			const teamId = l.find((item) => cuidPattern.test(item));
 
 			if (teamId) {
 				const team = fTeams.find((t) => t.value === teamId);
