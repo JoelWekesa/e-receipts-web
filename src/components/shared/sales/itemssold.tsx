@@ -42,6 +42,7 @@ const ItemsSoldTable: FC<{items: ReceiptItem[]}> = ({items}) => {
 
 		{
 			accessorKey: 'total',
+			accessorFn: (row) => row.price * row.quantity - row.discount,
 			header: ({column}) => {
 				return (
 					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>

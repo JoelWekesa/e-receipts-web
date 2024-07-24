@@ -42,7 +42,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 				<Card x-chunk='dashboard-05-chunk-3' className='w-full'>
 					<CardHeader className='px-7'>
 						<CardTitle>Sale Item Details</CardTitle>
-						<CardDescription>View a detailed explanation of a sale made</CardDescription>
+						<CardDescription className='px-3 py-2'>View a detailed explanation of a sale made</CardDescription>
 					</CardHeader>
 					<CardContent className='px-7'>
 						<div className='grid gap-6'>
@@ -56,7 +56,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 									</>
 								)}
 								<div className='text-muted-foreground'>Total Amount</div>
-								<div className='text-2xl font-bold'>{currencyFormat.format(totalPay)}</div>
+								<div className='text-2xl font-bold px-3 py-1'>{currencyFormat.format(totalPay)}</div>
 							</div>
 							<div className='grid gap-4'>
 								<div className='grid sm:grid-cols-1 gap-4'>
@@ -114,11 +114,13 @@ const SaleItem: FC<Props> = ({receipt}) => {
 								<div className='grid sm:grid-cols-2 gap-4'>
 									<div>
 										<div className='text-muted-foreground'>Date</div>
-										<div>{dayjs(receipt.createdAt).format('ddd DD MMM YYYY HH:mm')}</div>
+										<div className='px-3 py-2'>{dayjs(receipt.createdAt).format('ddd DD MMM YYYY HH:mm')}</div>
 									</div>
 									<div>
 										<div className='text-muted-foreground'>Status</div>
-										<Badge variant='secondary'>Paid</Badge>
+										<Badge variant='secondary' className='px-3 py-2'>
+											Paid
+										</Badge>
 									</div>
 								</div>
 
@@ -143,7 +145,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 														<div>
 															<div>{item.title}</div>
 														</div>
-														<div>
+														<div className='px-3 py-2'>
 															<div>{item.value}</div>
 														</div>
 													</div>
@@ -163,7 +165,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 													<div>
 														<div>{item.customer}</div>
 													</div>
-													<div>
+													<div className='px-3 py-2'>
 														<div>{item.points_earned}</div>
 													</div>
 												</div>

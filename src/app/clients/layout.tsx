@@ -1,5 +1,4 @@
 import {SiteHeader} from '@/components/site-header';
-import {Card, CardContent} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
 import {userStores} from '@/services/page/stores/user-stores';
@@ -9,16 +8,17 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {FC, ReactNode} from 'react';
-import {options} from '../../../api/auth/[...nextauth]/options';
-import {StoreNav} from '@/components/dashboard/StoreNav';
 
-const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
+import {MainNav} from '@/components/dashboard/MainNav';
+import {options} from '../api/auth/[...nextauth]/options';
+
+const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Dashboard',
+		default: 'Clients',
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -69,15 +69,9 @@ export const viewport: Viewport = {
 	],
 };
 
-const StoreDashBoardLayout: FC<{
-	periodsales: ReactNode;
-	period_all_annual_month: ReactNode;
-	periodtotals: ReactNode;
-	receipts: ReactNode;
-	top: ReactNode;
-	params: {id: string};
-}> = async ({periodsales, period_all_annual_month, periodtotals, receipts, top, params}) => {
-	const {id} = params;
+const StoreClientsLayout: FC<{
+	children: ReactNode;
+}> = async ({children}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -98,29 +92,11 @@ const StoreDashBoardLayout: FC<{
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<StoreNav className='mx-6' id={id} />
+									<MainNav className='mx-6' />
 								</div>
 							</div>
 						</div>
-						<div className='flex min-h-screen w-full flex-col bg-muted/40'>
-							<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
-								<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3'>
-									<div className='grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2'>
-										{periodtotals}
-										{periodsales}
-									</div>
-									<div>
-										<Card className='overflow-hidden' x-chunk='dashboard-05-chunk-4'>
-											{period_all_annual_month}
-											<CardContent className='p-6 text-sm'>
-												{top}
-												{receipts}
-											</CardContent>
-										</Card>
-									</div>
-								</main>
-							</div>
-						</div>
+						{children}
 					</main>
 				</div>
 			</div>
@@ -128,4 +104,4 @@ const StoreDashBoardLayout: FC<{
 	);
 };
 
-export default StoreDashBoardLayout;
+export default StoreClientsLayout;

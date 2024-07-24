@@ -9,10 +9,7 @@ import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
-
-const DynamicMainNav = dynamic(() => import('../../../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
-	loading: () => <Skeleton className='h-10 w-full' />,
-});
+import {TeamNav} from '@/components/dashboard/TeamNav';
 
 const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
@@ -99,7 +96,7 @@ const StoreDashBoardLayout: FC<{
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<DynamicMainNav className='mx-6' />
+									<TeamNav className='mx-6' id={teamId} />
 								</div>
 							</div>
 						</div>
