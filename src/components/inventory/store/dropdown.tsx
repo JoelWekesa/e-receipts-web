@@ -19,9 +19,14 @@ import DeleteInventory from './delete';
 interface Drop {
 	label: string;
 	inventory: Inventory;
+	isTeam?: boolean;
+	teamId?: string;
 }
 
-const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {label, inventory}, children}) => {
+const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
+	drop: {label, inventory, isTeam, teamId},
+	children,
+}) => {
 	const [open, setOpen] = useState(false);
 
 	const handleClick = () => {
@@ -36,13 +41,13 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {label,
 					<DropdownMenuLabel>{label} </DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						<Link href={`/inventory/item/${inventory.id}`}>
+						<Link href={isTeam ? `/teams/inventory/item/${teamId}/${inventory.id}` : `/inventory/item/${inventory.id}`}>
 							<DropdownMenuItem className='cursor-pointer'>
 								<Eye className='mr-2 h-4 w-4' />
 								<span>View Item </span>
 							</DropdownMenuItem>
 						</Link>
-						<Link href={`/inventory/edit/${inventory.id}`}>
+						<Link href={isTeam ? `/teams/inventory/edit/${teamId}/${inventory.id}` : `/inventory/edit/${inventory.id}`}>
 							<DropdownMenuItem className='cursor-pointer'>
 								<Edit className='mr-2 h-4 w-4' />
 								<span>Edit Item </span>

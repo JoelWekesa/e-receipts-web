@@ -54,7 +54,7 @@ const PeriodTotals = async ({params}: {params: {team: string}}) => {
 				<CardHeader className='pb-3'>
 					<CardTitle>{storeFromTeam.store.displayName}</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						<InventoryValue title='Total inventory value' total={inventoryValue} />
+						<InventoryValue title='Total inventory value' total={inventoryValue} storeId={storeId} isTeam teamId={id} />
 					</CardDescription>
 				</CardHeader>
 			</Card>

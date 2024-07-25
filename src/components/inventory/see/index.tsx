@@ -14,14 +14,16 @@ interface Props {
 	inventory: Inventory;
 	data: VariantTypes[];
 	total: Total;
+	isTeam?: boolean;
+	teamId?: string;
 }
 
-const ViewProductComponent: FC<Props> = ({inventory, data, total}) => {
+const ViewProductComponent: FC<Props> = ({inventory, data, total, isTeam, teamId}) => {
 	const url = `inventory/value?id=${inventory.id}`;
 
 	return (
 		<div className='grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
-			<SeeProductHeader inventory={inventory} />
+			<SeeProductHeader inventory={inventory} isTeam={isTeam} teamId={teamId} />
 			<InvValue title='Inventory Value' description='Total item stock value' value={total} url={url} />
 			<div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8'>
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
@@ -32,7 +34,7 @@ const ViewProductComponent: FC<Props> = ({inventory, data, total}) => {
 				</div>
 			</div>
 			<SeeProductOptions data={data} />
-			<SeeProductVariants inventory={inventory} />
+			<SeeProductVariants inventory={inventory} isTeam={isTeam} teamId={teamId} />
 		</div>
 	);
 };

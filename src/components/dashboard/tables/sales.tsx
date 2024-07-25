@@ -117,14 +117,17 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 			accessorKey: 'date',
 			header: ({column}) => {
 				return (
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<Button
+						variant='ghost'
+						onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+						className='hidden xl:block'>
 						Date
 						<ArrowUpDown className='ml-2 h-4 w-4' />
 					</Button>
 				);
 			},
 			cell: ({row}) => {
-				return <div className='flex'>{dayjs(row.original.date).format('ddd DD MMMM YYYY')}</div>;
+				return <div className='hidden xl:block'>{dayjs(row.original.date).format('ddd DD MMMM YYYY')}</div>;
 			},
 		},
 

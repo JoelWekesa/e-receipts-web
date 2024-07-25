@@ -28,11 +28,11 @@ export function TeamNav({className, id, ...props}: Props) {
 				Clients
 			</Link>
 			<Link
-				href='/myteams'
+				href={`/teams/inventory/${id}`}
 				className={`text-sm font-medium ${
-					pathName === '/myteams' ? 'text-primary' : 'text-muted-foreground'
+					pathName === `/teams/inventory/${id}` ? 'text-primary' : 'text-muted-foreground'
 				} transition-colors hover:text-primary`}>
-				My Teams
+				Inventory
 			</Link>
 		</nav>
 	);

@@ -1,5 +1,5 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import InventoryValue from '@/components/shared/inventory/value';
+import {AllInventoryValue} from '@/components/shared/inventory/value';
 import {buttonVariants} from '@/components/ui/button';
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
@@ -57,7 +57,7 @@ const PeriodTotals = async () => {
 				<CardHeader className='pb-3'>
 					<CardTitle>My Stores</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						<InventoryValue title='Total inventory value across all stores' total={data.total_inventory} />
+						<AllInventoryValue title='Total inventory value across all stores' total={data.total_inventory} />
 					</CardDescription>
 				</CardHeader>
 				<CardFooter>

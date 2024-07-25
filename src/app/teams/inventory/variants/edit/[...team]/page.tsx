@@ -1,17 +1,21 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import EditVariantComponent from '@/components/inventory/edit-variant';
-import InventoryLayout from '@/components/inventory/inventory-layout';
+import TeamInventoryLayout from '@/components/inventory/team-inventory-layout';
 import {getInventory} from '@/services/page/inventory/get';
 import {getVariant} from '@/services/page/inventory/variants/get';
 import {getInventoryOptions} from '@/services/page/inventory/variants/options';
 import {getServerSession} from 'next-auth';
 
-const EditVariantPage = async ({params}: {params: {variant: string}}) => {
+const EditVariantPage = async ({params}: {params: {team: string[]}}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const id = params.variant;
+	const {team} = params;
+
+	const teamId = team[0];
+
+	const id = team[1];
 
 	const variant = await getVariant({id, token});
 
@@ -22,9 +26,9 @@ const EditVariantPage = async ({params}: {params: {variant: string}}) => {
 
 	return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
-			<InventoryLayout storeId={variant.storeId || ''}>
+			<TeamInventoryLayout teamId={teamId}>
 				<EditVariantComponent variant={variant} options={opts} inventory={inventory} />
-			</InventoryLayout>
+			</TeamInventoryLayout>
 		</div>
 	);
 };

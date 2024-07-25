@@ -19,9 +19,14 @@ import DeleteVariant from './delete-variant';
 interface Drop {
 	label: string;
 	variant: Variant;
+	isTeam?: boolean;
+	teamId?: string;
 }
 
-const SeeInventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {label, variant}, children}) => {
+const SeeInventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
+	drop: {label, variant, isTeam, teamId},
+	children,
+}) => {
 	const [open, setOpen] = useState(false);
 
 	const handleClick = () => {
@@ -36,7 +41,10 @@ const SeeInventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop: {lab
 					<DropdownMenuLabel>{label} </DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						<Link href={`/inventory/variants/edit/${variant.id}`}>
+						<Link
+							href={
+								isTeam ? `/teams/inventory/variants/edit/${teamId}/${variant.id}` : `/inventory/variants/edit/${variant.id}`
+							}>
 							<DropdownMenuItem className='cursor-pointer'>
 								<Edit className='mr-2 h-4 w-4' />
 								<span>Edit Variant </span>

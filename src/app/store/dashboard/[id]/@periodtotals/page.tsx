@@ -1,12 +1,12 @@
-import { options } from '@/app/api/auth/[...nextauth]/options';
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import InventoryValue from '@/components/shared/inventory/value';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import {Card, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Skeleton} from '@/components/ui/skeleton';
 import getStoreInvValue from '@/services/page/stores/inventory/store';
-import { getStore } from '@/services/page/stores/store/get-store';
-import { getStorePeriodTotals } from '@/services/page/stores/store/period-totals';
-import { Period } from '@/services/receipts/businessperiod';
-import { getServerSession } from 'next-auth';
+import {getStore} from '@/services/page/stores/store/get-store';
+import {getStorePeriodTotals} from '@/services/page/stores/store/period-totals';
+import {Period} from '@/services/receipts/businessperiod';
+import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 
 const DynamicStoreTimeTotal = dynamic(() => import('../../../../../components/store/totals'), {
@@ -50,7 +50,7 @@ const PeriodTotals = async ({params}: {params: {id: string}}) => {
 				<CardHeader className='pb-3'>
 					<CardTitle>{store.displayName}</CardTitle>
 					<CardDescription className='max-w-lg text-balance leading-relaxed'>
-						<InventoryValue title='Total inventory value' total={total_inventory} />
+						<InventoryValue title='Total inventory values' total={total_inventory} storeId={storeId} />
 					</CardDescription>
 				</CardHeader>
 			</Card>
