@@ -1,4 +1,5 @@
-import {SiteHeader} from '@/components/site-header';
+import {StoreNav} from '@/components/dashboard/StoreNav';
+import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {Card, CardContent} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
@@ -10,7 +11,6 @@ import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
-import {StoreNav} from '@/components/dashboard/StoreNav';
 
 const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
@@ -92,7 +92,7 @@ const StoreDashBoardLayout: FC<{
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader />
+					<StoreSiteHeader storeId={id} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>

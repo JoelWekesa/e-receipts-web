@@ -10,7 +10,7 @@ const HomePage = async () => {
 
 	return (
 		<>
-			<SiteHeader />
+			<SiteHeader storeId='' />
 			<div className='flex-1 space-y-2 pt-6'>
 				<LandingComponent />
 			</div>

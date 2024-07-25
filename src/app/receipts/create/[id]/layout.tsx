@@ -1,4 +1,5 @@
-import {SiteHeader} from '@/components/site-header';
+import {StoreNav} from '@/components/dashboard/StoreNav';
+import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
 import {userStores} from '@/services/page/stores/user-stores';
@@ -8,18 +9,15 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {FC, ReactNode} from 'react';
+import {options} from '../../../api/auth/[...nextauth]/options';
 
-import {MainNav} from '@/components/dashboard/MainNav';
-import {options} from '../api/auth/[...nextauth]/options';
-import {getSetting} from '@/services/page/settings/get-setting';
-
-const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/TeamSwitcher'), {
+const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Clients',
+		default: 'Dashboard',
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -70,31 +68,32 @@ export const viewport: Viewport = {
 	],
 };
 
-const ClientsLayout: FC<{
+const StoreDashBoardLayout: FC<{
 	children: ReactNode;
-}> = async ({children}) => {
+	params: {id: string};
+}> = async ({children, params}) => {
+	const {id} = params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const [stores, teams, permissions, setting] = await Promise.all([
+	const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
-		getSetting(token),
 	]);
 
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader storeId={setting?.storeId || ''} />
+					<StoreSiteHeader storeId={id} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<MainNav className='mx-6' />
+									<StoreNav className='mx-6' id={id} />
 								</div>
 							</div>
 						</div>
@@ -106,4 +105,4 @@ const ClientsLayout: FC<{
 	);
 };
 
-export default ClientsLayout;
+export default StoreDashBoardLayout;

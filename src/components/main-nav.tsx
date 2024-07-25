@@ -13,8 +13,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import {FC} from 'react';
 
-export const MainNav = () => {
+interface Props {
+	storeId: string;
+}
+
+export const MainNav: FC<Props> = ({storeId}) => {
 	const pathname = usePathname();
 
 	return (
@@ -70,7 +75,7 @@ export const MainNav = () => {
 						</p>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent className='w-56' align='end' forceMount>
-						<Link href='/receipts/create'>
+						<Link href={`/receipts/create/${storeId}`}>
 							<DropdownMenuItem className='font-normal cursor-pointer'>Default</DropdownMenuItem>
 						</Link>
 

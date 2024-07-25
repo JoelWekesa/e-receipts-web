@@ -8,6 +8,7 @@ import {options} from '../api/auth/[...nextauth]/options';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
+import {getSetting} from '@/services/page/settings/get-setting';
 
 export const metadata: Metadata = {
 	title: {
@@ -79,17 +80,18 @@ export default async function InventoryLayout({children}: InventoryLayoutProps) 
 
 	const token = session?.accessToken || '';
 
-	const [stores, teams, permissions] = await Promise.all([
+	const [stores, teams, permissions, setting] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
+		getSetting(token),
 	]);
 
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader show={false} />
+					<SiteHeader show={false} storeId={setting?.storeId || ''} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>

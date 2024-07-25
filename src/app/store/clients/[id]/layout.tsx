@@ -1,5 +1,5 @@
 import {StoreNav} from '@/components/dashboard/StoreNav';
-import {SiteHeader} from '@/components/site-header';
+import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
 import {userStores} from '@/services/page/stores/user-stores';
@@ -88,7 +88,7 @@ const StoreClientsLayout: FC<{
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader />
+					<StoreSiteHeader storeId={storeId} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>

@@ -36,7 +36,7 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 				<DropdownMenuLabel>{drop.label}</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<Link href={`/receipts/create?id=${drop.store.id}`}>
+					<Link href={`/receipts/create/${drop.store.id}`}>
 						<DropdownMenuItem className='cursor-pointer'>
 							<ReceiptText className='mr-2 h-4 w-4' />
 							<span>Create Receipt</span>

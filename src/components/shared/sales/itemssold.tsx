@@ -64,7 +64,6 @@ const ItemsSoldTable: FC<{items: ReceiptItem[]}> = ({items}) => {
 		<div className='flex p-3 flex-col'>
 			<div className='m-3 p-5 rounded-md border'>
 				<DataTable columns={columns} data={items} searchColumn='item' searchPlaceholder='Search by client name' />
-				{/* <DeleteDialog open={open} setOpen={handleDeleteDialog} /> */}
 			</div>
 		</div>
 	);

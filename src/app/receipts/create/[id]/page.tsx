@@ -5,7 +5,6 @@ import InventoryClient from '@/config/axios-inventory';
 import {Product} from '@/models/inventory/product';
 import {Setting} from '@/models/setting';
 import {Store} from '@/models/store';
-import {getSetting} from '@/services/page/settings/get-setting';
 import {getServerSession} from 'next-auth';
 
 interface GetData {
@@ -49,16 +48,14 @@ const getStoresProduct = async ({token, storeId}: {token: string; storeId: strin
 	return products;
 };
 
-const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
+const StoresPage = async ({params}: {params: {id: string}}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
 	console.log({token});
 
-	const setting = await getSetting(token);
-
-	const id = searchParams?.id || setting?.storeId;
+	const {id} = params;
 
 	const [data, products] = await Promise.all([
 		getData({

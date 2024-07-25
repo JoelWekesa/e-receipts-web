@@ -1,6 +1,9 @@
 import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/config/site';
 import {Metadata, Viewport} from 'next';
+import {getServerSession} from 'next-auth';
+import {options} from '../api/auth/[...nextauth]/options';
+import {getSetting} from '@/services/page/settings/get-setting';
 
 export const metadata: Metadata = {
 	title: {
@@ -59,12 +62,18 @@ interface StoreLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function StoresLayout({children}: StoreLayoutProps) {
+export default async function StoresLayout({children}: StoreLayoutProps) {
+	const session = await getServerSession(options);
+
+	const token = session?.accessToken || '';
+
+	const setting = await getSetting(token);
+
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader show={false} />
+					<SiteHeader show={false} storeId={setting?.storeId || ''} />
 					<main className='flex-1'>{children}</main>
 				</div>
 			</div>

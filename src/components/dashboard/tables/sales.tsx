@@ -131,6 +131,7 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 		{
 			accessorKey: 'receipt',
 			header: '',
+			accessorFn: (row) => row.receipt,
 			cell: ({row}) => {
 				return (
 					<div className='flex flex-row gap-2'>

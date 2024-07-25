@@ -10,10 +10,9 @@ import {FC} from 'react';
 
 interface Props {
 	storeId: string;
-	teamId: string;
 }
 
-export const TeamNav: FC<Props> = ({storeId, teamId}) => {
+export const StoreNavSite: FC<Props> = ({storeId}) => {
 	const pathname = usePathname();
 
 	return (
@@ -30,10 +29,10 @@ export const TeamNav: FC<Props> = ({storeId, teamId}) => {
 			</Link>
 			<nav className='flex items-center gap-6 text-sm'>
 				<Link
-					href={`/teams/dashboard/${teamId}`}
+					href={`/store/dashboard/${storeId}`}
 					className={cn(
 						'transition-colors hover:text-foreground/80',
-						pathname === `/teams/dashboard/${teamId}` ? 'text-foreground' : 'text-foreground/60'
+						pathname === `/store/dashboard/${storeId}` ? 'text-foreground' : 'text-foreground/60'
 					)}>
 					Dashboard
 				</Link>

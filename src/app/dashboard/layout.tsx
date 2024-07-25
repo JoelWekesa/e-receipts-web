@@ -11,6 +11,7 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {options} from '../api/auth/[...nextauth]/options';
+import {getSetting} from '@/services/page/settings/get-setting';
 
 const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
 	loading: () => <Skeleton className='h-10 w-full' />,
@@ -84,17 +85,18 @@ const DashBoardLayout: FC<{
 
 	const token = session?.accessToken || '';
 
-	const [stores, teams, permissions] = await Promise.all([
+	const [stores, teams, permissions, setting] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
+		getSetting(token),
 	]);
 
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader />
+					<SiteHeader storeId={setting?.storeId || ''} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>

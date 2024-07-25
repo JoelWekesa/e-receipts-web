@@ -155,7 +155,7 @@ const StorePeriodSales: FC<{
 						<CardDescription>{`All time sales from ${name}`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<StoreSalesTable sales={allTime} isTeam={isTeam} />
+						<StoreSalesTable sales={allTime} isTeam={isTeam} storeId={storeId} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
