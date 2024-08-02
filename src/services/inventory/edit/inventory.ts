@@ -12,6 +12,8 @@ interface Edit {
     removed: string[];
     id: string
     options: Option[]
+    thumbnail: File | string | null
+    price?: string
 }
 
 
@@ -25,6 +27,14 @@ const editInventory = async ({ data, token }: { data: Edit; token: string }) => 
     data.images.forEach((image) => {
         formData.append('files', image);
     });
+
+    if (data.thumbnail) {
+        formData.append('thumbnail', data.thumbnail);
+    }
+
+    if (data.price) {
+        formData.append('price', data.price);
+    }
 
     formData.append('remove_images', JSON.stringify(data.removed));
     formData.append('options', JSON.stringify(data.options));

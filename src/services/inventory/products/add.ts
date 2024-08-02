@@ -1,12 +1,12 @@
 
 import { Option } from "@/atoms/inventory/options"
+import { ModeVariant } from "@/atoms/inventory/variants"
 import InventoryClient from "@/config/axios-inventory"
-import { Variant } from "@/models/inventory/inventory"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { toast } from "sonner"
 
-type VariantType = Omit<Variant, 'price' | 'quantity' | 'warnLevel'>
+type VariantType = Omit<ModeVariant, 'price' | 'quantity' | 'warnLevel'>
 
 interface VariantProps extends VariantType {
     price: number
@@ -22,6 +22,8 @@ export interface ProductProps {
     files: File[]
     variants: VariantProps[]
     options: Option[]
+    thumbnail: File
+    price?: string
 }
 
 export interface AddProduct {
@@ -30,6 +32,9 @@ export interface AddProduct {
 }
 
 const addProduct = async ({ data, token }: AddProduct) => {
+
+    console.log("first here")
+
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description || '');
@@ -37,6 +42,10 @@ const addProduct = async ({ data, token }: AddProduct) => {
     formData.append('categoryId', data.categoryId);
     formData.append('variants', JSON.stringify(data.variants));
     formData.append('options', JSON.stringify(data.options));
+    formData.append('thumbnail', data.thumbnail);
+    if (data.price) {
+        formData.append('price', data.price);
+    }
     for (let i = 0; i < data.files.length; i++) {
         formData.append('files', data.files[i]);
     }
@@ -48,9 +57,7 @@ const addProduct = async ({ data, token }: AddProduct) => {
 }
 
 const useAddProduct = (successFn: () => void) => {
-
     const queryClient = useQueryClient()
-
 
     return useMutation({
         mutationFn: addProduct,

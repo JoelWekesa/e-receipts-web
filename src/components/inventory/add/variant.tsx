@@ -1,14 +1,13 @@
 'use client';
-import variantsAtom from '@/atoms/inventory/variants';
+import variantsAtom, {ModeVariant} from '@/atoms/inventory/variants';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
-import { Variant } from '@/models/inventory/inventory';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
 import {ArrowUpDown} from 'lucide-react';
 
-const columns: ColumnDef<Variant>[] = [
+const columns: ColumnDef<ModeVariant>[] = [
 	{
 		accessorKey: 'name',
 		header: ({column}) => {

@@ -1,10 +1,12 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
 import {FC} from 'react';
 
 const ProductImages: FC<{
 	images: File[];
-}> = ({images}) => {
+	thumbnail: File | null | undefined;
+}> = ({images, thumbnail}) => {
 	return (
 		<Card className='overflow-hidden' x-chunk='dashboard-07-chunk-4'>
 			<CardHeader>
@@ -13,46 +15,36 @@ const ProductImages: FC<{
 			</CardHeader>
 			<CardContent>
 				<div className='grid gap-2'>
-					{/* <Image
-						alt='Product image'
-						className='aspect-square w-full rounded-md object-cover'
-						height='300'
-						src='/placeholder.svg'
-						width='300'
-					/> */}
-					<div className='grid grid-cols-3 gap-2'>
-						{images?.map((image, index) => (
-							<Image
-								alt='Product image'
-								className='aspect-square w-full rounded-md object-cover'
-								height='84'
-								key={index}
-								src={URL.createObjectURL(image)}
-								width='84'
-							/>
-						))}
-						{/* <button>
-							<Image
-								alt='Product image'
-								className='aspect-square w-full rounded-md object-cover'
-								height='84'
-								src='/placeholder.svg'
-								width='84'
-							/>
-						</button> */}
-						{/* <button>
-							<Image
-								alt='Product image'
-								className='aspect-square w-full rounded-md object-cover'
-								height='84'
-								src='/placeholder.svg'
-								width='84'
-							/>
-						</button> */}
-						{/* <button className='flex aspect-square w-full items-center justify-center rounded-md border border-dashed'>
-							<Upload className='h-4 w-4 text-muted-foreground' />
-							<span className='sr-only'>Upload</span>
-						</button> */}
+					<div className='grid grid-cols-1'>
+						<div className='flex flex-col gap-2'>
+							<p className='text-muted-foreground'>Product thumbnail</p>
+							{thumbnail && (
+								<Image
+									alt='Product image'
+									className='h-full w-full object-contain object-center p-2'
+									height='84'
+									src={URL.createObjectURL(thumbnail)}
+									width='84'
+								/>
+							)}
+						</div>
+					</div>
+					<Separator />
+
+					<div className='flex flex-col gap-2'>
+						<p className='text-muted-foreground'>Product images</p>
+						<div className='grid grid-cols-2 gap-2'>
+							{images?.map((image, index) => (
+								<Image
+									alt='Product image'
+									className='h-full w-full object-contain object-center p-2'
+									height='150'
+									key={index}
+									src={URL.createObjectURL(image)}
+									width='150'
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 			</CardContent>

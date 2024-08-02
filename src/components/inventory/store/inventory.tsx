@@ -36,10 +36,10 @@ const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total, 
 			},
 
 			cell: ({row}) => {
-				const image = row.original.images[0];
+				const image = row.original.thumbnail;
 				return (
 					<div className='flex justify-start pl-5'>
-						<Image src={image} alt='image' width={40} height={40} className='rounded' />
+						<Image src={image || ''} alt='image' width={40} height={40} className='rounded' />
 					</div>
 				);
 			},

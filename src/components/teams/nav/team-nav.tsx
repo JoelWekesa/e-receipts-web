@@ -13,7 +13,7 @@ interface Props {
 	teamId: string;
 }
 
-export const TeamNav: FC<Props> = ({storeId, teamId}) => {
+export const TeamNav: FC<Props> = ({teamId}) => {
 	const pathname = usePathname();
 
 	return (
@@ -38,10 +38,10 @@ export const TeamNav: FC<Props> = ({storeId, teamId}) => {
 					Dashboard
 				</Link>
 				<Link
-					href={`/receipts/create/${storeId}`}
+					href={`/teams/receipt/create/${teamId}`}
 					className={cn(
 						'transition-colors hover:text-foreground/80',
-						pathname === `/receipts/create/${storeId}` ? 'text-foreground' : 'text-foreground/60'
+						pathname === `/teams/receipt/create/${teamId}` ? 'text-foreground' : 'text-foreground/60'
 					)}>
 					Create Receipt
 				</Link>

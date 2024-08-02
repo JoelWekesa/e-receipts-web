@@ -48,7 +48,7 @@ const formSchema = z.object({
 			message: 'Please enter a valid warn level',
 		})
 		.optional(),
-	description: z.string().optional(),
+	description: z.string(),
 });
 
 const AddVariant: FC<Props> = ({options, inventory}) => {

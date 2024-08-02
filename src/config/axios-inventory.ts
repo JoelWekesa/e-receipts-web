@@ -11,7 +11,7 @@ const InventoryClient = ({ token, id }: Options) => {
     const baseURL = process.env.NEXT_PUBLIC_INVENTORY_URL;
     const defaultOptions = {
         baseURL,
-        timeout: 15000,
+        timeout: 1500000,
     };
 
     const instance = axios.create(defaultOptions);
@@ -30,6 +30,7 @@ const InventoryClient = ({ token, id }: Options) => {
             return response;
         },
         (error) => {
+            console.log({ error })
             toast("An Error Occurred", {
                 description: error?.response?.data?.message || "Something went wrong!",
                 icon: "❌",

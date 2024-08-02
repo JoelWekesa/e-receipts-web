@@ -6,7 +6,7 @@ const ApiClient = (token: string) => {
 	const baseURL = process.env.NEXT_PUBLIC_API_URL;
 	const defaultOptions = {
 		baseURL,
-		timeout: 15000,
+		timeout: 1500000,
 	};
 
 	const instance = axios.create(defaultOptions);

@@ -1,11 +1,13 @@
+import { MVariant } from "@/components/inventory/edit-variant/form"
 import InventoryClient from "@/config/axios-inventory"
-import { Variant } from "@/models/inventory/inventory"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { toast } from "sonner"
 
+export type CVar = Omit<MVariant, 'variant_name' | 'createdAt' | 'updatedAt'>
+
 interface Var {
-    variant: Variant
+    variant: CVar
     token: string
 }
 

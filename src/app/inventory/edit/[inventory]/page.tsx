@@ -53,7 +53,7 @@ const InventoryPage = async ({params}: {params: {inventory: string}}) => {
 	return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<InventoryLayout storeId={inventory.storeId}>
-				<EditProduct categories={categories} inventory={inventory} opts={opts} />
+				<EditProduct categories={categories} inventory={inventory} opts={opts} token={token} />
 			</InventoryLayout>
 		</div>
 	);

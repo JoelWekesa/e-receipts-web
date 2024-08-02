@@ -7,9 +7,9 @@ import {Inventory} from '@/models/inventory/inventory';
 import {Option} from '@/models/inventory/option';
 import useEditInventory from '@/services/inventory/edit/inventory';
 import useSingleInventory from '@/services/inventory/single/single';
+import {pricePAttern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {useSession} from 'next-auth/react';
 import {FC} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
@@ -23,6 +23,7 @@ interface Props {
 	categories: Category[];
 	inventory: Inventory;
 	opts: Option[];
+	token: string;
 }
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
@@ -34,6 +35,15 @@ const formSchema = z.object({
 	category: z.string({
 		required_error: 'Please select a category',
 	}),
+	thumbnail: z
+		.instanceof(File, {message: 'File is required'})
+		.refine((file) => {
+			return !file || file.size <= MAX_UPLOAD_SIZE;
+		}, 'File size must be less than 3MB')
+		.refine((file) => {
+			return ACCEPTED_FILE_TYPES.includes(file.type);
+		}, 'File must be an image')
+		.optional(),
 	images: z
 		.array(
 			z
@@ -46,9 +56,14 @@ const formSchema = z.object({
 				}, 'File must be an image')
 		)
 		.optional(),
+
+	price: z
+		.string()
+		.refine(() => pricePAttern)
+		.optional(),
 });
 
-const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
+const EditProduct: FC<Props> = ({categories, inventory, opts, token}) => {
 	const {data: inventoryItem} = useSingleInventory({
 		id: inventory.id,
 		inventory,
@@ -62,6 +77,7 @@ const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
 			category: inventoryItem.category.id,
 			name: inventoryItem.name,
 			description: inventoryItem.description,
+			price: '' + inventoryItem?.price,
 		},
 
 		mode: 'onChange',
@@ -69,23 +85,19 @@ const EditProduct: FC<Props> = ({categories, inventory, opts}) => {
 
 	const [images, _] = useAtom(editImagesAtom);
 
-	const {data: session} = useSession({
-		required: true,
-	});
-
-	const token = session?.accessToken || '';
-
 	const {mutate: edit, isPending} = useEditInventory();
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		edit({
 			data: {
 				...data,
+				thumbnail: images?.thumbnail || null,
 				images: images?.new || [],
 				description: data.description || '',
 				removed: images?.removed || [],
 				id: inventoryItem?.id || '',
 				options,
+				price: data.price || undefined,
 			},
 
 			token,

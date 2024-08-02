@@ -1,30 +1,44 @@
 export interface Inventory {
     id: string;
     name: string;
-    description: string;
+    nameId: string;
+    description?: string;
     storeId: string;
     categoryId: string;
+    thumbnail?: string;
     images: string[];
     createdAt: Date;
     updatedAt: Date;
     updatedById: null;
     userId: string;
+    price?: string | null | undefined;
     store: Category;
     category: Category;
     Variant: Variant[];
+    Option: Option[];
+}
+
+export interface Option {
+    id: string;
+    name: string;
+    options: string[];
+    inventoryId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface Variant {
-    id?: string;
+    id: string;
     name: Name[];
-    description?: string;
+    variant_name: string;
+    description: string;
     price: number;
     quantity: number;
     inventoryId: string;
     warnLevel: number;
-    storeId?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    storeId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface Name {

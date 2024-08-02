@@ -14,7 +14,7 @@ import {UseFormReturn} from 'react-hook-form';
 const SelectProductCategory: FC<{
 	categories: Category[];
 	form: UseFormReturn<
-		{name: string; description?: string | undefined; category: string; images?: File[]},
+		{name: string; description?: string | undefined; category: string; images?: File[]; thumbnail?: File; price?: string},
 		any,
 		undefined
 	>;

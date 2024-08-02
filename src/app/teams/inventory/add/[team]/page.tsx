@@ -21,7 +21,7 @@ const AddInventoryPage = async ({params}: {params: {team: string}}) => {
 	return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<TeamInventoryLayout teamId={team}>
-				<AddProduct categories={categories} storeId={storeId} />
+				<AddProduct categories={categories} storeId={storeId} token={token} />
 			</TeamInventoryLayout>
 		</div>
 	);

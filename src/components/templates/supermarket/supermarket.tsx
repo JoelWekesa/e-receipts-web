@@ -38,7 +38,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 							<a href='https://maizzle.com'>
 								<Image id='barcode' alt='barcode' src={store?.logo || ''} className='block m-auto' width={70} height={70} />
 							</a>
-							<h1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>{store?.name}</h1>
+							<h1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>{store?.displayName}</h1>
 							<p className='m-0 sm:leading-8  font-extralight uppercase text-sm'>{store?.address}</p>
 							<p className='m-0 sm:leading-8  font-extralight text-sm'>
 								<span>Tel: {store?.phone} </span>

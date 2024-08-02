@@ -40,16 +40,15 @@ const useUpdateStore = (successFn: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: updateStore,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+            await queryClient.invalidateQueries({
+                queryKey: ['user-stores']
+            })
             toast("Store updates successfully", {
                 description: dayjs(data?.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
             })
 
             successFn()
-
-            queryClient.invalidateQueries({
-                queryKey: ['user-stores']
-            })
         },
 
         onError: (err: any) => {

@@ -1,4 +1,5 @@
 'use client';
+import {ModeVariant} from '@/atoms/inventory/variants';
 import PageLoader from '@/components/shared/pageloader';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
@@ -8,7 +9,6 @@ import {Input} from '@/components/ui/input';
 import {Popover, PopoverContent} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
-import {Variant} from '@/models/inventory/inventory';
 import {Option} from '@/models/inventory/option';
 import useVariant from '@/services/inventory/variants/get-variant';
 import useUpdateVariant from '@/services/inventory/variants/update';
@@ -21,8 +21,16 @@ import {FC} from 'react';
 import {useFieldArray, useForm} from 'react-hook-form';
 import {z} from 'zod';
 
+export interface MVariant extends ModeVariant {
+	storeId: string;
+	id: string;
+	variant_name: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 interface Props {
-	variant: Variant;
+	variant: MVariant;
 	options: Option[];
 }
 
@@ -40,7 +48,7 @@ const formSchema = z.object({
 			message: 'Please enter a valid warn level',
 		})
 		.optional(),
-	description: z.string().optional(),
+	description: z.string(),
 });
 
 const EditVariant: FC<Props> = ({variant, options}) => {

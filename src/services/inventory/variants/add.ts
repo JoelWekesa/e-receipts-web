@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { toast } from "sonner"
 
-type VariantProps = Omit<Variant, "id" | "createdAt" | "updatedAt">
+type VariantProps = Omit<Variant, "id" | "createdAt" | "updatedAt" | 'variant_name'>
 
 interface Add {
     data: VariantProps
