@@ -6,9 +6,9 @@ import {Search} from 'lucide-react';
 import {FC} from 'react';
 import UserNav from '../dashboard/UserNav';
 import {ModeToggle} from '../mode-toggle';
+import StoreNavigationMenu from '../storefront/nav-menu/store-nav-menu';
 import {Button} from '../ui/button';
 import {CartNavItem} from './cart/cart-icon';
-import {StoreFrontNavSite} from './store-front-nav';
 
 interface Props {
 	store: Store;
@@ -19,17 +19,17 @@ export const StoreFrontSiteHeader: FC<Props> = ({store, categories}) => {
 	return (
 		<header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='container flex h-14 max-w-screen-2xl items-center'>
-				<StoreFrontNavSite store={store} categories={categories} />
 				<MobileNav />
-				<div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
-					<nav className='flex items-center'>
-						<div className='justify-center'>
-							<Button variant='ghost' size='sm' className='bg-neutral-100 dark:bg-neutral-900'>
+				<StoreNavigationMenu store={store} categories={categories} />
+				<div className='flex flex-1'>
+					<div className='hidden md:block flex-1'>
+						<nav className='flex items-center w-full px-7'>
+							<Button variant='ghost' size='sm' className='bg-neutral-100 dark:bg-neutral-900 w-full'>
 								<Search className='h-4 w-4 mr-2' />
-								<div className='sm:w-[300px] text-start'>Search Products...</div>
+								<div className='sm:w-full text-start '>Search Products...</div>
 							</Button>
-						</div>
-					</nav>
+						</nav>
+					</div>
 				</div>
 				<div className='mx-2'>
 					<CartNavItem />

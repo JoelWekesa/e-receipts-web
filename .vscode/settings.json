@@ -33,6 +33,7 @@
 		"topstores",
 		"upsert",
 		"varaint",
+		"variantselector",
 		"vaul",
 		"weeklysales",
 		"yearlysales"
