@@ -19,6 +19,7 @@ import ProductHeader from '../add/productheader';
 import EditVariantTypes from './variant-types';
 import Thumbnail from './images/thumbnail';
 import ProductImages from './images/images';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 
 interface Props {
 	categories: Category[];
@@ -114,8 +115,16 @@ const EditProduct: FC<Props> = ({inventory, opts, token, categories}) => {
 			<EditVariantTypes opts={opts} />
 			<Form {...form}>
 				<form>
-					<Thumbnail inventory={inventoryItem} />
-					<ProductImages inventory={inventoryItem} />
+					<Card>
+						<CardHeader>
+							<CardTitle>Product Media</CardTitle>
+							<CardDescription>Give your buyers a visual representation of your product</CardDescription>
+						</CardHeader>
+						<CardContent>
+							<Thumbnail inventory={inventoryItem} />
+							<ProductImages inventory={inventoryItem} />
+						</CardContent>
+					</Card>
 				</form>
 			</Form>
 		</div>
