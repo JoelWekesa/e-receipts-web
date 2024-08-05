@@ -1,25 +1,22 @@
-import optionsAtom, { Option } from '@/atoms/inventory/options';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import { useAtom } from 'jotai';
-import { PlusCircle, Trash2 } from 'lucide-react';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
+import optionsAtom, {Option} from '@/atoms/inventory/options';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {Separator} from '@radix-ui/react-dropdown-menu';
+import {useAtom} from 'jotai';
+import {PlusCircle, Trash2} from 'lucide-react';
+import {ChangeEvent, useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {v4 as uuidv4} from 'uuid';
+import {z} from 'zod';
+import VariantsDialog from './variants/dialog';
 
 const validationSchema = z.object({
-	name: z
-		.string({
-			required_error: 'Name is required',
-		})
-		.min(3, {
-			message: 'Name must be at least 3 characters',
-		}),
+	name: z.string({
+		required_error: 'Name is required',
+	}),
 
 	variant: z.string().optional(),
 
@@ -34,8 +31,6 @@ const VariantTypes = () => {
 			variant: '',
 			variants: [],
 		},
-
-		// mode: 'onChange',
 	});
 
 	const [variant, setVariant] = useState('');
@@ -195,10 +190,14 @@ const VariantTypes = () => {
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button className='w-full'>
-							<PlusCircle className='mr-2 h-4 w-4' />
-							Add Option
-						</Button>
+						<div className='flex flex-col w-full gap-4'>
+							<Button className='w-full'>
+								<PlusCircle className='mr-2 h-4 w-4' />
+								Add Option
+							</Button>
+
+							<VariantsDialog />
+						</div>
 					</CardFooter>
 				</form>
 			</Form>

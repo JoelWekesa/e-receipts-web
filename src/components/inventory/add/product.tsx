@@ -1,22 +1,26 @@
 'use client';
 import addImagesAtom, {thumbnailAtom} from '@/atoms/inventory/addimage';
 import optionsAtom from '@/atoms/inventory/options';
+import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from '@/components/ui/command';
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
+import {Popover, PopoverTrigger} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
+import {cn} from '@/lib/utils';
+import {Category} from '@/models/inventory/inventory';
+import {PopoverContent} from '@radix-ui/react-popover';
 import {useAtom} from 'jotai';
-import {FC, useEffect} from 'react';
-import Dropzone from 'react-dropzone';
-import {UseFormReturn} from 'react-hook-form';
+import {Check, ChevronsUpDown} from 'lucide-react';
+import {FC, useEffect, useMemo} from 'react';
+import {useFormContext} from 'react-hook-form';
 
-export const AddProductComponent: FC<{
-	form: UseFormReturn<
-		{name: string; description?: string | undefined; category: string; price?: string; images?: File[]; thumbnail?: File},
-		any,
-		undefined
-	>;
-}> = ({form}) => {
+interface Props {
+	categories: Category[];
+}
+
+export const AddProductComponent: FC<Props> = ({categories}) => {
 	const [_, setImages] = useAtom(addImagesAtom);
 	const [__, setOptions] = useAtom(optionsAtom);
 	const [___, setThumbnail] = useAtom(thumbnailAtom);
@@ -24,18 +28,20 @@ export const AddProductComponent: FC<{
 	useEffect(() => {
 		setImages([]);
 		setOptions([]);
+		setThumbnail(null);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onDrop = (acceptedFiles: File[]) => {
-		setImages(acceptedFiles);
-		form.setValue('images', acceptedFiles);
-	};
+	const fCategories = useMemo(
+		() =>
+			categories.map((category) => ({
+				value: category.id,
+				label: category.name,
+			})),
+		[categories]
+	);
 
-	const onDropThumbnail = (acceptedFiles: File[]) => {
-		setThumbnail(acceptedFiles[0]);
-		form.setValue('thumbnail', acceptedFiles[0]);
-	};
+	const form = useFormContext();
 
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>
@@ -102,114 +108,43 @@ export const AddProductComponent: FC<{
 					<div className='grid gap-3'>
 						<FormField
 							control={form.control}
-							name='thumbnail'
-							render={() => (
-								<FormItem>
-									<FormLabel>Product Thumbnail</FormLabel>
-									<FormControl>
-										<Dropzone
-											accept={{
-												'image/*': ['.png'],
-											}}
-											multiple={false}
-											maxFiles={1}
-											maxSize={5000000}
-											onDropAccepted={(items) => onDropThumbnail(items)}>
-											{({getRootProps, getInputProps}) => (
-												<div className='w-full flex justify-center items-center'>
-													<div
-														{...getRootProps()}
-														className='w-full h-full border-2 border-dashed border-gray-400 hover:border-gray-600 rounded-lg p-4 flex flex-col '>
-														<input {...getInputProps()} />
-
-														{form?.getValues('thumbnail') ? (
-															<div className='flex flex-initial justify-items-start flex-row gap-5'>
-																<div className='flex flex-col justify-center items-center'>
-																	<p>{`Drag 'n' drop your image here, or click to select file`}</p>
-																</div>
-															</div>
-														) : !!form?.formState?.errors?.thumbnail?.message ? (
-															<div className='justify-center items-center'>
-																<p className='text-red-600 text-center'>{`Drag 'n' drop your image here, or click to select file`}</p>
-															</div>
-														) : (
-															<div className='justify-center items-center'>
-																<p className='text-center'>{`Drag 'n' drop your image here, or click to select file`}</p>
-															</div>
-														)}
-													</div>
-												</div>
-											)}
-										</Dropzone>
-									</FormControl>
-									<FormDescription>
-										{`The thumbnail image is the main visual representation of your product in the storefront. It will provide a quick and appealing preview to attract customers.
-										This image is crucial for showcasing your product's features, design, and uniqueness at a glance. Ensure that
-										the thumbnail is high-quality and accurately represents the product, as it will play a key role in capturing
-										customers' attention and encouraging them to explore further.`}
-									</FormDescription>
+							name='category'
+							render={({field}) => (
+								<FormItem className='flex flex-col mt-3'>
+									<FormLabel>Product Category</FormLabel>
+									<Popover>
+										<PopoverTrigger asChild>
+											<FormControl>
+												<Button
+													variant='outline'
+													role='combobox'
+													className={cn('justify-between', !field.value && 'text-muted-foreground')}>
+													{field.value ? fCategories.find((category) => category.value === field.value)?.label : 'Select category'}
+													<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent className=' p-0'>
+											<Command>
+												<CommandInput placeholder='Search category...' />
+												<CommandEmpty>No category found</CommandEmpty>
+												<CommandGroup>
+													{fCategories.map((category) => (
+														<CommandItem
+															value={category.label}
+															key={category.value}
+															onSelect={() => {
+																form.setValue('category', category.value);
+															}}>
+															<Check className={cn('mr-2 h-4 w-4', category.value === field.value ? 'opacity-100' : 'opacity-0')} />
+															{category.label}
+														</CommandItem>
+													))}
+												</CommandGroup>
+											</Command>
+										</PopoverContent>
+									</Popover>
 									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-					<div className='grid gap-3'>
-						<FormField
-							control={form.control}
-							name='images'
-							render={() => (
-								<FormItem>
-									<FormLabel>
-										Product Images
-										<span className='text-xs text-gray-400'> (Max 6)</span>
-									</FormLabel>
-									<FormControl>
-										<Dropzone
-											accept={{
-												'': ['.png', '.jpg', '.jpeg'],
-											}}
-											multiple={true}
-											maxFiles={6}
-											maxSize={5000000}
-											useFsAccessApi={false}
-											onDropAccepted={(items) => onDrop(items)}>
-											{({getRootProps, getInputProps}) => (
-												<div className='w-full flex justify-center items-center'>
-													<div
-														{...getRootProps()}
-														className='w-full h-full border-2 border-dashed border-gray-400 hover:border-gray-600 rounded-lg p-4 flex flex-col '>
-														<input {...getInputProps()} />
-
-														{form?.getValues('images') ? (
-															<div className='flex flex-initial justify-items-start flex-row gap-5'>
-																{/* <Image
-															src={URL.createObjectURL(form?.getValues('logo'))}
-															width={100}
-															height={100}
-															alt='store'
-															style={{
-																borderRadius: '15%',
-															}}
-														/> */}
-																<div className='flex flex-col justify-center items-center'>
-																	<p>{`Drag 'n' drop your images here, or click to select files`}</p>
-																</div>
-															</div>
-														) : !!form?.formState?.errors?.images?.message ? (
-															<div className='justify-center items-center'>
-																<p className='text-red-600 text-center'>{`Drag 'n' drop your images here, or click to select files`}</p>
-															</div>
-														) : (
-															<div className='justify-center items-center'>
-																<p className='text-center'>{`Drag 'n' drop your images here, or click to select files`}</p>
-															</div>
-														)}
-													</div>
-												</div>
-											)}
-										</Dropzone>
-									</FormControl>
-									<FormDescription>Detailed product views</FormDescription>
 								</FormItem>
 							)}
 						/>

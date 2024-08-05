@@ -5,7 +5,7 @@ import {FC} from 'react';
 
 const ProductHeader: FC<{isPending: boolean; edit?: boolean}> = ({isPending, edit}) => {
 	return (
-		<div className='flex items-center gap-4'>
+		<div className='flex items-center gap-4 my-3'>
 			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
 				{edit ? 'Edit Product' : 'Add Product'}
 			</h1>

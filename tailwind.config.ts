@@ -69,15 +69,8 @@ const config = {
         'accent-6': 'var(--accent-6)',
         'accent-7': 'var(--accent-7)',
         'accent-8': 'var(--accent-8)',
-        'accent-9': 'var(--accent-9)',
-        violet: 'var(--violet)',
         'violet-light': 'var(--violet-light)',
         'violet-dark': 'var(--violet-dark)',
-      },
-      textColor: {
-        base: 'var(--text-base)',
-        primary: 'var(--text-primary)',
-        secondary: 'var(--text-secondary)',
       },
       boxShadow: {
         'outline-normal': '0 0 0 2px var(--accent-2)',

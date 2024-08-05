@@ -5,19 +5,19 @@ import variantsAtom from '@/atoms/inventory/variants';
 import {Form} from '@/components/ui/form';
 import {Category} from '@/models/inventory/category';
 import useAddProduct from '@/services/inventory/products/add';
+import {pricePAttern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
-import AddVariant from './add-variant';
-import SelectProductCategory from './category';
+import ProductImages from './images/images';
+import Thumbnail from './images/thumbnail';
 import AddProductComponent from './product';
 import ProductHeader from './productheader';
-import ProductImages from './productimages';
-import ProductVariant from './variant';
 import VariantTypes from './variant-types';
-import {pricePAttern} from '@/utils/regex';
+import ProductVariant from './variants/variant';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -90,6 +90,14 @@ const AddProduct: FC<{categories: Category[]; storeId: string; token: string}> =
 
 	const {mutate: add, isPending} = useAddProduct(handleSuccess);
 
+	useEffect(() => {
+		setImages([]);
+		setOptions([]);
+		setThumbnail(null);
+		setVariants([]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		add({
 			data: {
@@ -113,27 +121,25 @@ const AddProduct: FC<{categories: Category[]; storeId: string; token: string}> =
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleSubmit)}>
 					<ProductHeader isPending={isPending} />
+					<AddProductComponent categories={categories} />
 				</form>
 			</Form>
-
-			<div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8'>
-				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
-					<Form {...form}>
-						<form className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-							<AddProductComponent form={form} />
-							<SelectProductCategory categories={categories} form={form} />
-							{/* <Button type='submit'>Save and Continue</Button> */}
-						</form>
-					</Form>
-				</div>
-				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-					{/* <ProductStatus /> */}
-					<ProductImages images={images} thumbnail={thumbnail} />
-				</div>
-			</div>
 			<VariantTypes />
-			<AddVariant />
-			<ProductVariant />
+			{variants.length > 0 && <ProductVariant />}
+			<Form {...form}>
+				<form>
+					<Card>
+						<CardHeader>
+							<CardTitle>Product Media</CardTitle>
+							<CardDescription>Give your buyers a visual representation of your product</CardDescription>
+						</CardHeader>
+						<CardContent>
+							<Thumbnail />
+							<ProductImages />
+						</CardContent>
+					</Card>
+				</form>
+			</Form>
 		</div>
 	);
 };
