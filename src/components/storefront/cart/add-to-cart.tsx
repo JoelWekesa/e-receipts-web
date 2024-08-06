@@ -42,7 +42,11 @@ function SubmitButton({
 			aria-label='Add to cart'
 			className={clsx(buttonClasses, {
 				'hover:opacity-90': true,
-			})}>
+			})}
+			type='button'
+			onClick={() => {
+				console.log('Add to cart', selectedVariantId);
+			}}>
 			<div className='absolute left-0 ml-4'>
 				<PlusIcon className='h-5' />
 			</div>
@@ -54,7 +58,7 @@ function SubmitButton({
 export function AddToCart({product}: {product: Inventory}) {
 	const [variant, _] = useAtom(cartVariant);
 
-	const defaultVariantId = product.Variant[0]?.id || undefined;
+	const defaultVariantId = product.Variant[0].id;
 	const selectedVariantId = variant?.id || defaultVariantId;
 
 	return (

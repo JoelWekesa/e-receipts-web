@@ -18,9 +18,7 @@ export function VariantSelector({options, variants}: {options: Option[]; variant
 	const [_, setSelectedVariant] = useAtom(cartVariant);
 	const {state, updateOption} = useProduct();
 	const updateURL = useUpdateURL();
-	const hasNoOptionsOrJustOneOption = !options.length || (options.length === 1 && options[0]?.options.length === 1);
-
-	console.log({state});
+	const hasNoOptionsOrJustOneOption = variants.length === 1 || options.length === 0;
 
 	const combinations: Combination[] = variants.map((variant) => ({
 		id: variant.id,

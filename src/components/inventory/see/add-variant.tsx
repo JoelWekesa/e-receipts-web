@@ -110,7 +110,9 @@ const AddVariant: FC<Props> = ({options, inventory}) => {
 	return (
 		<Dialog open={open}>
 			<DialogTrigger asChild>
-				<Button onClick={() => setOpen(true)}>Add Variant</Button>
+				<Button onClick={() => setOpen(true)} disabled={options.length === 0}>
+					Add Variant
+				</Button>
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[625px] overflow-y-auto max-h-screen'>
 				<DialogHeader>

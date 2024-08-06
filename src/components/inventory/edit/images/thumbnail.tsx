@@ -1,5 +1,5 @@
 'use client';
-import {thumbnailAtom} from '@/atoms/inventory/addimage';
+import editImagesAtom from '@/atoms/inventory/images';
 import Required from '@/components/shared/required';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Inventory} from '@/models/inventory/inventory';
@@ -9,27 +9,24 @@ import Image from 'next/image';
 import {FC} from 'react';
 import Dropzone from 'react-dropzone';
 import {useFormContext} from 'react-hook-form';
-import {DeleteDropDown} from './drop';
 
 interface Props {
 	inventory: Inventory;
 }
 
 const Thumbnail: FC<Props> = ({inventory}) => {
-	const [thumbnails, setThumbnail] = useAtom(thumbnailAtom);
+	const [images, setImages] = useAtom(editImagesAtom);
 
 	const form = useFormContext();
 
 	const onDropThumbnail = (acceptedFiles: File[]) => {
 		if (acceptedFiles.length > 0) {
 			form.setValue('thumbnail', acceptedFiles[0]);
-			setThumbnail(acceptedFiles[0]);
+			setImages({
+				...images,
+				thumbnail: acceptedFiles[0],
+			});
 		}
-	};
-
-	const onDelete = () => {
-		setThumbnail(null);
-		form.setValue('thumbnail', null);
 	};
 
 	return (
@@ -83,20 +80,20 @@ const Thumbnail: FC<Props> = ({inventory}) => {
 				)}
 			/>
 
-			{thumbnails ? (
+			{images?.thumbnail ? (
 				<div className='flex flex-row justify-between items-center rounded'>
 					<div className='flex flex-row gap-2'>
 						<Image
 							alt='Product image'
 							className='object-contain object-center p-2'
 							height='84'
-							src={URL.createObjectURL(thumbnails)}
+							src={URL.createObjectURL(images.thumbnail as File)}
 							width='84'
 						/>
 
-						<p className='flex items-center text-muted-foreground'>{thumbnails.name}</p>
+						<p className='flex items-center text-muted-foreground'>{(images.thumbnail as File).name}</p>
 					</div>
-					<DeleteDropDown onDelete={onDelete} />
+					{/* <DeleteDropDown onDelete={onDelete} /> */}
 				</div>
 			) : (
 				<div className='flex flex-row justify-between items-center rounded'>
@@ -111,7 +108,7 @@ const Thumbnail: FC<Props> = ({inventory}) => {
 
 						<p className='flex items-center text-muted-foreground'>{urlStrip(inventory?.thumbnail || '')}</p>
 					</div>
-					<DeleteDropDown onDelete={onDelete} />
+					{/* <DeleteDropDown onDelete={onDelete} /> */}
 				</div>
 			)}
 		</div>

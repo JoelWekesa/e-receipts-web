@@ -10,7 +10,7 @@ import useSingleInventory from '@/services/inventory/single/single';
 import {pricePAttern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAtom} from 'jotai';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 // import SelectProductCategory from '../add/category';
@@ -83,7 +83,15 @@ const EditProduct: FC<Props> = ({inventory, opts, token, categories}) => {
 		},
 	});
 
-	const [images, _] = useAtom(editImagesAtom);
+	const [images, setImages] = useAtom(editImagesAtom);
+
+	useEffect(() => {
+		setImages({
+			current: inventory?.images,
+			new: [],
+			removed: [],
+		});
+	}, [inventory, setImages]);
 
 	const {mutate: edit, isPending} = useEditInventory();
 

@@ -77,7 +77,7 @@ export const AddProductComponent: FC<Props> = ({categories}) => {
 								<FormItem>
 									<FormLabel>Product Description</FormLabel>
 									<FormControl>
-										<Textarea id='description' placeholder='Product Description' {...field} />
+										<Textarea id='description' placeholder='Product Description' {...field} rows={5} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 const getInventoryOptions = async ({ inventoryId, token }: { inventoryId: string; token: string }) => {
+    
 
     const response: Option[] = await InventoryClient({
         token,

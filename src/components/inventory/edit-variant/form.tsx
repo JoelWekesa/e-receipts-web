@@ -10,6 +10,7 @@ import {Popover, PopoverContent} from '@/components/ui/popover';
 import {Textarea} from '@/components/ui/textarea';
 import {cn} from '@/lib/utils';
 import {Option} from '@/models/inventory/option';
+import useInventoryOptions from '@/services/inventory/options/all';
 import useVariant from '@/services/inventory/variants/get-variant';
 import useUpdateVariant from '@/services/inventory/variants/update';
 import {positiveNumberRegex} from '@/utils/regex';
@@ -54,6 +55,11 @@ const formSchema = z.object({
 const EditVariant: FC<Props> = ({variant, options}) => {
 	const {data, isLoading} = useVariant({id: variant?.id || '', variant});
 
+	const {data: loadedOptions, isLoading: loadingOptions} = useInventoryOptions({
+		inventoryId: variant?.inventoryId || '',
+		initialData: options,
+	});
+
 	const {data: session} = useSession({required: true});
 
 	const token = session?.accessToken || '';
@@ -93,7 +99,7 @@ const EditVariant: FC<Props> = ({variant, options}) => {
 		});
 	};
 
-	if (isLoading) return <PageLoader />;
+	if (isLoading || loadingOptions) return <PageLoader />;
 
 	return (
 		<Card x-chunk='dashboard-07-chunk-0'>
@@ -108,7 +114,7 @@ const EditVariant: FC<Props> = ({variant, options}) => {
 						<div className='grid gap-6'>
 							<div className='grid gap-3'>
 								<div className='grid gap-2 grid-cols-2'>
-									{options.map((option, index) => (
+									{loadedOptions.map((option, index) => (
 										<div className='flex w-full' key={option.id}>
 											<FormField
 												control={form.control}
