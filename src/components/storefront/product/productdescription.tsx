@@ -1,12 +1,12 @@
 'use client';
-import Price from './price';
-import {Inventory} from '@/models/inventory/inventory';
-import {VariantSelector} from './variantselector';
-import Prose from './prose';
-import {AddToCart} from '../cart/add-to-cart';
-import {useAtom} from 'jotai';
 import {cartVariant} from '@/atoms/cart/variant';
+import {Inventory} from '@/models/inventory/inventory';
+import {useAtom} from 'jotai';
 import {useEffect} from 'react';
+import {AddToCart} from '../cart/add-to-cart';
+import Price from './price';
+import Prose from './prose';
+import {VariantSelector} from './variantselector';
 
 export function ProductDescription({product}: {product: Inventory}) {
 	const [variant, setVariant] = useAtom(cartVariant);

@@ -11,8 +11,10 @@ import {Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster} from '@/c
 import {siteConfig} from '@/config/site';
 import {fontSans} from '@/lib/fonts';
 import {cn} from '@/lib/utils';
-import ReactQueryProvider from '@/providers/react-query';
 import NextAuthProvider from '@/providers/next-auth';
+import ReactQueryProvider from '@/providers/react-query';
+import {getCookies, setCookie} from 'cookies-next';
+import {v4 as uuidv4} from 'uuid';
 
 export const metadata: Metadata = {
 	title: {
@@ -71,7 +73,16 @@ interface RootLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function RootLayout({children}: RootLayoutProps) {
+export default async function RootLayout({children}: RootLayoutProps) {
+	const cookies = await getCookies();
+
+	if (!cookies?.cartId) {
+		const cartId = 'cart-' + uuidv4();
+		await setCookie('cartId', cartId, {
+			maxAge: 60 * 60 * 24 * 30,
+		});
+	}
+
 	return (
 		<NextAuthProvider>
 			<ReactQueryProvider>

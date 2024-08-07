@@ -2,9 +2,14 @@
 import {ShoppingBagIcon} from 'lucide-react';
 import clsx from 'clsx';
 import {LinkWithChannel} from '@/components/storefront/products/link-with-channel';
+import {useLoadedCartItems} from '@/providers/cart-items';
+import useCartItems from '@/services/cart/get';
 
 export const CartNavItem = () => {
-	const lineCount = 3;
+	const {cartId, cartItems} = useLoadedCartItems();
+
+	const {data: cart = []} = useCartItems({cartId, cartItems});
+	const lineCount = cart.length;
 
 	return (
 		<LinkWithChannel href='/cart' className='relative flex items-center mr-2' data-testid='CartNavItem'>
