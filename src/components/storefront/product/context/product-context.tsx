@@ -1,7 +1,8 @@
 'use client';
 
+import {getOrGenCookie} from '@/app/actions';
 import {useRouter, useSearchParams} from 'next/navigation';
-import React, {createContext, useContext, useMemo, useOptimistic} from 'react';
+import React, {createContext, useContext, useEffect, useMemo, useOptimistic} from 'react';
 
 type ProductState = {
 	[key: string]: string;
@@ -18,6 +19,14 @@ type ProductContextType = {
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export function ProductProvider({children}: {children: React.ReactNode}) {
+	useEffect(() => {
+		const setCartId = async () => {
+			await getOrGenCookie();
+		};
+
+		setCartId();
+	}, []);
+
 	const searchParams = useSearchParams();
 
 	const getInitialState = () => {

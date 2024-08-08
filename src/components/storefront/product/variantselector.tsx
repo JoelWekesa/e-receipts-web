@@ -17,27 +17,32 @@ type Combination = {
 export function VariantSelector({options, variants}: {options: Option[]; variants: Variant[]}) {
 	const [_, setSelectedVariant] = useAtom(cartVariant);
 	const {state, updateOption} = useProduct();
+
 	const updateURL = useUpdateURL();
 	const hasNoOptionsOrJustOneOption = variants.length === 1 || options.length === 0;
 
 	const combinations: Combination[] = variants.map((variant) => ({
 		id: variant.id,
-		availableForSale: true,
+		availableForSale: variant.quantity > 0,
 		...variant.name.reduce((accumulator, option) => ({...accumulator, [option.name.toLowerCase()]: option.value}), {}),
 	}));
 
 	useEffect(() => {
-		const availableVariantOptions = options.map((option) => option.options).length;
+		const optionKeys = options.map((option) => option.name.toLowerCase());
 
-		if (Object.keys(state).length === availableVariantOptions) {
-			const selectedVariant = combinations.find((combination) =>
-				Object.entries(state).every(([key, value]) => combination[key] === value)
-			);
+		const foreignKeys = Object.keys(state).filter((key) => !optionKeys.includes(key));
 
-			const variant = variants.find((variant) => variant.id === selectedVariant?.id);
-
-			setSelectedVariant(variant);
+		for (const key of foreignKeys) {
+			delete state[key];
 		}
+
+		const selectedVariant = combinations.find((combination) =>
+			Object.entries(state).every(([key, value]) => combination[key] === value)
+		);
+
+		const variant = variants.find((variant) => variant.id === selectedVariant?.id);
+
+		setSelectedVariant(variant);
 	}, [combinations, options, setSelectedVariant, state, variants]);
 
 	if (hasNoOptionsOrJustOneOption) {

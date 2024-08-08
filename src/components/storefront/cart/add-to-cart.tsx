@@ -1,6 +1,7 @@
 'use client';
 
 import {getOrGenCookie} from '@/app/actions';
+import {openCart} from '@/atoms/cart/add';
 import {cartVariant} from '@/atoms/cart/variant';
 import {Form} from '@/components/ui/form';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
@@ -9,7 +10,6 @@ import useAddToCart from '@/services/cart/add';
 import clsx from 'clsx';
 import {useAtom} from 'jotai';
 import {Loader2, PlusIcon} from 'lucide-react';
-import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import CartItemsComponent from './cart-items';
 
@@ -26,7 +26,7 @@ export function AddToCart({product}: {product: Inventory}) {
 
 	const {mutate: add, isPending} = useAddToCart();
 
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useAtom(openCart);
 
 	const toggleSheet = () => {
 		setOpen(!open);
@@ -45,7 +45,7 @@ export function AddToCart({product}: {product: Inventory}) {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleAddToCart)}>
-				{isPending ? (
+				{isPending || !variant ? (
 					<button aria-label='Please select an option' disabled className={clsx(buttonClasses, disabledClasses)}>
 						<div className='absolute left-0 ml-4'>
 							<PlusIcon className='h-5' />

@@ -12,6 +12,7 @@ import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 import {z} from 'zod';
 import VariantsDialog from './variants/dialog';
+import ProductVariant from './variants/variant';
 
 const validationSchema = z.object({
 	name: z.string({
@@ -90,6 +91,9 @@ const VariantTypes = () => {
 		if (optionExists) {
 			return;
 		} else {
+			if (option.options.length === 0) {
+				return;
+			}
 			setOptions([...options, option]);
 		}
 
@@ -195,6 +199,7 @@ const VariantTypes = () => {
 								<PlusCircle className='mr-2 h-4 w-4' />
 								Add Option
 							</Button>
+							<ProductVariant />
 
 							<VariantsDialog />
 						</div>

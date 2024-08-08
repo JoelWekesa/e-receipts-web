@@ -22,6 +22,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {Form} from '@/components/ui/form';
 import variantsAtom from '@/atoms/inventory/variants';
 import {positiveNumberRegex} from '@/utils/regex';
+import {toast} from 'sonner';
 
 const formSchema = z.object({
 	name: z.array(z.object({name: z.string(), value: z.string()})),
@@ -70,6 +71,18 @@ const VariantsDialog = () => {
 			warnLevel: Number(data.warnLevel),
 		};
 
+		const variantExists = variants.some((variant) =>
+			variant.name.every((name) => curr.name.some((n) => n.name === name.name && n.value === name.value))
+		);
+
+		if (variantExists) {
+			toast('Error', {
+				icon: '❌',
+				description: 'This variant already exists. Please enter a different variant.',
+			});
+			return;
+		}
+
 		setVariants([...variants, {...curr, inventoryId: ''}]);
 		form.reset();
 		toggleOpen();
@@ -117,7 +130,10 @@ const VariantsDialog = () => {
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(handleSubmit)}>
 						<AddVariant />
-						<DialogFooter>
+						<DialogFooter className='my-4'>
+							<Button type='button' variant='destructive' onClick={toggleOpen}>
+								Cancel
+							</Button>
 							<Button type='submit'>Save Variant</Button>
 						</DialogFooter>
 					</form>

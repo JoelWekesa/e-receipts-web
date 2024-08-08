@@ -21,11 +21,13 @@ const AddVariant = () => {
 
 	const [options, _] = useAtom(optionsAtom);
 
+	const nonEmptyOptions = options.filter((option) => option.options.length > 0);
+
 	return (
 		<div className='grid gap-6'>
 			<div className='grid gap-3'>
 				<div className='grid gap-2 grid-cols-2'>
-					{options.map((option, index) => (
+					{nonEmptyOptions.map((option, index) => (
 						<div className='flex w-full' key={option.id}>
 							<FormField
 								control={form.control}

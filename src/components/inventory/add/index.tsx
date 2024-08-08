@@ -1,23 +1,22 @@
 'use client';
-import addImagesAtom, {thumbnailAtom} from '@/atoms/inventory/addimage';
+import addImagesAtom, { thumbnailAtom } from '@/atoms/inventory/addimage';
 import optionsAtom from '@/atoms/inventory/options';
 import variantsAtom from '@/atoms/inventory/variants';
-import {Form} from '@/components/ui/form';
-import {Category} from '@/models/inventory/category';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form } from '@/components/ui/form';
+import { Category } from '@/models/inventory/category';
 import useAddProduct from '@/services/inventory/products/add';
-import {pricePAttern} from '@/utils/regex';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useAtom} from 'jotai';
-import {FC, useEffect} from 'react';
-import {useForm} from 'react-hook-form';
-import {z} from 'zod';
+import { pricePAttern } from '@/utils/regex';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtom } from 'jotai';
+import { FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import ProductImages from './images/images';
 import Thumbnail from './images/thumbnail';
 import AddProductComponent from './product';
 import ProductHeader from './productheader';
 import VariantTypes from './variant-types';
-import ProductVariant from './variants/variant';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -125,7 +124,6 @@ const AddProduct: FC<{categories: Category[]; storeId: string; token: string}> =
 				</form>
 			</Form>
 			<VariantTypes />
-			{variants.length > 0 && <ProductVariant />}
 			<Form {...form}>
 				<form>
 					<Card>
