@@ -79,6 +79,10 @@ export const AddProductComponent: FC<Props> = ({categories}) => {
 									<FormControl>
 										<Textarea id='description' placeholder='Product Description' {...field} rows={5} />
 									</FormControl>
+									<FormDescription>
+										Give your product a short and clear description. 120-160 characters is the recommended length for search
+										engines.
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}

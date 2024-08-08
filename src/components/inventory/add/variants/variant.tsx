@@ -5,7 +5,8 @@ import {Button} from '@/components/ui/button';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
-import {ArrowUpDown} from 'lucide-react';
+import {ArrowUpDown, MoreHorizontal} from 'lucide-react';
+import VariantsDropDown from './dropdown';
 
 const columns: ColumnDef<ModeVariant>[] = [
 	{
@@ -87,6 +88,26 @@ const columns: ColumnDef<ModeVariant>[] = [
 
 		cell: ({row}) => {
 			return <div className='flex justify-end pr-5'>{row.original.warnLevel}</div>;
+		},
+	},
+
+	{
+		accessorKey: 'id',
+		header: 'Action',
+		cell: ({row}) => {
+			return (
+				<div className='flex flex-row gap-2'>
+					<VariantsDropDown
+						drop={{
+							label: 'Actions',
+							variant: row.original,
+						}}>
+						<Button variant='outline' size='icon'>
+							<MoreHorizontal className='h-4 w-4' />
+						</Button>
+					</VariantsDropDown>
+				</div>
+			);
 		},
 	},
 ];

@@ -23,11 +23,9 @@ const useAddToCart = () => {
     return useMutation({
         mutationFn: addToCart,
 
-        onSettled: async () => {
+        onSuccess: async () => {
             return await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
-
-        mutationKey: [AddToCartEnum.ADD_TO_CART]
 
     })
 }

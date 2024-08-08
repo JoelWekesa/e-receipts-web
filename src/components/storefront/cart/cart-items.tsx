@@ -2,13 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {cartAtom, CartVariant} from '@/atoms/cart/add';
 import {useLoadedCartItems} from '@/providers/cart-items';
-import {AddToCartEnum} from '@/services/cart/add';
 import useCartItems from '@/services/cart/get';
-import {RemoveFromCartEnum} from '@/services/cart/remove';
-import {SubtractFromCartEnum} from '@/services/cart/subtract';
 import {createUrl} from '@/utils/create-url';
 import {DEFAULT_OPTION} from '@/utils/default-options';
-import {useMutationState} from '@tanstack/react-query';
 import {useAtom} from 'jotai';
 import {Loader2, ShoppingCartIcon} from 'lucide-react';
 import Image from 'next/image';
@@ -30,21 +26,6 @@ const CartItemsComponent = () => {
 		cartItems,
 	});
 
-	const variables = useMutationState({
-		filters: {mutationKey: [AddToCartEnum.ADD_TO_CART], status: 'pending'},
-		select: (mutation) => mutation.state.variables,
-	});
-
-	const subtractVariables = useMutationState({
-		filters: {mutationKey: [SubtractFromCartEnum.SUBTRACT_FROM_CART], status: 'pending'},
-		select: (mutation) => mutation.state.variables,
-	});
-
-	const removeFromCartVariables = useMutationState({
-		filters: {mutationKey: [RemoveFromCartEnum.REMOVE_FROM_CART], status: 'pending'},
-		select: (mutation) => mutation.state.variables,
-	});
-
 	const [cart, setCart] = useAtom(cartAtom);
 
 	const [totalCartCost, setTotalCartCost] = useState(0);
@@ -64,73 +45,6 @@ const CartItemsComponent = () => {
 			cart: cartItems,
 		});
 	}, [cartId, cartInitial]);
-
-	useEffect(() => {
-		if (variables.length > 0) {
-			const {cartId, variantId} = variables[0] as {cartId: string; variantId: string};
-
-			const cartItem = cart.cart.find((item) => item.id === variantId);
-
-			if (cartItem) {
-				const updatedCart = cart.cart.map((item) => {
-					if (item.id === variantId) {
-						return {
-							...item,
-							items: item.items + 1,
-						};
-					}
-
-					return item;
-				});
-
-				setCart({
-					cartId,
-					cart: updatedCart,
-				});
-			}
-		}
-	}, [variables]);
-
-	useEffect(() => {
-		if (subtractVariables.length > 0) {
-			const {cartId, variantId} = subtractVariables[0] as {cartId: string; variantId: string};
-
-			const cartItem = cart.cart.find((item) => item.id === variantId);
-
-			if (cartItem) {
-				const updatedCart = cart.cart.map((item) => {
-					if (item.id === variantId) {
-						return {
-							...item,
-							items: item.items - 1,
-						};
-					}
-
-					return item;
-				});
-
-				const filteredCart = updatedCart.filter((item) => item.items > 0);
-
-				setCart({
-					cartId,
-					cart: filteredCart,
-				});
-			}
-		}
-	}, [subtractVariables]);
-
-	useEffect(() => {
-		if (removeFromCartVariables.length > 0) {
-			const {cartId, variantId} = removeFromCartVariables[0] as {cartId: string; variantId: string};
-
-			const updatedCart = cart.cart.filter((item) => item.id !== variantId);
-
-			setCart({
-				cartId,
-				cart: updatedCart,
-			});
-		}
-	}, [removeFromCartVariables]);
 
 	useEffect(() => {
 		const totalCartCost = cart.cart.reduce((acc, item) => {

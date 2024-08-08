@@ -1,7 +1,7 @@
 'use client';
 
 import {getOrGenCookie} from '@/app/actions';
-import {openCart} from '@/atoms/cart/add';
+import {cartAtom, openCart} from '@/atoms/cart/add';
 import {cartVariant} from '@/atoms/cart/variant';
 import {Form} from '@/components/ui/form';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
@@ -21,6 +21,8 @@ export function AddToCart({product}: {product: Inventory}) {
 
 	const [variant, _] = useAtom(cartVariant);
 
+	const [{cart}, setCart] = useAtom(cartAtom);
+
 	const defaultVariantId = product.Variant[0].id;
 	const selectedVariantId = variant?.id || defaultVariantId;
 
@@ -34,6 +36,22 @@ export function AddToCart({product}: {product: Inventory}) {
 
 	const handleAddToCart = async () => {
 		const cartId = await getOrGenCookie();
+
+		const updatedCart = cart.map((item) => {
+			if (item.id === selectedVariantId) {
+				return {
+					...item,
+					items: item.items + 1,
+				};
+			}
+
+			return item;
+		});
+
+		setCart({
+			cartId,
+			cart: updatedCart,
+		});
 
 		add({cartId, variantId: selectedVariantId});
 

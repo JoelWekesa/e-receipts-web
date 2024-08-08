@@ -20,7 +20,7 @@ import {z} from 'zod';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Form} from '@/components/ui/form';
-import variantsAtom from '@/atoms/inventory/variants';
+import variantsAtom, {variantAtom} from '@/atoms/inventory/variants';
 import {positiveNumberRegex} from '@/utils/regex';
 import {toast} from 'sonner';
 
@@ -42,20 +42,22 @@ const formSchema = z.object({
 });
 
 const VariantsDialog = () => {
-	const [options, _] = useAtom(optionsAtom);
+	const [options] = useAtom(optionsAtom);
 
 	const [disabled, setDisabled] = useState(true);
 
 	const [variants, setVariants] = useAtom(variantsAtom);
 
+	const [variant] = useAtom(variantAtom);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: [],
-			price: '',
-			quantity: '',
-			warnLevel: '',
-			description: '',
+			name: variant?.name || [],
+			price: variant?.price ? '' + variant.price : '',
+			quantity: variant?.quantity ? '' + variant.quantity : '',
+			warnLevel: variant?.warnLevel ? '' + variant.warnLevel : '',
+			description: variant?.description || '',
 		},
 	});
 

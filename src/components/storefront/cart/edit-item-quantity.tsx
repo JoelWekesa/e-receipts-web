@@ -1,19 +1,38 @@
 'use client';
 
 import {getOrGenCookie} from '@/app/actions';
-import {CartVariant} from '@/atoms/cart/add';
+import {cartAtom, CartVariant} from '@/atoms/cart/add';
 import useAddToCart from '@/services/cart/add';
 import useSubtractFromCart from '@/services/cart/subtract';
 import clsx from 'clsx';
+import {useAtom} from 'jotai';
 import {MinusIcon, PlusIcon} from 'lucide-react';
 
 export function EditItemQuantityButton({type, item}: {item: CartVariant; type: 'plus' | 'minus'}) {
 	const {mutate: add} = useAddToCart();
 	const {mutate: subtract} = useSubtractFromCart();
 
+	const [{cart}, setCart] = useAtom(cartAtom);
+
 	const handleAdd = async () => {
 		const cartId = await getOrGenCookie();
+		const updatedCart = cart.map((cartItem) => {
+			if (cartItem.id === item.id) {
+				return {
+					...cartItem,
+					items: cartItem.items + 1,
+				};
+			}
+
+			return cartItem;
+		});
+
 		const {id: variantId} = item;
+
+		setCart({
+			cartId,
+			cart: updatedCart,
+		});
 
 		add({cartId, variantId});
 	};
@@ -21,6 +40,38 @@ export function EditItemQuantityButton({type, item}: {item: CartVariant; type: '
 	const handleSubtract = async () => {
 		const cartId = await getOrGenCookie();
 		const {id: variantId} = item;
+
+		const cartItem = cart.find((cartItem) => cartItem.id === item.id);
+
+		if (!cartItem) {
+			return;
+		}
+
+		if (cartItem.items === 1) {
+			const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
+			setCart({
+				cartId,
+				cart: updatedCart,
+			});
+			subtract({cartId, variantId});
+			return;
+		}
+
+		const updatedCart = cart.map((cartItem) => {
+			if (cartItem.id === item.id) {
+				return {
+					...cartItem,
+					items: cartItem.items - 1,
+				};
+			}
+
+			return cartItem;
+		});
+
+		setCart({
+			cartId,
+			cart: updatedCart,
+		});
 		subtract({cartId, variantId});
 	};
 

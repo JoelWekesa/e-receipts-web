@@ -22,11 +22,9 @@ const useSubtractFromCart = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: subtractFromCart,
-        onSettled: async () => {
+        onSuccess: async () => {
             return await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
-
-        mutationKey: [SubtractFromCartEnum.SUBTRACT_FROM_CART]
 
     })
 }

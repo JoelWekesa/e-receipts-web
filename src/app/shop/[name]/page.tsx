@@ -17,8 +17,8 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 		altText: alt,
 	} = {
 		url: shop.logo,
-		width: 100,
-		height: 100,
+		width: 1200,
+		height: 630,
 		altText: shop.displayName,
 	};
 	const indexable = !!shop.logo;
