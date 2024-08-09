@@ -8,7 +8,7 @@ interface Props {
 
 const useCartItems = ({ cartId, cartItems }: Props) => {
     return useQuery<CartItem[]>({
-        queryKey: ['cart', cartId],
+        queryKey: ['cart', { cartId }],
         queryFn: async () => getCartItems({ cartId }),
         initialData: cartItems,
     });

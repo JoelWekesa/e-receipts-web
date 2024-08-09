@@ -1,15 +1,12 @@
 'use client';
-/* eslint-disable react-hooks/exhaustive-deps */
-import {cartActions, cartAtom, CartVariant} from '@/atoms/cart/add';
-import {useLoadedCartItems} from '@/providers/cart-items';
-import useCartItems from '@/services/cart/get';
+import {Cart, cartActions} from '@/atoms/cart/add';
 import {createUrl} from '@/utils/create-url';
 import {DEFAULT_OPTION} from '@/utils/default-options';
 import {useAtom} from 'jotai';
 import {Loader2, ShoppingCartIcon} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useFormStatus} from 'react-dom';
 import Price from '../product/price';
 import {DeleteItemButton} from './delete-item';
@@ -19,35 +16,15 @@ import CartItemSkeleton from './skeleton';
 type MerchandiseSearchParams = {
 	[key: string]: string;
 };
-const CartItemsComponent = () => {
-	const {cartItems, cartId} = useLoadedCartItems();
 
-	const {data: cartInitial} = useCartItems({
-		cartId,
-		cartItems,
-	});
+interface Props {
+	cart: Cart;
+}
 
-	const [cart, setCart] = useAtom(cartAtom);
-
+const CartItemsComponent: FC<Props> = ({cart}) => {
 	const [totalCartCost, setTotalCartCost] = useState(0);
 
 	const [{loading, variantId}] = useAtom(cartActions);
-
-	useEffect(() => {
-		const cartItems: CartVariant[] =
-			cartInitial?.map(({variant, quantity}) => {
-				return {
-					...variant,
-					items: quantity,
-					product_name: variant.inventory.name,
-				};
-			}) || [];
-
-		setCart({
-			cartId,
-			cart: cartItems,
-		});
-	}, [cartId, cartInitial]);
 
 	useEffect(() => {
 		const totalCartCost = cart.cart.reduce((acc, item) => {

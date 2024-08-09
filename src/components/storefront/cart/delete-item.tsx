@@ -1,16 +1,16 @@
 'use client';
 
-import {getOrGenCookie} from '@/app/actions';
 import {cartActions, cartAtom, CartVariant} from '@/atoms/cart/add';
+import {useLoadedCartItems} from '@/providers/cart-items';
 import useRemoveFromCart from '@/services/cart/remove';
 import {useAtom} from 'jotai';
 import {X} from 'lucide-react';
 
 export function DeleteItemButton({item}: {item: CartVariant}) {
+	const {cartId} = useLoadedCartItems();
 	const [_, setActions] = useAtom(cartActions);
 
 	const successFn = async () => {
-		const cartId = await getOrGenCookie();
 		const cartItem = cart.find((cartItem) => cartItem.id === item.id);
 
 		if (!cartItem) {
@@ -39,7 +39,6 @@ export function DeleteItemButton({item}: {item: CartVariant}) {
 			loading: true,
 			variantId: item.id,
 		});
-		const cartId = await getOrGenCookie();
 		const {id: variantId} = item;
 
 		removeItem({cartId, variantId});

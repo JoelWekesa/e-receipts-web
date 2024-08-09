@@ -24,7 +24,7 @@ const useRemoveFromCart = ({ successFn }: { successFn: () => void }) => {
         mutationFn: removeFromCart,
         onSuccess: async () => {
             successFn()
-            await queryClient.invalidateQueries({ queryKey: ['cart'] })
+            return await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
 
     })

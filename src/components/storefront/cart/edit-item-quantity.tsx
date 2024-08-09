@@ -1,8 +1,9 @@
 'use client';
 
-import {getOrGenCookie} from '@/app/actions';
 import {cartActions, cartAtom, CartVariant} from '@/atoms/cart/add';
+import {useLoadedCartItems} from '@/providers/cart-items';
 import useAddToCart from '@/services/cart/add';
+import useRemoveFromCart from '@/services/cart/remove';
 import useSubtractFromCart from '@/services/cart/subtract';
 import clsx from 'clsx';
 import {useAtom} from 'jotai';
@@ -11,8 +12,31 @@ import {MinusIcon, PlusIcon} from 'lucide-react';
 export function EditItemQuantityButton({type, item}: {item: CartVariant; type: 'plus' | 'minus'}) {
 	const [{loading}, setActions] = useAtom(cartActions);
 
+	const {cartId} = useLoadedCartItems();
+
+	const removeSuccessFn = async () => {
+		const cartItem = cart.find((cartItem) => cartItem.id === item.id);
+
+		if (!cartItem) {
+			return;
+		}
+
+		const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
+
+		setCart({
+			cartId,
+			cart: updatedCart,
+		});
+
+		setActions({
+			loading: false,
+			variantId: '',
+		});
+	};
+
+	const {mutate: removeItem} = useRemoveFromCart({successFn: removeSuccessFn});
+
 	const successFn = async ({type}: {type: 'plus' | 'minus'}) => {
-		const cartId = await getOrGenCookie();
 		const updatedCart = cart.map((cartItem) => {
 			if (cartItem.id === item.id) {
 				return {
@@ -41,8 +65,6 @@ export function EditItemQuantityButton({type, item}: {item: CartVariant; type: '
 	const [{cart}, setCart] = useAtom(cartAtom);
 
 	const handleAdd = async () => {
-		const cartId = await getOrGenCookie();
-
 		const {id: variantId} = item;
 
 		setActions({
@@ -58,22 +80,17 @@ export function EditItemQuantityButton({type, item}: {item: CartVariant; type: '
 			loading: true,
 			variantId: item.id,
 		});
-		const cartId = await getOrGenCookie();
+
 		const {id: variantId} = item;
 
 		const cartItem = cart.find((cartItem) => cartItem.id === item.id);
 
-		if (!cartItem) {
+		if (cartItem?.items === 1) {
+			removeItem({cartId, variantId});
 			return;
 		}
 
-		if (cartItem.items === 1) {
-			const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
-			setCart({
-				cartId,
-				cart: updatedCart,
-			});
-			subtract({cartId, variantId});
+		if (!cartItem) {
 			return;
 		}
 

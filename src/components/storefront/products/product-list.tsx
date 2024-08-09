@@ -1,6 +1,6 @@
 'use client';
 
-import {openCart} from '@/atoms/cart/add';
+import {cartAtom, openCart} from '@/atoms/cart/add';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
 import {Inventory} from '@/models/inventory/inventory';
 import {useAtom} from 'jotai';
@@ -15,6 +15,8 @@ export const ProductList: FC<{products: Inventory[]}> = ({products}) => {
 		setOpen(!open);
 	};
 
+	const [cart] = useAtom(cartAtom);
+
 	return (
 		<>
 			<ul role='list' data-testid='ProductList' className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
@@ -25,7 +27,7 @@ export const ProductList: FC<{products: Inventory[]}> = ({products}) => {
 			<Sheet open={open} onOpenChange={toggleSheet}>
 				<SheetContent className='w-[400px] sm:w-[540px]'>
 					<SheetHeader>My Cart</SheetHeader>
-					<CartItemsComponent />
+					<CartItemsComponent cart={cart} />
 				</SheetContent>
 			</Sheet>
 		</>

@@ -21,19 +21,22 @@ export const CartNavItem = () => {
 
 	useEffect(() => {
 		const cartItems: CartVariant[] =
-			cartInitial?.map(({variant, quantity}) => {
-				return {
-					...variant,
-					items: quantity,
-					product_name: variant.inventory.name,
-				};
-			}) || [];
+			cartInitial
+				.filter(({quantity}) => quantity > 0)
+				.map(({variant, quantity}) => {
+					return {
+						...variant,
+						items: quantity,
+						product_name: variant.inventory.name,
+					};
+				}) || [];
 
 		setCart({
 			cartId,
 			cart: cartItems,
 		});
-	}, [cartId, cartInitial, setCart]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cartId, cartInitial]);
 
 	const lineCount = cart.length;
 

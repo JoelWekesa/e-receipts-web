@@ -29,7 +29,7 @@ const useAddToCart = ({ successFn }: Props) => {
 
         onSuccess: async () => {
             await successFn()
-            await queryClient.invalidateQueries({ queryKey: ['cart'] })
+            return await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
 
     })

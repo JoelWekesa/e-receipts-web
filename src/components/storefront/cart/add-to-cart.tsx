@@ -1,11 +1,11 @@
 'use client';
 
-import {getOrGenCookie} from '@/app/actions';
 import {cartActions, cartAtom, openCart} from '@/atoms/cart/add';
 import {cartVariant} from '@/atoms/cart/variant';
 import {Form} from '@/components/ui/form';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
 import {Inventory} from '@/models/inventory/inventory';
+import {useLoadedCartItems} from '@/providers/cart-items';
 import useAddToCart from '@/services/cart/add';
 import clsx from 'clsx';
 import {useAtom} from 'jotai';
@@ -15,6 +15,7 @@ import CartItemsComponent from './cart-items';
 import LoadingDots from './loadingdots';
 
 export function AddToCart({product}: {product: Inventory}) {
+	const {cartId} = useLoadedCartItems();
 	const buttonClasses =
 		'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
 
@@ -32,7 +33,6 @@ export function AddToCart({product}: {product: Inventory}) {
 	const [{loading}, setActions] = useAtom(cartActions);
 
 	const successFn = async () => {
-		const cartId = await getOrGenCookie();
 		const updatedCart = cart.map((item) => {
 			if (item.id === selectedVariantId) {
 				return {
@@ -69,8 +69,6 @@ export function AddToCart({product}: {product: Inventory}) {
 	};
 
 	const handleAddToCart = async () => {
-		const cartId = await getOrGenCookie();
-
 		setActions({
 			loading: true,
 			variantId: selectedVariantId,
@@ -87,7 +85,7 @@ export function AddToCart({product}: {product: Inventory}) {
 				{isPending || !variant || loading ? (
 					<button aria-label='Please select an option' disabled className={clsx(buttonClasses, disabledClasses)}>
 						<div className='absolute left-0 ml-4'>
-							{loading || isPending ? <LoadingDots className='bg-white' /> : <PlusIcon className='h-5' />}
+							{loading || isPending ? <LoadingDots className='bg-white justify-center' /> : <PlusIcon className='h-5' />}
 						</div>
 						Add To Cart
 					</button>
@@ -104,7 +102,12 @@ export function AddToCart({product}: {product: Inventory}) {
 				<Sheet open={open} onOpenChange={toggleSheet}>
 					<SheetContent className='w-[400px] sm:w-[540px]'>
 						<SheetHeader>My Cart</SheetHeader>
-						<CartItemsComponent />
+						<CartItemsComponent
+							cart={{
+								cartId,
+								cart,
+							}}
+						/>
 					</SheetContent>
 				</Sheet>
 			</form>
