@@ -1,7 +1,7 @@
 'use client';
 
 import {getOrGenCookie} from '@/app/actions';
-import {cartAtom, CartVariant} from '@/atoms/cart/add';
+import {cartActions, cartAtom, CartVariant} from '@/atoms/cart/add';
 import useAddToCart from '@/services/cart/add';
 import useSubtractFromCart from '@/services/cart/subtract';
 import clsx from 'clsx';
@@ -9,35 +9,55 @@ import {useAtom} from 'jotai';
 import {MinusIcon, PlusIcon} from 'lucide-react';
 
 export function EditItemQuantityButton({type, item}: {item: CartVariant; type: 'plus' | 'minus'}) {
-	const {mutate: add} = useAddToCart();
-	const {mutate: subtract} = useSubtractFromCart();
+	const [{loading}, setActions] = useAtom(cartActions);
 
-	const [{cart}, setCart] = useAtom(cartAtom);
-
-	const handleAdd = async () => {
+	const successFn = async ({type}: {type: 'plus' | 'minus'}) => {
 		const cartId = await getOrGenCookie();
 		const updatedCart = cart.map((cartItem) => {
 			if (cartItem.id === item.id) {
 				return {
 					...cartItem,
-					items: cartItem.items + 1,
+					items: type === 'plus' ? cartItem.items + 1 : cartItem.items - 1,
 				};
 			}
 
 			return cartItem;
 		});
 
-		const {id: variantId} = item;
-
 		setCart({
 			cartId,
 			cart: updatedCart,
+		});
+
+		setActions({
+			loading: false,
+			variantId: '',
+		});
+	};
+
+	const {mutate: add} = useAddToCart({successFn: () => successFn({type: 'plus'})});
+	const {mutate: subtract} = useSubtractFromCart({successFn: () => successFn({type: 'minus'})});
+
+	const [{cart}, setCart] = useAtom(cartAtom);
+
+	const handleAdd = async () => {
+		const cartId = await getOrGenCookie();
+
+		const {id: variantId} = item;
+
+		setActions({
+			loading: true,
+			variantId,
 		});
 
 		add({cartId, variantId});
 	};
 
 	const handleSubtract = async () => {
+		setActions({
+			loading: true,
+			variantId: item.id,
+		});
 		const cartId = await getOrGenCookie();
 		const {id: variantId} = item;
 
@@ -85,7 +105,8 @@ export function EditItemQuantityButton({type, item}: {item: CartVariant; type: '
 				{
 					'ml-auto': type === 'minus',
 				}
-			)}>
+			)}
+			disabled={loading}>
 			{type === 'plus' ? (
 				<PlusIcon className='h-4 w-4 dark:text-neutral-500' />
 			) : (

@@ -18,12 +18,13 @@ const subtractFromCart = async (data: ServerCart) => {
     return response
 }
 
-const useSubtractFromCart = () => {
+const useSubtractFromCart = ({ successFn }: { successFn: () => void }) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: subtractFromCart,
         onSuccess: async () => {
-            return await queryClient.invalidateQueries({ queryKey: ['cart'] })
+            await successFn()
+            await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
 
     })

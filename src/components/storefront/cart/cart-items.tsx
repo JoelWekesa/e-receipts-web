@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
-import {cartAtom, CartVariant} from '@/atoms/cart/add';
+import {cartActions, cartAtom, CartVariant} from '@/atoms/cart/add';
 import {useLoadedCartItems} from '@/providers/cart-items';
 import useCartItems from '@/services/cart/get';
 import {createUrl} from '@/utils/create-url';
@@ -14,6 +14,7 @@ import {useFormStatus} from 'react-dom';
 import Price from '../product/price';
 import {DeleteItemButton} from './delete-item';
 import {EditItemQuantityButton} from './edit-item-quantity';
+import CartItemSkeleton from './skeleton';
 
 type MerchandiseSearchParams = {
 	[key: string]: string;
@@ -29,6 +30,8 @@ const CartItemsComponent = () => {
 	const [cart, setCart] = useAtom(cartAtom);
 
 	const [totalCartCost, setTotalCartCost] = useState(0);
+
+	const [{loading, variantId}] = useAtom(cartActions);
 
 	useEffect(() => {
 		const cartItems: CartVariant[] =
@@ -65,7 +68,12 @@ const CartItemsComponent = () => {
 				<div className='flex h-full flex-col justify-between overflow-hidden p-1'>
 					<ul className='flex-grow overflow-auto py-4'>
 						{cart.cart
-							.sort((a, b) => a.product_name.localeCompare(b.product_name))
+							.sort((a, b) => {
+								const nameA = JSON.stringify(a.name);
+								const nameB = JSON.stringify(b.name);
+
+								return nameA.localeCompare(nameB);
+							})
 							.map((item, i) => {
 								const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
@@ -79,48 +87,53 @@ const CartItemsComponent = () => {
 
 								return (
 									<li key={i} className='flex w-full flex-col border-b border-neutral-300 dark:border-neutral-700'>
-										<div className='relative flex w-full flex-row justify-between px-1 py-4'>
-											<div className='absolute z-40 -ml-1 -mt-2'>
-												<DeleteItemButton item={item} />
-											</div>
-											<div className='flex flex-row'>
-												<div className='relative h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800'>
-													<Image
-														className='h-full w-full object-contain object-center p-2'
-														width={64}
-														height={64}
-														alt={item.variant_name}
-														src={item.inventory?.thumbnail || item.description}
-													/>
+										{loading && variantId === item.id ? (
+											<CartItemSkeleton />
+										) : (
+											<div className='relative flex w-full flex-row justify-between px-1 py-4'>
+												<div className='absolute z-40 -ml-1 -mt-2'>
+													<DeleteItemButton item={item} />
 												</div>
-												<Link href={merchandiseUrl} className='z-30 ml-2 flex flex-row space-x-4'>
-													<div className='flex flex-1 flex-col text-base'>
-														<span className='leading-tight'>{item.product_name}</span>
-														{item.product_name !== DEFAULT_OPTION ? (
-															<p className='text-sm text-neutral-500 dark:text-neutral-400'>
-																{item.name.map((thing, index) => (
-																	<span key={index}> {thing.value} /</span>
-																))}
-															</p>
-														) : null}
+												<div className='flex flex-row'>
+													<div className='relative h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800'>
+														<Image
+															className='h-full w-full object-contain object-center p-2'
+															width={64}
+															height={64}
+															alt={item.variant_name}
+															src={item.inventory?.thumbnail || item.description}
+														/>
 													</div>
-												</Link>
-											</div>
-											<div className='flex h-16 flex-col justify-between'>
-												<Price
-													className='flex justify-end space-y-2 text-right text-sm'
-													amount={(item.items * item.price).toString()}
-													currencyCode='KES'
-												/>
-												<div className='ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700'>
-													<EditItemQuantityButton item={item} type='minus' />
-													<p className='w-6 text-center'>
-														<span className='w-full text-sm'>{item.items}</span>
-													</p>
-													<EditItemQuantityButton item={item} type='plus' />
+													<Link href={merchandiseUrl} className='z-30 ml-2 flex flex-row space-x-4'>
+														<div className='flex flex-1 flex-col text-base'>
+															<span className='leading-tight'>{item.product_name}</span>
+															{item.product_name !== DEFAULT_OPTION ? (
+																<p className='text-sm text-neutral-500 dark:text-neutral-400'>
+																	{item.name.map((thing, index) => (
+																		<span key={index}> {thing.value} /</span>
+																	))}
+																</p>
+															) : null}
+														</div>
+													</Link>
+												</div>
+												<div className='flex h-16 flex-col justify-between'>
+													<Price
+														className='flex justify-end space-y-2 text-right text-sm'
+														amount={(item.items * item.price).toString()}
+														currencyCode='KES'
+													/>
+
+													<div className='ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700'>
+														<EditItemQuantityButton item={item} type='minus' />
+														<p className='w-6 text-center'>
+															<span className='w-full text-sm'>{item.items}</span>
+														</p>
+														<EditItemQuantityButton item={item} type='plus' />
+													</div>
 												</div>
 											</div>
-										</div>
+										)}
 									</li>
 								);
 							})}

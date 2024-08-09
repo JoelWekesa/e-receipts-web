@@ -1,7 +1,7 @@
 'use client';
 
 import {getOrGenCookie} from '@/app/actions';
-import {cartAtom, openCart} from '@/atoms/cart/add';
+import {cartActions, cartAtom, openCart} from '@/atoms/cart/add';
 import {cartVariant} from '@/atoms/cart/variant';
 import {Form} from '@/components/ui/form';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
@@ -12,6 +12,7 @@ import {useAtom} from 'jotai';
 import {Loader2, PlusIcon} from 'lucide-react';
 import {useForm} from 'react-hook-form';
 import CartItemsComponent from './cart-items';
+import LoadingDots from './loadingdots';
 
 export function AddToCart({product}: {product: Inventory}) {
 	const buttonClasses =
@@ -23,24 +24,20 @@ export function AddToCart({product}: {product: Inventory}) {
 
 	const [{cart}, setCart] = useAtom(cartAtom);
 
+	// const [__, actions] = useAtom(cartActions);
+
 	const defaultVariantId = product.Variant[0].id;
 	const selectedVariantId = variant?.id || defaultVariantId;
 
-	const {mutate: add, isPending} = useAddToCart();
+	const [{loading}, setActions] = useAtom(cartActions);
 
-	const [open, setOpen] = useAtom(openCart);
-
-	const toggleSheet = () => {
-		setOpen(!open);
-	};
-
-	const handleAddToCart = async () => {
+	const successFn = async () => {
 		const cartId = await getOrGenCookie();
-
 		const updatedCart = cart.map((item) => {
 			if (item.id === selectedVariantId) {
 				return {
 					...item,
+					product_name: item.variant_name,
 					items: item.items + 1,
 				};
 			}
@@ -53,9 +50,33 @@ export function AddToCart({product}: {product: Inventory}) {
 			cart: updatedCart,
 		});
 
-		add({cartId, variantId: selectedVariantId});
+		setActions({
+			loading: false,
+			variantId: '',
+		});
 
-		toggleSheet();
+		setOpen(true);
+	};
+
+	const {mutate: add, isPending} = useAddToCart({
+		successFn,
+	});
+
+	const [open, setOpen] = useAtom(openCart);
+
+	const toggleSheet = () => {
+		setOpen(!open);
+	};
+
+	const handleAddToCart = async () => {
+		const cartId = await getOrGenCookie();
+
+		setActions({
+			loading: true,
+			variantId: selectedVariantId,
+		});
+
+		add({cartId, variantId: selectedVariantId});
 	};
 
 	const form = useForm();
@@ -63,10 +84,10 @@ export function AddToCart({product}: {product: Inventory}) {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleAddToCart)}>
-				{isPending || !variant ? (
+				{isPending || !variant || loading ? (
 					<button aria-label='Please select an option' disabled className={clsx(buttonClasses, disabledClasses)}>
 						<div className='absolute left-0 ml-4'>
-							<PlusIcon className='h-5' />
+							{loading || isPending ? <LoadingDots className='bg-white' /> : <PlusIcon className='h-5' />}
 						</div>
 						Add To Cart
 					</button>
@@ -75,13 +96,13 @@ export function AddToCart({product}: {product: Inventory}) {
 						className={clsx(buttonClasses, {
 							'hover:opacity-90': true,
 						})}
-						disabled={isPending}>
-						{isPending ? <Loader2 className='h-5' /> : <PlusIcon className='h-5' />}
+						disabled={isPending || loading}>
+						{isPending || loading ? <Loader2 className='h-5' /> : <PlusIcon className='h-5' />}
 						Add To Cart
 					</button>
 				)}
 				<Sheet open={open} onOpenChange={toggleSheet}>
-					<SheetContent>
+					<SheetContent className='w-[400px] sm:w-[540px]'>
 						<SheetHeader>My Cart</SheetHeader>
 						<CartItemsComponent />
 					</SheetContent>

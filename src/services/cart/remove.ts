@@ -18,15 +18,14 @@ const removeFromCart = async ({ cartId, variantId }: ServerCart) => {
     return response
 }
 
-const useRemoveFromCart = () => {
+const useRemoveFromCart = ({ successFn }: { successFn: () => void }) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: removeFromCart,
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({ queryKey: ['cart'] })
+        onSuccess: async () => {
+            successFn()
+            await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
-
-        mutationKey: [RemoveFromCartEnum.REMOVE_FROM_CART]
 
     })
 }

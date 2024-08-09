@@ -23,7 +23,7 @@ export const ProductList: FC<{products: Inventory[]}> = ({products}) => {
 				))}
 			</ul>
 			<Sheet open={open} onOpenChange={toggleSheet}>
-				<SheetContent>
+				<SheetContent className='w-[400px] sm:w-[540px]'>
 					<SheetHeader>My Cart</SheetHeader>
 					<CartItemsComponent />
 				</SheetContent>

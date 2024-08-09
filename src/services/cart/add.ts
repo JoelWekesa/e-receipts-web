@@ -10,6 +10,10 @@ export interface ServerCart {
     variantId: string;
 }
 
+interface Props {
+    successFn: () => void
+}
+
 const addToCart = async (data: ServerCart) => {
 
     const response = await InventoryClient({ token: '' }).post('/cart', data).then(res => res.data)
@@ -17,14 +21,15 @@ const addToCart = async (data: ServerCart) => {
     return response
 }
 
-const useAddToCart = () => {
+const useAddToCart = ({ successFn }: Props) => {
     const queryClient = useQueryClient()
 
     return useMutation({
         mutationFn: addToCart,
 
         onSuccess: async () => {
-            return await queryClient.invalidateQueries({ queryKey: ['cart'] })
+            await successFn()
+            await queryClient.invalidateQueries({ queryKey: ['cart'] })
         },
 
     })

@@ -18,9 +18,20 @@ export interface Cart {
     cart: CartVariant[]
 }
 
+export interface CartActions {
+    loading: boolean
+    variantId: string
+}
+
 export const cartAtom = atom<Cart>({
     cartId: '',
     cart: []
 })
 
 export const openCart = atom<boolean>(false)
+
+
+export const cartActions = atom<CartActions>({
+    loading: false,
+    variantId: ''
+})
