@@ -15,6 +15,7 @@ import NextAuthProvider from '@/providers/next-auth';
 import ReactQueryProvider from '@/providers/react-query';
 import {getCookies, setCookie} from 'cookies-next';
 import {v4 as uuidv4} from 'uuid';
+import {Provider} from 'jotai';
 
 export const metadata: Metadata = {
 	title: {
@@ -85,29 +86,31 @@ export default async function RootLayout({children}: RootLayoutProps) {
 
 	return (
 		<NextAuthProvider>
-			<ReactQueryProvider>
-				<html lang='en' suppressHydrationWarning>
-					<head />
-					<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
-						<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-							<div vaul-drawer-wrapper=''>
-								<div className='relative flex min-h-screen flex-col bg-background'>
-									{/* <SiteHeader /> */}
-									<main className='flex-1'>{children}</main>
-									<Toaster />
-									<SiteFooter />
+			<Provider>
+				<ReactQueryProvider>
+					<html lang='en' suppressHydrationWarning>
+						<head />
+						<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
+							<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+								<div vaul-drawer-wrapper=''>
+									<div className='relative flex min-h-screen flex-col bg-background'>
+										{/* <SiteHeader /> */}
+										<main className='flex-1'>{children}</main>
+										<Toaster />
+										<SiteFooter />
+									</div>
 								</div>
-							</div>
-							<TailwindIndicator />
-							<ThemeSwitcher />
-							<Analytics />
-							<NewYorkToaster />
-							<DefaultToaster />
-							<NewYorkSonner />
-						</ThemeProvider>
-					</body>
-				</html>
-			</ReactQueryProvider>
+								<TailwindIndicator />
+								<ThemeSwitcher />
+								<Analytics />
+								<NewYorkToaster />
+								<DefaultToaster />
+								<NewYorkSonner />
+							</ThemeProvider>
+						</body>
+					</html>
+				</ReactQueryProvider>
+			</Provider>
 		</NextAuthProvider>
 	);
 }

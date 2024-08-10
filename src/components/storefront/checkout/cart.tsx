@@ -9,9 +9,9 @@ import Link from 'next/link';
 import {FC, useEffect, useState} from 'react';
 import {useFormStatus} from 'react-dom';
 import Price from '../product/price';
-import {DeleteItemButton} from './delete-item';
-import {EditItemQuantityButton} from './edit-item-quantity';
-import CartItemSkeleton from './skeleton';
+import CartItemSkeleton from '../cart/skeleton';
+import {DeleteItemButton} from '../cart/delete-item';
+import {EditItemQuantityButton} from '../cart/edit-item-quantity';
 
 type MerchandiseSearchParams = {
 	[key: string]: string;
@@ -21,7 +21,7 @@ interface Props {
 	cart: Cart;
 }
 
-const CartItemsComponent: FC<Props> = ({cart}) => {
+const ShoppingCartItemsComponent: FC<Props> = ({cart}) => {
 	const [totalCartCost, setTotalCartCost] = useState(0);
 
 	const [{loading, variantId}] = useAtom(cartActions);
@@ -42,7 +42,7 @@ const CartItemsComponent: FC<Props> = ({cart}) => {
 					<p className='mt-6 text-center text-2xl font-bold'>Your cart is empty.</p>
 				</div>
 			) : (
-				<div className='flex h-full flex-col justify-between overflow-hidden p-1'>
+				<div className='flex h-full flex-col justify-between overflow-hidden p-1 w-full'>
 					<ul className='flex-grow overflow-auto py-4'>
 						{cart.cart
 							.sort((a, b) => {
@@ -129,16 +129,16 @@ const CartItemsComponent: FC<Props> = ({cart}) => {
 							/>
 						</div>
 					</div>
-					<Link href='/shop/checkout'>
-						<CheckoutButton />
-					</Link>
+					<form>
+						<OrderButton />
+					</form>
 				</div>
 			)}
 		</>
 	);
 };
 
-function CheckoutButton() {
+function OrderButton() {
 	const {pending} = useFormStatus();
 
 	return (
@@ -146,9 +146,9 @@ function CheckoutButton() {
 			className='block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100'
 			type='submit'
 			disabled={pending}>
-			{pending ? <Loader2 className='bg-white' /> : 'Proceed to Checkout'}
+			{pending ? <Loader2 className='bg-white' /> : 'Confirm Order'}
 		</button>
 	);
 }
 
-export default CartItemsComponent;
+export default ShoppingCartItemsComponent;

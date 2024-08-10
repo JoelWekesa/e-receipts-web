@@ -1,42 +1,14 @@
 'use client';
-import {cartAtom, CartVariant, openCart} from '@/atoms/cart/add';
+import {cartAtom, openCart} from '@/atoms/cart/add';
 import {Button} from '@/components/ui/button';
-import {useLoadedCartItems} from '@/providers/cart-items';
-import useCartItems from '@/services/cart/get';
 import clsx from 'clsx';
 import {useAtom} from 'jotai';
 import {ShoppingBagIcon} from 'lucide-react';
-import {useEffect} from 'react';
 
 export const CartNavItem = () => {
-	const {cartItems, cartId} = useLoadedCartItems();
+	const [{cart}] = useAtom(cartAtom);
 
 	const [open, setOpen] = useAtom(openCart);
-
-	const {data: cartInitial} = useCartItems({
-		cartId,
-		cartItems,
-	});
-	const [{cart}, setCart] = useAtom(cartAtom);
-
-	useEffect(() => {
-		const cartItems: CartVariant[] =
-			cartInitial
-				.filter(({quantity}) => quantity > 0)
-				.map(({variant, quantity}) => {
-					return {
-						...variant,
-						items: quantity,
-						product_name: variant.inventory.name,
-					};
-				}) || [];
-
-		setCart({
-			cartId,
-			cart: cartItems,
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cartId, cartInitial]);
 
 	const lineCount = cart.length;
 
