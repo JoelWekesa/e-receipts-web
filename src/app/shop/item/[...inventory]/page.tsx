@@ -72,7 +72,7 @@ const Item: FC<Props> = async ({params}) => {
 
 					<div className='basis-full lg:basis-2/6'>
 						<Suspense fallback={null}>
-							<ProductDescription product={inventoryItem} />
+							<ProductDescription product={inventoryItem} shop={store} />
 						</Suspense>
 					</div>
 				</div>

@@ -13,8 +13,14 @@ import {Loader2, PlusIcon} from 'lucide-react';
 import {useForm} from 'react-hook-form';
 import CartItemsComponent from './cart-items';
 import LoadingDots from './loadingdots';
+import {FC} from 'react';
 
-export function AddToCart({product}: {product: Inventory}) {
+interface Props {
+	product: Inventory;
+	shop: string;
+}
+
+export const AddToCart: FC<Props> = ({product, shop}) => {
 	const {cartId} = useLoadedCartItems();
 	const buttonClasses =
 		'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
@@ -107,10 +113,11 @@ export function AddToCart({product}: {product: Inventory}) {
 								cartId,
 								cart,
 							}}
+							shop={shop}
 						/>
 					</SheetContent>
 				</Sheet>
 			</form>
 		</Form>
 	);
-}
+};

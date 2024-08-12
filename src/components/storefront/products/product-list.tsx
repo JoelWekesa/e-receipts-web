@@ -8,7 +8,12 @@ import {FC} from 'react';
 import CartItemsComponent from '../cart/cart-items';
 import {ProductElement} from './product-element';
 
-export const ProductList: FC<{products: Inventory[]}> = ({products}) => {
+interface Props {
+	products: Inventory[];
+	shop: string;
+}
+
+export const ProductList: FC<Props> = ({products, shop}) => {
 	const [open, setOpen] = useAtom(openCart);
 
 	const toggleSheet = () => {
@@ -27,7 +32,7 @@ export const ProductList: FC<{products: Inventory[]}> = ({products}) => {
 			<Sheet open={open} onOpenChange={toggleSheet}>
 				<SheetContent className='w-[400px] sm:w-[540px]'>
 					<SheetHeader>My Cart</SheetHeader>
-					<CartItemsComponent cart={cart} />
+					<CartItemsComponent cart={cart} shop={shop} />
 				</SheetContent>
 			</Sheet>
 		</>

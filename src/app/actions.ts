@@ -19,3 +19,13 @@ export const getOrGenCookie = async () => {
 
     return cartId
 }
+
+export const delCookies = async () => {
+    await cookies().delete('cartId')
+
+    const cartId = uuidv4()
+    await cookies().set({
+        name: 'cartId',
+        value: cartId,
+    })
+}

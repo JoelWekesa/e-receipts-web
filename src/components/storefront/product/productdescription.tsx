@@ -8,7 +8,7 @@ import Price from './price';
 import Prose from './prose';
 import {VariantSelector} from './variantselector';
 
-export function ProductDescription({product}: {product: Inventory}) {
+export function ProductDescription({product, shop}: {product: Inventory; shop: string}) {
 	const [variant, setVariant] = useAtom(cartVariant);
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ export function ProductDescription({product}: {product: Inventory}) {
 			{product.description ? (
 				<Prose className='mb-6 text-sm leading-tight dark:text-white/[60%]' html={product.description} />
 			) : null}
-			<AddToCart product={product} />
+			<AddToCart product={product} shop={shop} />
 		</>
 	);
 }

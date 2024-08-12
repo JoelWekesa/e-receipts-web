@@ -1,4 +1,4 @@
-import { options } from '@/app/api/auth/[...nextauth]/options';
+import {options} from '@/app/api/auth/[...nextauth]/options';
 import {TeamNav} from '@/components/dashboard/TeamNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import {TeamSiteHeader} from '@/components/teams/site-header/site-header';
@@ -54,7 +54,6 @@ export const metadata: Metadata = {
 		shortcut: '/favicon-16x16.png',
 		apple: '/apple-touch-icon.png',
 	},
-	manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export const viewport: Viewport = {

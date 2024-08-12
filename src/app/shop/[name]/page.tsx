@@ -82,7 +82,7 @@ const Shop = async ({params}: {params: {name: string}}) => {
 					__html: JSON.stringify(productJsonLd),
 				}}
 			/>
-			<ProductList products={products} />
+			<ProductList products={products} shop={shop.name} />
 		</div>
 	);
 };

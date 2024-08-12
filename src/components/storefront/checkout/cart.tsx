@@ -3,15 +3,15 @@ import {Cart, cartActions} from '@/atoms/cart/add';
 import {createUrl} from '@/utils/create-url';
 import {DEFAULT_OPTION} from '@/utils/default-options';
 import {useAtom} from 'jotai';
-import {Loader2, ShoppingCartIcon} from 'lucide-react';
+import {ShoppingCartIcon} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {FC, useEffect, useState} from 'react';
-import {useFormStatus} from 'react-dom';
-import Price from '../product/price';
-import CartItemSkeleton from '../cart/skeleton';
 import {DeleteItemButton} from '../cart/delete-item';
 import {EditItemQuantityButton} from '../cart/edit-item-quantity';
+import CartItemSkeleton from '../cart/skeleton';
+import Price from '../product/price';
+import OrderButton from './orderButton';
 
 type MerchandiseSearchParams = {
 	[key: string]: string;
@@ -19,9 +19,12 @@ type MerchandiseSearchParams = {
 
 interface Props {
 	cart: Cart;
+	shippingId: string;
+	storeId: string;
+	token: string;
 }
 
-const ShoppingCartItemsComponent: FC<Props> = ({cart}) => {
+const ShoppingCartItemsComponent: FC<Props> = ({cart, shippingId, storeId, token}) => {
 	const [totalCartCost, setTotalCartCost] = useState(0);
 
 	const [{loading, variantId}] = useAtom(cartActions);
@@ -129,26 +132,19 @@ const ShoppingCartItemsComponent: FC<Props> = ({cart}) => {
 							/>
 						</div>
 					</div>
-					<form>
-						<OrderButton />
-					</form>
+
+					<OrderButton
+						shipping={{
+							cartId: cart.cartId,
+							shippingId,
+							storeId,
+						}}
+						token={token}
+					/>
 				</div>
 			)}
 		</>
 	);
 };
-
-function OrderButton() {
-	const {pending} = useFormStatus();
-
-	return (
-		<button
-			className='block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100'
-			type='submit'
-			disabled={pending}>
-			{pending ? <Loader2 className='bg-white' /> : 'Confirm Order'}
-		</button>
-	);
-}
 
 export default ShoppingCartItemsComponent;

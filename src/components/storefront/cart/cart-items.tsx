@@ -19,9 +19,10 @@ type MerchandiseSearchParams = {
 
 interface Props {
 	cart: Cart;
+	shop: string;
 }
 
-const CartItemsComponent: FC<Props> = ({cart}) => {
+const CartItemsComponent: FC<Props> = ({cart, shop}) => {
 	const [totalCartCost, setTotalCartCost] = useState(0);
 
 	const [{loading, variantId}] = useAtom(cartActions);
@@ -129,7 +130,7 @@ const CartItemsComponent: FC<Props> = ({cart}) => {
 							/>
 						</div>
 					</div>
-					<Link href='/shop/checkout'>
+					<Link href={`/shop/${shop}/checkout`}>
 						<CheckoutButton />
 					</Link>
 				</div>
