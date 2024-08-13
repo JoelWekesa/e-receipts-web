@@ -147,7 +147,7 @@ function CheckoutButton() {
 			className='block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100'
 			type='submit'
 			disabled={pending}>
-			{pending ? <Loader2 className='bg-white' /> : 'Proceed to Checkout'}
+			{pending ? <Loader2 className='bg-white animate-spin' /> : 'Proceed to Checkout'}
 		</button>
 	);
 }

@@ -4,7 +4,6 @@ import {Button} from '@/components/ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Shipping} from '@/models/shipping/shipping';
-import {useLoadedCartItems} from '@/providers/cart-items';
 import useAddShipping from '@/services/shipping/add';
 import {phoneNumberPattern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -45,8 +44,6 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 
 	const {mutate: add, isPending} = useAddShipping();
 
-	const {cartId} = useLoadedCartItems();
-
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
 		add({
 			shipping: {
@@ -56,7 +53,6 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 				lastName: data.lastName,
 				address: data.address,
 				city: data.city,
-				cartId,
 			},
 			token,
 		});
@@ -163,7 +159,8 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 						</div>
 					</section>
 					<Button type='submit'>
-						{isPending ? <Loader2 className='w-6 h-6 mr-2' /> : <Truck className='w-6 h-6 mr-2' />} Confirm Shipping
+						{isPending ? <Loader2 className='w-6 h-6 mr-2 animate-spin' /> : <Truck className='w-6 h-6 mr-2' />} Confirm
+						Shipping
 					</Button>
 				</form>
 			</Form>

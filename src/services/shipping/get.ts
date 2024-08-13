@@ -4,7 +4,7 @@ import getShipping from "../page/shipping/get"
 import { Shipping } from "@/models/shipping/shipping"
 
 interface Props {
-    shipping: Shipping
+    shipping: Shipping | null
 }
 
 const useShipping = ({ shipping }: Props) => {

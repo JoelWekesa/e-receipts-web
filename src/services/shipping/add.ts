@@ -4,7 +4,6 @@ import dayjs from "dayjs"
 import { toast } from "sonner"
 
 interface Props {
-    cartId: string,
     firstName: string,
     lastName: string
     phone: string

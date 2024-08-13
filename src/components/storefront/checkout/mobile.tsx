@@ -11,9 +11,10 @@ interface Props {
 	shipping: Shipping | null;
 	token: string;
 	storeId: string;
+	shop: string;
 }
 
-const MobileCheckOutTabs: FC<Props> = ({cart, shipping, token, storeId}) => {
+const MobileCheckOutTabs: FC<Props> = ({cart, shipping, token, storeId, shop}) => {
 	return (
 		<Tabs defaultValue='shipping' className='w-full'>
 			<TabsList className='grid w-full grid-cols-2'>
@@ -24,7 +25,13 @@ const MobileCheckOutTabs: FC<Props> = ({cart, shipping, token, storeId}) => {
 				<CheckOutForm shipping={shipping} token={token} />
 			</TabsContent>
 			<TabsContent value='confirm'>
-				<ShoppingCartItemsComponent cart={cart} shippingId={shipping?.id || ''} token={token} storeId={storeId} />
+				<ShoppingCartItemsComponent
+					cart={cart}
+					shippingId={shipping?.id || ''}
+					token={token}
+					storeId={storeId}
+					shop={shop}
+				/>
 			</TabsContent>
 		</Tabs>
 	);

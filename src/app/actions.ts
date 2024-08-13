@@ -29,3 +29,12 @@ export const delCookies = async () => {
         value: cartId,
     })
 }
+
+export const genOrderCookie = async (orderId: string) => {
+    await cookies().delete('orderId')
+
+    await cookies().set({
+        name: 'orderId',
+        value: orderId
+    })
+}

@@ -22,9 +22,10 @@ interface Props {
 	shippingId: string;
 	storeId: string;
 	token: string;
+	shop: string;
 }
 
-const ShoppingCartItemsComponent: FC<Props> = ({cart, shippingId, storeId, token}) => {
+const ShoppingCartItemsComponent: FC<Props> = ({cart, shippingId, storeId, token, shop}) => {
 	const [totalCartCost, setTotalCartCost] = useState(0);
 
 	const [{loading, variantId}] = useAtom(cartActions);
@@ -138,6 +139,7 @@ const ShoppingCartItemsComponent: FC<Props> = ({cart, shippingId, storeId, token
 							cartId: cart.cartId,
 							shippingId,
 							storeId,
+							shop,
 						}}
 						token={token}
 					/>

@@ -1,3 +1,4 @@
+import { delCookies, genOrderCookie } from "@/app/actions"
 import InventoryClient from "@/config/axios-inventory"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -28,7 +29,11 @@ const useCreateOrder = (successFn: () => void) => {
         mutationFn: createOrder,
         onSuccess: async (data) => {
 
-            successFn()
+            await delCookies();
+
+            await genOrderCookie(data.id)
+
+            await successFn()
 
             const keys = ['orders', 'cart']
 

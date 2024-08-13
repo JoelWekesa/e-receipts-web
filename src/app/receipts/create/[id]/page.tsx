@@ -19,7 +19,7 @@ async function getData({id, token}: GetData): Promise<Store> {
 		val = '' + id;
 	} else {
 		const def: Setting = await ApiClient(token)
-			.get(process.env.NEXT_PUBLIC_API_URL + 'settings')
+			.get('settings')
 			.then((res) => res.data)
 			.catch((err) => {
 				throw new Error(err);
@@ -29,7 +29,7 @@ async function getData({id, token}: GetData): Promise<Store> {
 	}
 
 	const res = await ApiClient(token)
-		.get(process.env.NEXT_PUBLIC_API_URL + 'stores/store?id=' + val)
+		.get('stores/store?id=' + val)
 		.then((res) => res.data)
 		.catch((err) => {
 			throw new Error(err);

@@ -135,7 +135,7 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 											</PopoverTrigger>
 											<PopoverContent className=' p-0'>
 												<Command>
-													<CommandInput placeholder='Search category...' />
+													<CommandInput placeholder='Search item...' className='w-full' />
 													<CommandEmpty>No product found</CommandEmpty>
 													<CommandGroup>
 														{fProducts.map((item) => (

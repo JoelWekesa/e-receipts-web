@@ -101,7 +101,7 @@ export const AddToCart: FC<Props> = ({product, shop}) => {
 							'hover:opacity-90': true,
 						})}
 						disabled={isPending || loading}>
-						{isPending || loading ? <Loader2 className='h-5' /> : <PlusIcon className='h-5' />}
+						{isPending || loading ? <Loader2 className='h-5 animate-spin' /> : <PlusIcon className='h-5' />}
 						Add To Cart
 					</button>
 				)}
