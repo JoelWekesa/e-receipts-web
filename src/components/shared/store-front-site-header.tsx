@@ -2,12 +2,11 @@
 import {MobileNav} from '@/components/mobile-nav';
 import {Category} from '@/models/inventory/category';
 import {Store} from '@/models/store';
-import {Search} from 'lucide-react';
 import {FC} from 'react';
 import UserNav from '../dashboard/UserNav';
 import {ModeToggle} from '../mode-toggle';
 import StoreNavigationMenu from '../storefront/nav-menu/store-nav-menu';
-import {Button} from '../ui/button';
+import {SearchInput} from '../storefront/search/input';
 import {CartNavItem} from './cart/cart-icon';
 
 interface Props {
@@ -24,10 +23,11 @@ export const StoreFrontSiteHeader: FC<Props> = ({store, categories}) => {
 				<div className='flex flex-1'>
 					<div className='hidden md:block flex-1'>
 						<nav className='flex items-center w-full px-7'>
-							<Button variant='ghost' size='sm' className='bg-neutral-100 dark:bg-neutral-900 w-full'>
+							<SearchInput placeholder='Search for products' shop={store.name} />
+							{/* <Button variant='ghost' size='sm' className='bg-neutral-100 dark:bg-neutral-900 w-full'>
 								<Search className='h-4 w-4 mr-2' />
 								<div className='sm:w-full text-start '>Search Products...</div>
-							</Button>
+							</Button> */}
 						</nav>
 					</div>
 				</div>

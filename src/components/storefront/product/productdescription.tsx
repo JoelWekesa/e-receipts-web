@@ -32,7 +32,7 @@ export function ProductDescription({product, shop}: {product: Inventory; shop: s
 					<Price amount={variant?.price.toString() || product?.price || '0'} currencyCode='KES' />
 				</div>
 			</div>
-			<VariantSelector options={product.Option} variants={product.Variant} />
+			<VariantSelector options={product?.Option ?? []} variants={product.Variant} />
 			{product.description ? (
 				<Prose className='mb-6 text-sm leading-tight dark:text-white/[60%]' html={product.description} />
 			) : null}

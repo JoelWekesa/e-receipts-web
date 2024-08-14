@@ -27,7 +27,7 @@ const useUpsertSettings = () => {
 		onSuccess: (data) => {
 			toast({
 				title: 'Default store successfully updated',
-				description: dayjs(data?.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+				description: dayjs(data?.updatedAt).format('DD/MM/YYYY HH:mm:ss'),
 			});
 
 			queryClient.invalidateQueries({

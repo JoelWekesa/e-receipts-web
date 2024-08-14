@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import {useAtom} from 'jotai';
 import {Loader2, PlusIcon} from 'lucide-react';
 import {useRouter} from 'next/navigation';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 
 interface Shipping {
 	shippingId: string;
@@ -34,6 +34,10 @@ const OrderButton: FC<ShippingProps> = ({shipping, token}) => {
 		setOpen(false);
 		router.push(`/shop/${shipping?.shop}/checkout/order`);
 	};
+
+	useEffect(() => {
+		router.prefetch(`/shop/${shipping?.shop}/checkout/order`);
+	}, [shipping]);
 
 	const {mutate: add, isPending} = useCreateOrder(successFn);
 
