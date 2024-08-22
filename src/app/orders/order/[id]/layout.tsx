@@ -1,27 +1,31 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import {StoreFrontSiteHeader} from '@/components/shared/store-front-site-header';
+import {StoreNav} from '@/components/dashboard/StoreNav';
+import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
+import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {siteConfig} from '@/config/site';
-import {getCategories} from '@/services/page/inventory/categories/store-categories';
-import {storeFromName} from '@/services/page/stores/store/store-from-name';
+import getOrder from '@/services/page/orders/order';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
 import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Shop',
-		template: `%s | ${siteConfig.name}`,
+		default: 'Orders',
+		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
 	description: siteConfig.description,
 	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
 	authors: [
 		{
-			name: 'Joel Wekesa',
-			url: 'https://joelwekesa.com',
+			name: 'shadcn',
+			url: 'https://shadcn.com',
 		},
 	],
-	creator: 'Joel Wekesa',
+	creator: 'shadcn',
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -43,7 +47,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@joelwekesa_',
+		creator: '@shadcn',
 	},
 	icons: {
 		icon: '/favicon.ico',
@@ -59,34 +63,42 @@ export const viewport: Viewport = {
 	],
 };
 
-const StoreClientsLayout: FC<{
+const StoreOrderLayout: FC<{
 	children: ReactNode;
-	params: {inventory: string[]};
+	params: {id: string};
 }> = async ({children, params}) => {
-	const {inventory} = params;
-
-	const store_name = inventory[0];
-
+	const {id} = params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const [store] = await Promise.all([storeFromName({name: store_name})]);
-
-	const storeId = store.id;
-
-	const categories = await getCategories({storeId, token});
+	const [order, stores, teams, permissions] = await Promise.all([
+		getOrder({token, id}),
+		userStores(token),
+		getTeams({token}),
+		getPermissions({token}),
+	]);
 
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<StoreFrontSiteHeader store={store} categories={categories} />
-					<main className='flex-1'>{children}</main>
+					<StoreSiteHeader storeId={order.storeId} />
+					<main className='flex-1'>
+						<div className='hidden flex-col md:flex'>
+							<div className='border-b'>
+								<div className='flex h-16 items-center px-4'>
+									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
+									<StoreNav className='mx-6' id={order.storeId} />
+								</div>
+							</div>
+						</div>
+						<div className='flex min-h-screen container mx-auto flex-col bg-muted/40'>{children}</div>
+					</main>
 				</div>
 			</div>
 		</>
 	);
 };
 
-export default StoreClientsLayout;
+export default StoreOrderLayout;

@@ -32,11 +32,11 @@ const OrderButton: FC<ShippingProps> = ({shipping, token}) => {
 
 	const successFn = async () => {
 		setOpen(false);
-		router.push(`/shop/${shipping?.shop}/checkout/order`);
+		router.push(`/shop/checkout/${shipping?.shop}/order`);
 	};
 
 	useEffect(() => {
-		router.prefetch(`/shop/${shipping?.shop}/checkout/order`);
+		router.prefetch(`/shop/checkout/${shipping?.shop}/order`);
 	}, [shipping]);
 
 	const {mutate: add, isPending} = useCreateOrder(successFn);
@@ -57,9 +57,9 @@ const OrderButton: FC<ShippingProps> = ({shipping, token}) => {
 			{isPending || !!!shipping?.shippingId ? (
 				<button aria-label='Please select an option' disabled className={clsx(buttonClasses, disabledClasses)}>
 					{isPending ? (
-						<div className='absolute left-0 ml-4'>{<Loader2 className='h-5' />}</div>
+						<div className='absolute left-0 ml-4'>{<Loader2 className='h-5 animate-spin' />}</div>
 					) : (
-						<PlusIcon className='h-5 animate-spin' />
+						<PlusIcon className='h-5 ' />
 					)}
 					{!!!shipping?.shippingId ? 'Confirm Order' : 'Processing'}
 				</button>

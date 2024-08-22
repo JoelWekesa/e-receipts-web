@@ -56,7 +56,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`Today's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={daily}  />
+						<SalesTable receipts={daily} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -67,7 +67,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This week's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={weekly}  />
+						<SalesTable receipts={weekly} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -78,7 +78,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This month's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={monthly}  />
+						<SalesTable receipts={monthly} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -89,7 +89,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`This year's sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={yearly}  />
+						<SalesTable receipts={yearly} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -107,7 +107,7 @@ const PeriodSales: FC<{
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={custom}  />
+						<SalesTable receipts={custom} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -118,7 +118,7 @@ const PeriodSales: FC<{
 						<CardDescription>{`All time sales from all your stores.`}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<SalesTable receipts={allTime}  />
+						<SalesTable receipts={allTime} />
 					</CardContent>
 				</Card>
 			</TabsContent>

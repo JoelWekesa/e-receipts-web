@@ -30,6 +30,7 @@ const ApiClient = (token: string) => {
 			toast("An Error Occurred", {
 				description: error?.response?.data?.message || "Something went wrong!",
 				icon: "❌",
+				position: 'top-right'
 			})
 		}
 	);

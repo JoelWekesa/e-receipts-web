@@ -62,6 +62,8 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 const CheckOut: FC<Props> = async ({params}) => {
 	const {name} = params;
 
+	console.log({name});
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';

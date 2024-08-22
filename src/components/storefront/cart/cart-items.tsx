@@ -130,7 +130,7 @@ const CartItemsComponent: FC<Props> = ({cart, shop}) => {
 							/>
 						</div>
 					</div>
-					<Link href={`/shop/${shop}/checkout`}>
+					<Link href={`/shop/checkout/${shop}`}>
 						<CheckoutButton />
 					</Link>
 				</div>

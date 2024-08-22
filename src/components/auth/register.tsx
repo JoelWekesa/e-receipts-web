@@ -45,17 +45,16 @@ const formSchema = z
 			.instanceof(File, {message: 'File is required'})
 			.refine((file) => {
 				if (file) {
-					return !file || file.size <= MAX_UPLOAD_SIZE;
+					return !file || file.size >= MAX_UPLOAD_SIZE;
 				} else {
 					return true;
 				}
-			}, 'File size must be less than 3MB')
+			}, 'File size must be less than 5MB')
 			.refine((file) => {
 				if (file) {
 					return ACCEPTED_FILE_TYPES.includes(file.type);
 				}
-			}, 'File must be an image')
-			.optional(),
+			}, 'File must be an image'),
 	})
 	.refine((data) => data.password === data.confirm, {
 		message: "Passwords don't match",
@@ -187,7 +186,7 @@ const RegisterForm = () => {
 											'image/*': ['.png'],
 										}}
 										multiple={true}
-										maxSize={3000000}
+										maxSize={1024 * 1024 * 5}
 										onDropAccepted={(items) => form.setValue('image', items[0])}>
 										{({getRootProps, getInputProps}) => (
 											<div className='w-full flex justify-center items-center'>
@@ -208,7 +207,7 @@ const RegisterForm = () => {
 																}}
 															/>
 															<div className='flex flex-col justify-center items-center'>
-																<p>{`Drag 'n' drop your logo here, or click to select file`}</p>
+																<p>{`Drag 'n' drop your photo here, or click to select photo`}</p>
 															</div>
 														</div>
 													) : !!form?.formState?.errors?.image?.message ? (
@@ -217,7 +216,7 @@ const RegisterForm = () => {
 														</div>
 													) : (
 														<div className='justify-center items-center'>
-															<p className='text-center'>{`Drag 'n' drop your logo here, or click to select file`}</p>
+															<p className='text-center'>{`Drag 'n' drop your photo here, or click to select photo`}</p>
 														</div>
 													)}
 												</div>
@@ -227,6 +226,8 @@ const RegisterForm = () => {
 								)}
 							/>
 							<FormDescription>Upload a new image (max 5MB)</FormDescription>
+							<FormMessage />
+							{JSON.stringify(form.formState.errors.image)}
 						</div>
 
 						<div className='grid gap-2'>

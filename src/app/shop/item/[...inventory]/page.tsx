@@ -2,10 +2,63 @@ import {ProductProvider} from '@/components/storefront/product/context/product-c
 import {Gallery} from '@/components/storefront/product/gallery';
 import {ProductDescription} from '@/components/storefront/product/productdescription';
 import {getStoreInventoryItem} from '@/services/page/inventory/store/store-inventory-item';
+import {Metadata} from 'next';
 import {FC, Suspense} from 'react';
 
 interface Props {
 	params: {inventory: string[]};
+}
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+	const {inventory} = params;
+
+	const store = inventory[0];
+	const name = inventory[1];
+
+	const inventoryItem = await getStoreInventoryItem({store, name});
+
+	const thumbnailImage = {
+		src: inventoryItem?.thumbnail || '',
+		altText: Math.random().toString(),
+	};
+
+	const {
+		url,
+		width,
+		height,
+		altText: alt,
+	} = {
+		url: thumbnailImage?.src || '',
+		width: 1200,
+		height: 630,
+		altText: inventoryItem?.description || '',
+	};
+	const indexable = !!inventoryItem?.thumbnail;
+
+	return {
+		title: inventoryItem.name,
+		description: inventoryItem.description,
+		robots: {
+			index: indexable,
+			follow: indexable,
+			googleBot: {
+				index: indexable,
+				follow: indexable,
+			},
+		},
+		openGraph: url
+			? {
+					images: [
+						{
+							url,
+							width,
+							height,
+							alt,
+						},
+					],
+			  }
+			: null,
+	};
 }
 
 const Item: FC<Props> = async ({params}) => {

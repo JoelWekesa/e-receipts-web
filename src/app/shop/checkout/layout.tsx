@@ -1,15 +1,14 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
-import {StoreFrontSiteHeader} from '@/components/shared/store-front-site-header';
 import {siteConfig} from '@/config/site';
-import {getCategories} from '@/services/page/inventory/categories/store-categories';
-import {storeFromName} from '@/services/page/stores/store/store-from-name';
+import ShippingProvider from '@/providers/shipping';
+import getShipping from '@/services/page/shipping/get';
 import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Shop',
+		default: 'Checkout',
 		template: `%s | ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
 			url: 'https://joelwekesa.com',
 		},
 	],
-	creator: 'Joel Wekesa',
+	creator: 'joelwekesa',
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -61,32 +60,20 @@ export const viewport: Viewport = {
 
 const StoreClientsLayout: FC<{
 	children: ReactNode;
-	params: {inventory: string[]};
-}> = async ({children, params}) => {
-	const {inventory} = params;
-
-	const store_name = inventory[0];
+	// params: {
+	// 	name: string;
+	// 	checkout: string;
+	// };
+}> = async ({children}) => {
+	// const {name} = params;
 
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const [store] = await Promise.all([storeFromName({name: store_name})]);
+	const [shipping] = await Promise.all([getShipping({token})]);
 
-	const storeId = store.id;
-
-	const categories = await getCategories({storeId, token});
-
-	return (
-		<>
-			<div vaul-drawer-wrapper=''>
-				<div className='relative flex min-h-screen flex-col bg-background'>
-					<StoreFrontSiteHeader store={store} categories={categories} />
-					<main className='flex-1'>{children}</main>
-				</div>
-			</div>
-		</>
-	);
+	return <ShippingProvider shipping={shipping}>{children}</ShippingProvider>;
 };
 
 export default StoreClientsLayout;

@@ -30,6 +30,15 @@ export function VariantSelector({options, variants}: {options: Option[]; variant
 	useEffect(() => {
 		const optionKeys = options.map((option) => option.name.toLowerCase());
 
+		if (optionKeys.length === 0) {
+			setSelectedVariant(variants[0]);
+			return;
+		}
+
+		if (Object.keys(state).length !== optionKeys.length) {
+			return;
+		}
+
 		const foreignKeys = Object.keys(state).filter((key) => !optionKeys.includes(key));
 
 		for (const key of foreignKeys) {
@@ -39,6 +48,14 @@ export function VariantSelector({options, variants}: {options: Option[]; variant
 		const selectedVariant = combinations.find((combination) =>
 			Object.entries(state).every(([key, value]) => combination[key] === value)
 		);
+
+		console.log({
+			selectedVariant: optionKeys.length,
+		});
+
+		console.log({
+			state: Object.entries(state).length,
+		});
 
 		const variant = variants.find((variant) => variant.id === selectedVariant?.id);
 

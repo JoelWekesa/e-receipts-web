@@ -1,14 +1,18 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
+import {StoreNav} from '@/components/dashboard/StoreNav';
+import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
+import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {siteConfig} from '@/config/site';
-import ShippingProvider from '@/providers/shipping';
-import getShipping from '@/services/page/shipping/get';
+import {userStores} from '@/services/page/stores/user-stores';
+import {getTeams} from '@/services/page/teams/member-teams';
+import {getPermissions} from '@/services/page/teams/permissions';
 import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Checkout',
+		default: 'Orders',
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -42,7 +46,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@joelwekesa_',
+		creator: '@shadcn',
 	},
 	icons: {
 		icon: '/favicon.ico',
@@ -58,22 +62,41 @@ export const viewport: Viewport = {
 	],
 };
 
-const StoreClientsLayout: FC<{
+const StoreOrdersLayout: FC<{
 	children: ReactNode;
-	// params: {
-	// 	name: string;
-	// 	checkout: string;
-	// };
-}> = async ({children}) => {
-	// const {name} = params;
-
+	params: {storeId: string};
+}> = async ({children, params}) => {
+	const {storeId: id} = params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const [shipping] = await Promise.all([getShipping({token})]);
+	const [stores, teams, permissions] = await Promise.all([
+		userStores(token),
+		getTeams({token}),
+		getPermissions({token}),
+	]);
 
-	return <ShippingProvider shipping={shipping}>{children}</ShippingProvider>;
+	return (
+		<>
+			<div vaul-drawer-wrapper=''>
+				<div className='relative flex min-h-screen flex-col bg-background'>
+					<StoreSiteHeader storeId={id} />
+					<main className='flex-1'>
+						<div className='hidden flex-col md:flex'>
+							<div className='border-b'>
+								<div className='flex h-16 items-center px-4'>
+									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
+									<StoreNav className='mx-6' id={id} />
+								</div>
+							</div>
+						</div>
+						<div className='flex min-h-screen w-full flex-col bg-muted/40'>{children}</div>
+					</main>
+				</div>
+			</div>
+		</>
+	);
 };
 
-export default StoreClientsLayout;
+export default StoreOrdersLayout;

@@ -34,6 +34,7 @@ const InventoryClient = ({ token, id }: Options) => {
             toast("An Error Occurred", {
                 description: error?.response?.data?.message || "Something went wrong!",
                 icon: "❌",
+                position: "top-right"
             })
         }
     );

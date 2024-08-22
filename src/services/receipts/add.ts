@@ -36,7 +36,8 @@ const useAddReceipt = (successFn: () => void) => {
             successFn()
             toast("Receipt successfully sent", {
                 description: dayjs(data?.createdAt).format("DD/MM/YYYY HH:mm:ss"),
-                icon: "✅"
+                icon: "✅",
+                position: 'top-right'
             })
         },
         onError: (err: any) => {

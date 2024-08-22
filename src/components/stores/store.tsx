@@ -2,9 +2,11 @@
 import {storeAtom} from '@/atoms/store';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
-import {Calendar, FileDigit} from 'lucide-react';
+import {Calendar, Facebook, FileDigit, Instagram, Share, Twitter} from 'lucide-react';
 import Image from 'next/image';
 import {FC, ReactNode} from 'react';
+import CopyItem from '../shared/copy';
+import {Button} from '../ui/button';
 
 const StoreComponent = () => {
 	const [store, _] = useAtom(storeAtom);
@@ -77,6 +79,33 @@ const StoreComponent = () => {
 
 					<div className='w-3/5'>
 						<p className='text-sm tracking-tighter'>{dayjs(store?.createdAt).format('DD MMMM YYYY')}</p>
+					</div>
+				</RowWrap>
+			</Wrapper>
+
+			<Wrapper>
+				<RowWrap>
+					<div className='w-2/5'>
+						<RowWrap>
+							<div className='mx-1'>
+								<Share />
+							</div>
+							<div className='mx-1'>Share</div>
+						</RowWrap>
+					</div>
+
+					<div className='w-3/5 flex flex-row gap-2'>
+						<Button variant='ghost' size='icon'>
+							<Instagram />
+						</Button>
+						<Button variant='ghost' size='icon'>
+							<Facebook />
+						</Button>
+						<Button variant='ghost' size='icon'>
+							<Twitter />
+						</Button>
+
+						<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`} />
 					</div>
 				</RowWrap>
 			</Wrapper>

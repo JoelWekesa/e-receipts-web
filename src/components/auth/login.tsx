@@ -83,7 +83,7 @@ export const LoginForm: FC<{path?: string}> = ({path}) => {
 					</form>
 					<Button
 						variant='default'
-						className='w-full bg-blue-500 text-white'
+						className='w-full bg-blue-800 text-white hover:bg-blue-600'
 						onClick={() =>
 							signIn('google', {
 								redirect: true,

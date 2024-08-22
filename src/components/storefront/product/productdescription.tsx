@@ -2,27 +2,13 @@
 import {cartVariant} from '@/atoms/cart/variant';
 import {Inventory} from '@/models/inventory/inventory';
 import {useAtom} from 'jotai';
-import {useEffect} from 'react';
 import {AddToCart} from '../cart/add-to-cart';
 import Price from './price';
 import Prose from './prose';
 import {VariantSelector} from './variantselector';
 
 export function ProductDescription({product, shop}: {product: Inventory; shop: string}) {
-	const [variant, setVariant] = useAtom(cartVariant);
-
-	useEffect(() => {
-		if (product.id !== variant?.inventoryId && product.Variant.length > 1) {
-			const mostAffordableVariant = product.Variant.reduce(
-				(min, variant) => (variant.price < min.price ? variant : min),
-				product.Variant[0]
-			);
-			const defaultVariantId = mostAffordableVariant.id || undefined;
-			const selectedVariantId = variant?.id || defaultVariantId;
-			const selectedVariant = product.Variant.find((variant) => variant.id === selectedVariantId);
-			setVariant(selectedVariant);
-		}
-	}, [product, setVariant, variant]);
+	const [variant] = useAtom(cartVariant);
 
 	return (
 		<>

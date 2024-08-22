@@ -100,7 +100,7 @@ export const AddToCart: FC<Props> = ({product, shop}) => {
 						className={clsx(buttonClasses, {
 							'hover:opacity-90': true,
 						})}
-						disabled={isPending || loading}>
+						disabled={isPending || loading || !!!variant}>
 						{isPending || loading ? <Loader2 className='h-5 animate-spin' /> : <PlusIcon className='h-5' />}
 						Add To Cart
 					</button>

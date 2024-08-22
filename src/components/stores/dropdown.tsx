@@ -1,5 +1,5 @@
 'use client';
-import {Edit, Eye, ReceiptText, ShoppingCart} from 'lucide-react';
+import {Edit, Eye, ListOrdered, ReceiptText, ShoppingCart} from 'lucide-react';
 
 import {storeAtom} from '@/atoms/store';
 import {
@@ -42,6 +42,18 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 							<span>Create Receipt</span>
 						</DropdownMenuItem>
 					</Link>
+					<Link href={`/orders/${drop.store.id}`}>
+						<DropdownMenuItem className='cursor-pointer'>
+							<ListOrdered className='mr-2 h-4 w-4' />
+							<span>Orders</span>
+						</DropdownMenuItem>
+					</Link>
+					<Link href={`/inventory/${drop.store.id}`}>
+						<DropdownMenuItem className='cursor-pointer'>
+							<ShoppingCart className='mr-2 h-4 w-4' />
+							<span>Manage Inventory</span>
+						</DropdownMenuItem>
+					</Link>
 					<SheetTrigger asChild>
 						<DropdownMenuItem onClick={handleClick} className='cursor-pointer'>
 							<Eye className='mr-2 h-4 w-4' />
@@ -52,12 +64,6 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 						<DropdownMenuItem className='cursor-pointer'>
 							<Edit className='mr-2 h-4 w-4' />
 							<span>Edit Store</span>
-						</DropdownMenuItem>
-					</Link>
-					<Link href={`/inventory/${drop.store.id}`}>
-						<DropdownMenuItem className='cursor-pointer'>
-							<ShoppingCart className='mr-2 h-4 w-4' />
-							<span>Manage Inventory</span>
 						</DropdownMenuItem>
 					</Link>
 				</DropdownMenuGroup>

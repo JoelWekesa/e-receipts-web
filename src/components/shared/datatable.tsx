@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
 				/>
 			</div>
 			<div className='p-4'>
-				<Table>
+				<Table className='relative'>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id} className='bg-accent'>

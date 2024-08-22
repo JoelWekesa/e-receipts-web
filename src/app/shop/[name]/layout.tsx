@@ -9,19 +9,19 @@ import {options} from '../../api/auth/[...nextauth]/options';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Store Clients',
-		template: `%s - ${siteConfig.name}`,
+		default: 'Search',
+		template: `%s | ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
 	description: siteConfig.description,
 	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
 	authors: [
 		{
-			name: 'shadcn',
-			url: 'https://shadcn.com',
+			name: 'Joel Wekesa',
+			url: 'https://joelwekesa.com',
 		},
 	],
-	creator: 'shadcn',
+	creator: 'Joel Wekesa',
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@shadcn',
+		creator: '@joelwekesa_',
 	},
 	icons: {
 		icon: '/favicon.ico',
