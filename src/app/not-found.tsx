@@ -9,7 +9,7 @@ export default function NotFoundPage() {
 			<div className='mx-auto max-w-md text-center'>
 				<AlertTriangle className='mx-auto h-24 w-24 text-primary animate-pulse' />
 				<h1 className='mt-8 text-4xl font-bold tracking-tight text-foreground sm:text-5xl'>404 - Page Not Found</h1>
-				<p className='mt-6 text-xl text-muted-foreground'>Oops! It seems you've ventured into uncharted territory.</p>
+				<p className='mt-6 text-xl text-muted-foreground'>{`Oops! It seems you've ventured into uncharted territory.`}</p>
 				<div className='mt-10'>
 					<Link
 						href='/'

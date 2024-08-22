@@ -1,4 +1,4 @@
-import {Metadata, Viewport} from 'next';
+import {Viewport} from 'next';
 import '../styles/globals.css';
 
 import {Analytics} from '@/components/analytics';
@@ -8,59 +8,58 @@ import {TailwindIndicator} from '@/components/tailwind-indicator';
 import {ThemeSwitcher} from '@/components/theme-switcher';
 import {Toaster as NewYorkSonner} from '@/components/ui/sonner';
 import {Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster} from '@/components/ui/toaster';
-import {siteConfig} from '@/config/site';
 import {fontSans} from '@/lib/fonts';
 import {cn} from '@/lib/utils';
 import NextAuthProvider from '@/providers/next-auth';
 import ReactQueryProvider from '@/providers/react-query';
 import {getCookies, setCookie} from 'cookies-next';
-import {v4 as uuidv4} from 'uuid';
 import {Provider} from 'jotai';
+import {v4 as uuidv4} from 'uuid';
 
-export const metadata: Metadata = {
-	title: {
-		default: siteConfig.name,
-		template: `%s - ${siteConfig.name}`,
-	},
-	metadataBase: new URL(siteConfig.url),
-	description: siteConfig.description,
-	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
-	authors: [
-		{
-			name: 'Joel Wekesa',
-			url: 'https://joelwekesa.com',
-		},
-	],
-	creator: 'Joel Wekesa',
-	openGraph: {
-		type: 'website',
-		locale: 'en_US',
-		url: siteConfig.url,
-		title: siteConfig.name,
-		description: siteConfig.description,
-		siteName: siteConfig.name,
-		images: [
-			{
-				url: siteConfig.ogImage,
-				width: 1200,
-				height: 630,
-				alt: siteConfig.name,
-			},
-		],
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: siteConfig.name,
-		description: siteConfig.description,
-		images: [siteConfig.ogImage],
-		creator: '@joelwekesa_',
-	},
-	icons: {
-		icon: '/favicon.ico',
-		shortcut: '/favicon-16x16.png',
-		apple: '/apple-touch-icon.png',
-	},
-};
+// export const metadata: Metadata = {
+// 	// title: {
+// 	// 	default: siteConfig.name,
+// 	// 	template: `%s | ${siteConfig.name}`,
+// 	// },
+// 	// metadataBase: new URL(siteConfig.url),
+// 	description: siteConfig.description,
+// 	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
+// 	authors: [
+// 		{
+// 			name: 'Joel Wekesa',
+// 			url: 'https://joelwekesa.com',
+// 		},
+// 	],
+// 	creator: 'Joel Wekesa',
+// 	// openGraph: {
+// 	// 	type: 'website',
+// 	// 	locale: 'en_US',
+// 	// 	url: siteConfig.url,
+// 	// 	title: siteConfig.name,
+// 	// 	description: siteConfig.description,
+// 	// 	siteName: siteConfig.name,
+// 	// 	images: [
+// 	// 		{
+// 	// 			url: siteConfig.ogImage,
+// 	// 			width: 1200,
+// 	// 			height: 630,
+// 	// 			alt: siteConfig.name,
+// 	// 		},
+// 	// 	],
+// 	// },
+// 	twitter: {
+// 		card: 'summary_large_image',
+// 		title: siteConfig.name,
+// 		description: siteConfig.description,
+// 		images: [siteConfig.ogImage],
+// 		creator: '@joelwekesa_',
+// 	},
+// 	icons: {
+// 		icon: '/favicon.ico',
+// 		shortcut: '/favicon-16x16.png',
+// 		apple: '/apple-touch-icon.png',
+// 	},
+// };
 
 export const viewport: Viewport = {
 	themeColor: [

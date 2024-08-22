@@ -1,7 +1,9 @@
 import {ProductProvider} from '@/components/storefront/product/context/product-context';
 import {Gallery} from '@/components/storefront/product/gallery';
 import {ProductDescription} from '@/components/storefront/product/productdescription';
+import {siteConfig} from '@/config/site';
 import {getStoreInventoryItem} from '@/services/page/inventory/store/store-inventory-item';
+import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
 import {FC, Suspense} from 'react';
 
@@ -12,32 +14,29 @@ interface Props {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
 	const {inventory} = params;
 
-	const store = inventory[0];
+	const storeName = inventory[0];
+
 	const name = inventory[1];
 
-	const inventoryItem = await getStoreInventoryItem({store, name});
+	const [inventoryItem, storeItem] = await Promise.all([
+		getStoreInventoryItem({store: storeName, name}),
+		storeFromName({name: storeName}),
+	]);
 
-	const thumbnailImage = {
-		src: inventoryItem?.thumbnail || '',
-		altText: Math.random().toString(),
-	};
+	const shopUrl = `${siteConfig.url}/shop/${storeName}`;
 
-	const {
-		url,
-		width,
-		height,
-		altText: alt,
-	} = {
-		url: thumbnailImage?.src || '',
-		width: 1200,
-		height: 630,
-		altText: inventoryItem?.description || '',
-	};
+	const itemUrl = `${shopUrl}/item/${name}`;
+
 	const indexable = !!inventoryItem?.thumbnail;
 
 	return {
-		title: inventoryItem.name,
+		title: {
+			default: `${inventoryItem.name} | ${storeItem?.displayName}`,
+			template: `%s | ${storeItem?.displayName}`,
+		},
 		description: inventoryItem.description,
+		keywords: [inventoryItem.name, inventoryItem?.description || ''],
+		metadataBase: new URL(itemUrl),
 		robots: {
 			index: indexable,
 			follow: indexable,
@@ -46,18 +45,36 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 				follow: indexable,
 			},
 		},
-		openGraph: url
-			? {
-					images: [
-						{
-							url,
-							width,
-							height,
-							alt,
-						},
-					],
-			  }
-			: null,
+
+		openGraph: {
+			type: 'website',
+			locale: 'en_US',
+			url: itemUrl,
+			title: inventoryItem.name,
+			description: inventoryItem.description,
+			siteName: inventoryItem.name,
+			images: [
+				{
+					url: inventoryItem.thumbnail || '',
+					width: 1200,
+					height: 630,
+					alt: inventoryItem.name,
+				},
+			],
+		},
+
+		twitter: {
+			card: 'summary_large_image',
+			title: inventoryItem.name,
+			description: inventoryItem.description,
+			images: [inventoryItem.thumbnail || ''],
+			creator: '@joelwekesa_',
+		},
+		icons: {
+			icon: '/favicon.ico',
+			shortcut: '/favicon-16x16.png',
+			apple: '/apple-touch-icon.png',
+		},
 	};
 }
 

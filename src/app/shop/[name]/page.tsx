@@ -1,31 +1,24 @@
 import {ProductList} from '@/components/storefront/products/product-list';
+import {siteConfig} from '@/config/site';
 import {getStoreProductStoreFront} from '@/services/page/inventory/store/store-variants';
 import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 
 export async function generateMetadata({params}: {params: {name: string}}): Promise<Metadata> {
-	const {name} = params;
-	const shop = await storeFromName({name});
+	const {name: storeName} = params;
 
-	if (!shop) return notFound();
+	const shopUrl = `${siteConfig.url}/shop/${storeName}`;
 
-	const {
-		url,
-		width,
-		height,
-		altText: alt,
-	} = {
-		url: shop.logo,
-		width: 1200,
-		height: 630,
-		altText: shop.displayName,
-	};
-	const indexable = !!shop.logo;
+	const store = await storeFromName({name: storeName});
+
+	const indexable = !!store?.logo;
 
 	return {
-		title: shop.displayName,
-		description: shop.displayName,
+		title: `${store.displayName} | ${siteConfig.name}`,
+		description: store.displayName,
+		keywords: [store.displayName, store.address],
+		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
 			follow: indexable,
@@ -34,18 +27,36 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 				follow: indexable,
 			},
 		},
-		openGraph: url
-			? {
-					images: [
-						{
-							url,
-							width,
-							height,
-							alt,
-						},
-					],
-			  }
-			: null,
+
+		openGraph: {
+			type: 'website',
+			locale: 'en_US',
+			url: shopUrl,
+			title: store.displayName,
+			description: store.displayName,
+			siteName: store.displayName,
+			images: [
+				{
+					url: store.logo,
+					width: 1200,
+					height: 630,
+					alt: store.name,
+				},
+			],
+		},
+
+		twitter: {
+			card: 'summary_large_image',
+			title: store.displayName,
+			description: store.displayName,
+			images: [store.logo],
+			creator: '@joelwekesa_',
+		},
+		icons: {
+			icon: '/favicon.ico',
+			shortcut: '/favicon-16x16.png',
+			apple: '/apple-touch-icon.png',
+		},
 	};
 }
 

@@ -37,7 +37,7 @@ const OrderButton: FC<ShippingProps> = ({shipping, token}) => {
 
 	useEffect(() => {
 		router.prefetch(`/shop/checkout/${shipping?.shop}/order`);
-	}, [shipping]);
+	}, [router, shipping]);
 
 	const {mutate: add, isPending} = useCreateOrder(successFn);
 

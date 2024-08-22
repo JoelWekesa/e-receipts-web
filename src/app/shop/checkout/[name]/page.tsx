@@ -1,5 +1,6 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import CheckOutComponent from '@/components/storefront/checkout';
+import {siteConfig} from '@/config/site';
 import getShipping from '@/services/page/shipping/get';
 import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
@@ -20,22 +21,17 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 
 	if (!shop) return notFound();
 
-	const {
-		url,
-		width,
-		height,
-		altText: alt,
-	} = {
-		url: shop.logo,
-		width: 1200,
-		height: 630,
-		altText: shop.displayName,
-	};
-	const indexable = !!shop.logo;
+	const shopUrl = `${siteConfig.url}/shop/${name}`;
+
+	const store = await storeFromName({name: name});
+
+	const indexable = !!store?.logo;
 
 	return {
-		title: shop.displayName,
-		description: shop.displayName,
+		title: `${store.displayName} | ${siteConfig.name}`,
+		description: store.displayName,
+		keywords: [store.displayName, store.address],
+		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
 			follow: indexable,
@@ -44,18 +40,36 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 				follow: indexable,
 			},
 		},
-		openGraph: url
-			? {
-					images: [
-						{
-							url,
-							width,
-							height,
-							alt,
-						},
-					],
-			  }
-			: null,
+
+		openGraph: {
+			type: 'website',
+			locale: 'en_US',
+			url: shopUrl,
+			title: store.displayName,
+			description: store.displayName,
+			siteName: store.displayName,
+			images: [
+				{
+					url: store.logo,
+					width: 1200,
+					height: 630,
+					alt: store.name,
+				},
+			],
+		},
+
+		twitter: {
+			card: 'summary_large_image',
+			title: store.displayName,
+			description: store.displayName,
+			images: [store.logo],
+			creator: '@joelwekesa_',
+		},
+		icons: {
+			icon: '/favicon.ico',
+			shortcut: '/favicon-16x16.png',
+			apple: '/apple-touch-icon.png',
+		},
 	};
 }
 
