@@ -35,4 +35,4 @@ jobs:
      run: |
       echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       docker build . --file Dockerfile --tag $DOCKER_USERNAME/eweb:${{ env.TAG }}
-      docker push $DOCKER_USERNAME/e-api:${{ env.TAG }}
+      docker push $DOCKER_USERNAME/eweb:${{ env.TAG }}
