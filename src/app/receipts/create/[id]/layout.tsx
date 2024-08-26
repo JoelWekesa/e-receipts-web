@@ -17,7 +17,7 @@ const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboa
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Dashboard',
+		default: 'Send Receipt',
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),

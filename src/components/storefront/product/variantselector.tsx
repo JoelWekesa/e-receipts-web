@@ -36,6 +36,7 @@ export function VariantSelector({options, variants}: {options: Option[]; variant
 		}
 
 		if (Object.keys(state).length !== optionKeys.length) {
+			setSelectedVariant(undefined);
 			return;
 		}
 
