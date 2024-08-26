@@ -1,0 +1,29 @@
+trigger:
+- dev
+
+resources:
+- repo: self
+
+variables:
+  # Set the tag to the current timestamp
+  tag: "$(Build.SourceBranchName)-$(date +%Y-%m-%d_%H%M%S)"
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - script: |
+        echo "##vso[task.setvariable variable=tag]$(date +%Y-%m-%d_%H%M%S)"
+      displayName: Set image tag with timestamp
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'docker'
+        repository: 'joelwekesa/eweb'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'
