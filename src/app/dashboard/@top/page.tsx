@@ -30,6 +30,8 @@ const DynamicTopsComponent = dynamic(() => import('../../../components/dashboard
 const Top = async () => {
 	const session = await getServerSession(options);
 
+	console.log({id: session?.accessToken});
+
 	const data = await getAllData({
 		token: session?.accessToken || '',
 	});
