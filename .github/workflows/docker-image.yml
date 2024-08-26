@@ -17,8 +17,8 @@ jobs:
      id: vars
      run: |
       COMMIT_COUNT=$(git rev-list --count HEAD)
-      TIMESTAMP=$(date +"%Y-%m-%d~%H%M%S")
-      echo "TAG=${COMMIT_COUNT}-${TIMESTAMP}" >> $GITHUB_ENV
+      TIMESTAMP=$(date +"%Y-%m-%d_%H%M%S")
+      echo "TAG=${TIMESTAMP}" >> $GITHUB_ENV
 
    - name: Build and Push Docker Image
      env:
