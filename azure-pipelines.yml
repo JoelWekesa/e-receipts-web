@@ -36,11 +36,6 @@ stages:
       displayName: Build Docker Image
       env:
         DOCKER_BUILDKIT: 1 # Enable buildkit for better output
-
-    # Push the Docker image to registry
-    - task: Docker@2
-      env: 
-        DOCKER_BUILDKIT: 1
         NEXT_GOOGLE_CLIENT_ID: $(NEXT_GOOGLE_CLIENT_ID)
         NEXT_GOOGLE_CLIENT_SECRET: $(NEXT_GOOGLE_CLIENT_SECRET)
         NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
@@ -49,6 +44,9 @@ stages:
         NEXT_PUBLIC_PER_PAGE: $(NEXT_PUBLIC_PER_PAGE)
         NEXT_AUTH_SECRET: $(NEXT_AUTH_SECRET)
         NEXT_AUTH_URL: $(NEXT_AUTH_URL)
+
+    # Push the Docker image to registry
+    - task: Docker@2
       inputs:
         containerRegistry: 'docker'
         repository: 'joelwekesa/eweb'
