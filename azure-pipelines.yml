@@ -27,7 +27,14 @@ stages:
         script: |
           cat <<EOT > .env
           ENVIRONMENT_NAME=production
-          NEXT_PUBLIC_WEBSITE_URL=$( parameters.public_url )
+          NEXT_GOOGLE_CLIENT_ID=$(NEXT_GOOGLE_CLIENT_ID)
+          NEXT_GOOGLE_CLIENT_SECRET=$(NEXT_GOOGLE_CLIENT_SECRET)
+          NEXT_PUBLIC_API_URL=$(NEXT_PUBLIC_API_URL)
+          NEXT_PUBLIC_DOMAIN=$(NEXT_PUBLIC_DOMAIN)
+          NEXT_PUBLIC_INVENTORY_URL=$(NEXT_PUBLIC_INVENTORY_URL)
+          NEXT_PUBLIC_PER_PAGE=$(NEXT_PUBLIC_PER_PAGE)
+          NEXT_AUTH_SECRET=$(NEXT_AUTH_SECRET)
+          NEXT_AUTH_URL=$(NEXT_AUTH_URL)
           // put the rest of your env vars here
           EOT
 
@@ -43,14 +50,6 @@ stages:
       displayName: Build Docker Image
       env:
         DOCKER_BUILDKIT: 1 # Enable buildkit for better output
-        NEXT_GOOGLE_CLIENT_ID: $(NEXT_GOOGLE_CLIENT_ID)
-        NEXT_GOOGLE_CLIENT_SECRET: $(NEXT_GOOGLE_CLIENT_SECRET)
-        NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-        NEXT_PUBLIC_DOMAIN: $(NEXT_PUBLIC_DOMAIN)
-        NEXT_PUBLIC_INVENTORY_URL: $(NEXT_PUBLIC_INVENTORY_URL)
-        NEXT_PUBLIC_PER_PAGE: $(NEXT_PUBLIC_PER_PAGE)
-        NEXT_AUTH_SECRET: $(NEXT_AUTH_SECRET)
-        NEXT_AUTH_URL: $(NEXT_AUTH_URL)
 
     # Push the Docker image to registry
     - task: Docker@2
