@@ -8,3 +8,7 @@ README.md
 !.next/standalone
 .git
 build.sh
+.env.local
+.env.test
+.env.production
+
