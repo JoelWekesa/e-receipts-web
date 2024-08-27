@@ -5,8 +5,8 @@ resources:
 - repo: self
 
 variables:
-  # Set the tag to the current timestamp
-  tag: "$(Build.SourceBranchName)-$(date +%Y-%m-%d_%H%M%S)"
+  # Set the tag using the build ID which is unique for each build
+  tag: "$(Build.SourceBranchName)-$(Build.BuildId)"
 
 stages:
 - stage: Build
@@ -17,7 +17,6 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    
 
     # Create .env
     - task: Bash@3
@@ -35,23 +34,22 @@ stages:
           NEXT_PUBLIC_PER_PAGE=$(NEXT_PUBLIC_PER_PAGE)
           NEXTAUTH_SECRET=$(NEXTAUTH_SECRET)
           NEXTAUTH_URL=$(NEXTAUTH_URL)
-          // put the rest of your env vars here
+          # put the rest of your env vars here
           EOT
 
-    # Set image tag with timestamp
-    - script: |
-        echo "##vso[task.setvariable variable=tag]$(date +%Y-%m-%d_%H%M%S)"
-      displayName: Set image tag with timestamp
-
-    # Adding logging for Docker build process
+    # Logging the image tag for debugging purposes
     - script: |
         echo "Building Docker image with tag: $(tag)"
+      displayName: Log Image Tag
+
+    # Build the Docker image with the specified tag
+    - script: |
         docker build -f Dockerfile -t joelwekesa/eweb:$(tag) .
       displayName: Build Docker Image
       env:
         DOCKER_BUILDKIT: 1 # Enable buildkit for better output
 
-    # Push the Docker image to registry
+    # Push the Docker image to the registry
     - task: Docker@2
       inputs:
         containerRegistry: 'docker'
