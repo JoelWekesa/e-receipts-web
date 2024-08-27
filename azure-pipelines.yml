@@ -30,6 +30,12 @@ stages:
         DOCKER_BUILDKIT: 1 # Enable buildkit for better output
 
     # Push the Docker image to registry
+    
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: 'Install Node.js'
+      
     - task: Docker@2
       inputs:
         containerRegistry: 'docker'
