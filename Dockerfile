@@ -63,6 +63,7 @@ USER nextjs
 
 EXPOSE 5300
 
-ENV PORT 5300
+ENV PORT=5300
+
 
 CMD ["node", "server.js"]
