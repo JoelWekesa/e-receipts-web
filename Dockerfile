@@ -4,16 +4,16 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-ENV BUILD_STANDALONE true
+ENV BUILD_STANDALONE=true
 
 
 # Install dependencies only when needed
 FROM base AS deps
-
-RUN apk add --no-cache libc6-compat
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 WORKDIR /eweb
 
+RUN rm -rf node_modules
+RUN rm -rf yarn.lock
 
 # Install dependencies based on the preferred package manager
 COPY package.json pnpm-lock.yaml* ./
@@ -63,4 +63,3 @@ EXPOSE 5300
 ENV PORT 5300
 
 CMD ["node", "server.js"]
-
