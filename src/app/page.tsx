@@ -1,9 +1,7 @@
 import LandingComponent from '@/components/landing';
 import {SiteHeader} from '@/components/site-header';
-import {getServerSession} from 'next-auth';
-import {options} from './api/auth/[...nextauth]/options';
-import {Metadata} from 'next';
 import {siteConfig} from '@/config/site';
+import {Metadata} from 'next';
 
 export const metadata: Metadata = {
 	title: {
@@ -51,10 +49,6 @@ export const metadata: Metadata = {
 };
 
 const HomePage = async () => {
-	const session = await getServerSession(options);
-
-	console.log({id: session?.accessToken});
-
 	return (
 		<>
 			<SiteHeader storeId='' />
