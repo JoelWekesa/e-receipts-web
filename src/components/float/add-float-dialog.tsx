@@ -11,6 +11,7 @@ import {Button} from '../ui/button';
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from '../ui/dialog';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
+import useFloatTopUps from '@/services/float/top-ups';
 
 interface Props {
 	open: boolean;
@@ -36,6 +37,7 @@ const validationSchema = z.object({
 });
 
 const AddFloatDialog: FC<Props> = ({open, onClose, storeFloat}) => {
+	const {refetch} = useFloatTopUps({floatId: storeFloat?.id || '', topUps: []});
 	const form = useForm<z.infer<typeof validationSchema>>({
 		resolver: zodResolver(validationSchema),
 	});
@@ -49,6 +51,7 @@ const AddFloatDialog: FC<Props> = ({open, onClose, storeFloat}) => {
 	const successFn = () => {
 		onClose();
 		form.reset();
+		refetch();
 	};
 
 	const {mutate, isPending} = useFloatTopUp(successFn);

@@ -22,7 +22,7 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
-	const nameRegex = /^[a-zA-Z][a-zA-Z0-9_.]{2,15}$/;
+	const nameRegex = /^[a-zA-Z][a-zA-Z0-9_ .]{2,15}$/;
 	const formSchema = z.object({
 		name: z.string().min(3, {message: 'Name is required'}).regex(nameRegex, {message: 'Invalid name'}),
 		address: z.string().min(1, {message: 'Address is required'}),

@@ -2,18 +2,20 @@
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {Progress} from '@/components/ui/progress';
-import {Banknote, Store} from 'lucide-react';
+import {StoreFloat} from '@/models/floats/store';
+import useOptIn from '@/services/float/optin';
+import useStoreFloat from '@/services/float/store-float';
+import {Banknote, Loader2, Store} from 'lucide-react';
+import {useSession} from 'next-auth/react';
 import {FC, useState} from 'react';
 import AddFloatDialog from './add-float-dialog';
-import {StoreFloat} from '@/models/floats/store';
-import useStoreFloat from '@/services/float/store-float';
-import {useSession} from 'next-auth/react';
 
 interface Props {
 	storeFloat: StoreFloat | null;
+	storeId: string;
 }
 
-const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat}) => {
+const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat, storeId}) => {
 	const [currentStep, setCurrentStep] = useState(1);
 
 	const {data: session} = useSession({
@@ -22,7 +24,9 @@ const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat}) => {
 
 	const token = session?.accessToken || '';
 
-	const {data} = useStoreFloat({token, storeId: storeFloat?.storeId || '', storeFloat});
+	const {data} = useStoreFloat({token, storeId, storeFloat});
+
+	const {mutate, isPending} = useOptIn();
 
 	const steps = [
 		{
@@ -38,7 +42,10 @@ const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat}) => {
 		},
 	];
 
-	const handleNext = () => {
+	const handleNext = async () => {
+		if (!data) {
+			await mutate({token, storeId});
+		}
 		if (currentStep < steps.length) {
 			setCurrentStep(currentStep + 1);
 		}
@@ -83,7 +90,10 @@ const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat}) => {
 							Previous
 						</Button>
 
-						<Button onClick={handleNext}>{currentStep === steps.length ? 'Add Float' : !data ? 'Opt In' : 'Next'}</Button>
+						<Button onClick={handleNext} disabled={isPending}>
+							{isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+							{currentStep === steps.length ? 'Add Float' : !data ? 'Opt In' : 'Next'}
+						</Button>
 					</div>
 				</CardContent>
 			</Card>

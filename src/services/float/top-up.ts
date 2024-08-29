@@ -20,7 +20,9 @@ const useFloatTopUp = (successFn: () => void) => {
 
     const toInvalidate = [
         'storeFloat',
-        'floatTopUps'
+        'floatTopUps',
+        'transaction',
+        'transactions'
     ]
 
 

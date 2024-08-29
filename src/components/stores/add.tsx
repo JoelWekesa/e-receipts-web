@@ -17,7 +17,7 @@ const AddStore: FC<{token: string}> = ({token}) => {
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
-	const nameRgex = /^[a-zA-Z][a-zA-Z0-9_.]{2,15}$/;
+	const nameRgex = /^[a-zA-Z][a-zA-Z0-9_ .]{2,15}$/;
 	const formSchema = z.object({
 		name: z.string().min(3, {message: 'Name is required'}).regex(nameRgex, {message: 'Invalid name'}),
 		address: z.string().min(1, {message: 'Address is required'}),

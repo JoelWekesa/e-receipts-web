@@ -20,15 +20,17 @@ const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId}) => {
 	});
 
 	const token = session?.accessToken || '';
-	const {data = []} = useFloatTopUps({floatId: storeFloat?.id || '', topUps});
+
 	const {data: float} = useStoreFloat({token, storeId, storeFloat});
+
+	const {data = []} = useFloatTopUps({floatId: float?.id || '', topUps});
 
 	return (
 		<>
 			{data.length > 0 ? (
 				<StoreFloatTopUps topUps={data} storeFloat={float} storeId={storeId} />
 			) : (
-				<StoreFloatOnboardingScreen storeFloat={float} />
+				<StoreFloatOnboardingScreen storeFloat={float} storeId={storeId} />
 			)}
 		</>
 	);
