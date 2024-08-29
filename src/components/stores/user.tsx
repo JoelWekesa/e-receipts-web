@@ -19,6 +19,7 @@ import {ColumnDef} from '@tanstack/react-table';
 import {useAtom} from 'jotai';
 import {ArrowUpDown, LayoutDashboard, Loader2, MoreHorizontal, Trash2} from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {FC, useState} from 'react';
 import {DataTable} from '../shared/datatable';
@@ -28,7 +29,6 @@ import {Input} from '../ui/input';
 import {Sheet, SheetClose, SheetContent, SheetFooter} from '../ui/sheet';
 import StoreButtonDropDown from './dropdown';
 import StoreComponent from './store';
-import Link from 'next/link';
 
 export interface Props extends StoreFetch {
 	total: Total;
@@ -39,7 +39,7 @@ const UserStores = ({initialData, token, total}: Props) => {
 
 	const {data, isLoading} = useUserStores({initialData, token});
 
-	const [store, setStore] = useAtom(storeAtom);
+	const [store] = useAtom(storeAtom);
 
 	const url = 'inventory/all/value';
 
@@ -47,8 +47,6 @@ const UserStores = ({initialData, token, total}: Props) => {
 		url,
 		initialData: total,
 	});
-
-	const router = useRouter();
 
 	const columns: ColumnDef<Store>[] = [
 		{
@@ -134,9 +132,7 @@ const UserStores = ({initialData, token, total}: Props) => {
 								label: 'Store Actions',
 								store: row.original,
 							}}>
-							<Button onClick={() => handleEditStore(row.original)} size='icon' variant='ghost'>
-								<MoreHorizontal className='mr-2 h-4 w-4' />
-							</Button>
+							<MoreHorizontal className='mr-2 h-4 w-4' />
 						</StoreButtonDropDown>
 					</div>
 				);
@@ -151,11 +147,6 @@ const UserStores = ({initialData, token, total}: Props) => {
 			</div>
 		);
 	}
-
-	const handleEditStore = (store: Store) => {
-		router.push('/stores/update?id=' + store.id);
-		setStore(store);
-	};
 
 	const handleDeleteDialog = () => {
 		setOpen(!open);

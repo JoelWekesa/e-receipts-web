@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className={`rounded-md ${black && 'bg-[#000000]'}`}>
+		<div className={`rounded-md ${black && 'dark:bg-[#000000]'}`}>
 			{title && (
 				<div className='mb-6 p-5'>
 					<h2 className='text-2xl font-bold text-primary'>{title}</h2>

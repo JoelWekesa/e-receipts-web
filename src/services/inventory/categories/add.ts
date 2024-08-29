@@ -27,6 +27,7 @@ export const useAddCategory = (
             toast("Category Added", {
                 icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                position: 'top-right'
             })
 
 
