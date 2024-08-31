@@ -14,7 +14,7 @@ import {Input} from '../ui/input';
 
 const AddStore: FC<{token: string}> = ({token}) => {
 	const router = useRouter();
-	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
+	const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 	const regex = /^(07|01)\d{8}$/;
 	const nameRgex = /^[a-zA-Z][a-zA-Z0-9_ .]{2,15}$/;
