@@ -45,7 +45,7 @@ stages:
        # Adding logging for Docker build process
        - script: |
           echo "Building Docker image with tag: $(tag)"
-          docker build -f Dockerfile -t joelwekesa/eweb:$(tag) .
+          docker build --build-arg PORT=$(PORT) -f Dockerfile -t joelwekesa/eweb:$(tag) .
          displayName: Build Docker Image
          env:
           DOCKER_BUILDKIT: 1 # Enable buildkit for better output
