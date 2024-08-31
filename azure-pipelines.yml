@@ -8,7 +8,7 @@ variables:
  # Set the tag to the current timestamp
  tag: '$(Build.SourceBranchName)-$(date +%Y-%m-%d_%H%M%S)'
 
- PORT: 4000
+ PORT: 5300
 
 stages:
  - stage: Build
