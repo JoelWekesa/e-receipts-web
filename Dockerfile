@@ -1,5 +1,7 @@
 FROM --platform=linux/amd64 node:20-slim as base
 
+ARG PORT=3000
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -58,9 +60,9 @@ COPY --from=builder --chown=nextjs:nodejs /eweb/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 5300
+EXPOSE $PORT
 
-ENV PORT=5300
+ENV PORT=$PORT
 
 
 CMD ["node", "server.js"]
