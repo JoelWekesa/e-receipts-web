@@ -1,5 +1,5 @@
 export const siteConfig = {
-	name: 'E-Receipts',
+	name: 'eStore',
 	url: 'https://testeweb.codelabskenya.com',
 	ogImage: 'https://receipts-ke.s3.amazonaws.com/logo/opengraph.png',
 	description:
