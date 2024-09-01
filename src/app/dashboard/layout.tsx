@@ -23,7 +23,7 @@ const DynamicTeamSwitcher = dynamic(() => import('../../components/dashboard/Tea
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Dashboard',
+		default: `Dashboard | ${siteConfig.name}`,
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),

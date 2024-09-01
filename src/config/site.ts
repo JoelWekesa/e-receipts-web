@@ -1,9 +1,9 @@
 export const siteConfig = {
 	name: 'eStore',
-	url: process.env.NEXT_PUBLIC_DOMAIN || 'https://estore.ke',
+	url: process.env.NEXT_PUBLIC_DOMAIN || '',
 	ogImage: 'https://receipts-ke.s3.amazonaws.com/logo/opengraph.png',
 	description:
-		'The most comprehensive E-Receipts Platform. Say goodbye to messy wallets, fading ink, and lost receipts! E-Receipts revolutionizes the way businesses send and customers receive receipts.',
+		'Say goodbye to paper clutter and lost receipts! eStore’s AI-powered platform simplifies how businesses track sales, manage inventory, and issue digital receipts effortlessly.',
 	links: {
 		twitter: 'https://x.com/joelwekesa_',
 		github: 'https://github.com/JoelWekesa',

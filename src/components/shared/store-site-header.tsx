@@ -1,5 +1,6 @@
-import Link from 'next/link';
+'use client';
 
+import Link from 'next/link';
 import {CommandMenu} from '@/components/command-menu';
 import {Icons} from '@/components/icons';
 import {MobileNav} from '@/components/mobile-nav';
@@ -10,6 +11,7 @@ import {FC} from 'react';
 import UserNav from '../dashboard/UserNav';
 import {buttonVariants} from '../ui/button';
 import {StoreNavSite} from './store-nav';
+import {useTheme} from 'next-themes';
 
 interface Props {
 	show?: boolean;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export const StoreSiteHeader: FC<Props> = ({show, storeId}) => {
+	const {theme} = useTheme();
+
 	return (
 		<header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='container flex h-14 max-w-screen-2xl items-center'>
@@ -49,7 +53,7 @@ export const StoreSiteHeader: FC<Props> = ({show, storeId}) => {
 									}),
 									'w-9 px-0'
 								)}>
-								<Icons.twitter className='h-3 w-3 fill-current' />
+								<Icons.twitter className='h-3 w-3 fill-current' color={theme} />
 								<span className='sr-only'>Twitter</span>
 							</div>
 						</Link>

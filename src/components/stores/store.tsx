@@ -2,14 +2,35 @@
 import {storeAtom} from '@/atoms/store';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
-import {Calendar, Facebook, FileDigit, Instagram, Share, Twitter} from 'lucide-react';
+import {Calendar, FileDigit, Share} from 'lucide-react';
+import {useTheme} from 'next-themes';
 import Image from 'next/image';
 import {FC, ReactNode} from 'react';
+import {Icons} from '../icons';
 import CopyItem from '../shared/copy';
-import {Button} from '../ui/button';
+
+export enum Platform {
+	facebook = 'facebook',
+	twitter = 'twitter',
+	whatsapp = 'whatsapp',
+}
+
+export const socialMediaLinks: any = {
+	facebook: 'https://www.facebook.com/sharer/sharer.php?u=',
+	twitter: 'https://twitter.com/intent/tweet?url=',
+	whatsapp: 'https://api.whatsapp.com/send?text=',
+};
+
+export const shareToSocialMedia = (platform: Platform, urlToShare: string) => {
+	const shareUrl = `${socialMediaLinks[platform]}${encodeURIComponent(urlToShare)}`.trim();
+	window.open(shareUrl, '_blank', 'noopener,noreferrer');
+};
 
 const StoreComponent = () => {
 	const [store, _] = useAtom(storeAtom);
+
+	const {theme} = useTheme();
+
 	return (
 		<div className='p-2 flex flex-col gap-5'>
 			<Wrapper>
@@ -94,18 +115,38 @@ const StoreComponent = () => {
 						</RowWrap>
 					</div>
 
-					<div className='w-3/5 flex flex-row gap-2'>
-						<Button variant='ghost' size='icon'>
-							<Instagram />
-						</Button>
-						<Button variant='ghost' size='icon'>
-							<Facebook />
-						</Button>
-						<Button variant='ghost' size='icon'>
-							<Twitter />
-						</Button>
+					<div className='w-3/5 flex flex-row gap-4'>
+						<Icons.whatsapp
+							className='h-5 w-5'
+							onClick={() => {
+								shareToSocialMedia(
+									Platform.whatsapp,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								);
+							}}
+						/>
+						<Icons.faceBook
+							className='h-5 w-5'
+							onClick={() => {
+								shareToSocialMedia(
+									Platform.facebook,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								);
+							}}
+						/>
 
-						<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`} />
+						<Icons.twitter
+							className='h-5 w-5'
+							color={theme}
+							onClick={() =>
+								shareToSocialMedia(
+									Platform.twitter,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								)
+							}
+						/>
+
+						<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`} />
 					</div>
 				</RowWrap>
 			</Wrapper>

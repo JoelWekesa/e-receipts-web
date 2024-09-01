@@ -7,7 +7,7 @@ import {getSetting} from '@/services/page/settings/get-setting';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Settings',
+		default: `Settings | ${siteConfig.name}`,
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
 	authors: [
 		{
-			name: 'shadcn',
-			url: 'https://shadcn.com',
+			name: 'Joel Wekesa',
+			url: 'https://joelwekesa.com',
 		},
 	],
-	creator: 'shadcn',
+	creator: 'joelwekesa',
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@shadcn',
+		creator: '@joelwekesa_',
 	},
 	icons: {
 		icon: '/favicon.ico',
