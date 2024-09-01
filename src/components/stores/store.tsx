@@ -22,7 +22,7 @@ export const socialMediaLinks: any = {
 };
 
 export const shareToSocialMedia = (platform: Platform, urlToShare: string) => {
-	const shareUrl = `${socialMediaLinks[platform]}${encodeURIComponent(urlToShare)}`;
+	const shareUrl = `${socialMediaLinks[platform]}${encodeURIComponent(urlToShare)}`.trim();
 	window.open(shareUrl, '_blank', 'noopener,noreferrer');
 };
 
