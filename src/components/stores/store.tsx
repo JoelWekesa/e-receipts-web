@@ -119,23 +119,34 @@ const StoreComponent = () => {
 						<Icons.whatsapp
 							className='h-5 w-5'
 							onClick={() => {
-								shareToSocialMedia(Platform.whatsapp, `${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`);
+								shareToSocialMedia(
+									Platform.whatsapp,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								);
 							}}
 						/>
 						<Icons.faceBook
 							className='h-5 w-5'
 							onClick={() => {
-								shareToSocialMedia(Platform.facebook, `${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`);
+								shareToSocialMedia(
+									Platform.facebook,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								);
 							}}
 						/>
 
 						<Icons.twitter
 							className='h-5 w-5'
 							color={theme}
-							onClick={() => shareToSocialMedia(Platform.twitter, `${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`)}
+							onClick={() =>
+								shareToSocialMedia(
+									Platform.twitter,
+									`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`
+								)
+							}
 						/>
 
-						<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`} />
+						<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/${encodeURIComponent(`${store?.name}`)}`} />
 					</div>
 				</RowWrap>
 			</Wrapper>

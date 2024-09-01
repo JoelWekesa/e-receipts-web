@@ -30,7 +30,7 @@ const SeeProductHeader: FC<Props> = ({hide, inventory, isTeam, teamId}) => {
 						onClick={() => {
 							shareToSocialMedia(
 								Platform.whatsapp,
-								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(`${inventory.name}`)}`
 							);
 						}}
 					/>
@@ -39,7 +39,7 @@ const SeeProductHeader: FC<Props> = ({hide, inventory, isTeam, teamId}) => {
 						onClick={() => {
 							shareToSocialMedia(
 								Platform.facebook,
-								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(`${inventory.name}`)}`
 							);
 						}}
 					/>
@@ -50,12 +50,16 @@ const SeeProductHeader: FC<Props> = ({hide, inventory, isTeam, teamId}) => {
 						onClick={() =>
 							shareToSocialMedia(
 								Platform.twitter,
-								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+								`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(`${inventory.name}`)}`
 							)
 						}
 					/>
 
-					<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`} />
+					<CopyItem
+						copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(
+							`${inventory.name}`
+						)}`}
+					/>
 				</div>
 			</div>
 			{!hide && (

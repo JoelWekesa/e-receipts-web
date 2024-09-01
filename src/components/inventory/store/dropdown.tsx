@@ -72,7 +72,9 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 										onClick={() => {
 											shareToSocialMedia(
 												Platform.whatsapp,
-												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(
+													`${inventory.name}`
+												)}`
 											);
 										}}
 									/>
@@ -81,7 +83,9 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 										onClick={() => {
 											shareToSocialMedia(
 												Platform.facebook,
-												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(
+													`${inventory.name}`
+												)}`
 											);
 										}}
 									/>
@@ -92,12 +96,18 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 										onClick={() =>
 											shareToSocialMedia(
 												Platform.twitter,
-												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(
+													`${inventory.name}`
+												)}`
 											)
 										}
 									/>
 
-									<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`} />
+									<CopyItem
+										copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${encodeURIComponent(
+											`${inventory.name}`
+										)}`}
+									/>
 								</div>
 							</div>
 						</DropdownMenuItem>
