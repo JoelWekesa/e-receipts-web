@@ -7,7 +7,7 @@ import {getSetting} from '@/services/page/settings/get-setting';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Store Management',
+		default: `Stores Management | ${siteConfig.name}`,
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
