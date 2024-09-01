@@ -3,7 +3,7 @@ export const siteConfig = {
 	url: 'https://testeweb.codelabskenya.com',
 	ogImage: 'https://receipts-ke.s3.amazonaws.com/logo/opengraph.png',
 	description:
-		'The most comprehensive E-Receipts Platform. Say goodbye to messy wallets, fading ink, and lost receipts! E-Receipts revolutionizes the way businesses send and customers receive receipts.',
+		'Say goodbye to paper clutter and lost receipts! eStore’s AI-powered platform simplifies how businesses track sales, manage inventory, and issue digital receipts effortlessly.',
 	links: {
 		twitter: 'https://x.com/joelwekesa_',
 		github: 'https://github.com/JoelWekesa',

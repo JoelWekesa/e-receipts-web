@@ -11,6 +11,7 @@ import {FC} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
+import {Icons} from '../icons';
 
 const formSchema = z.object({
 	username: z.string().refine(() => usernamePattern || emailPattern || phoneNumberPattern, {
@@ -90,6 +91,7 @@ export const LoginForm: FC<{path?: string}> = ({path}) => {
 								callbackUrl: path || '/',
 							})
 						}>
+						<Icons.google className='h-5 w-5' />
 						Continue With Google
 					</Button>
 				</Form>

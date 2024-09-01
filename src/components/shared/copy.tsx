@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {Button} from '../ui/button';
-import {Copy, Check} from 'lucide-react';
+import {Check, Copy} from 'lucide-react';
+import {useState} from 'react';
 const CopyItem = ({copy}: {copy: string}) => {
 	const [copied, setCopied] = useState(false);
 
@@ -14,13 +13,7 @@ const CopyItem = ({copy}: {copy: string}) => {
 			setCopied(false);
 		}, 2000);
 	};
-	return (
-		<div>
-			<Button variant='outline' size='icon' onClick={handleCopy}>
-				{copied ? <Check /> : <Copy />}
-			</Button>
-		</div>
-	);
+	return <div>{copied ? <Check onClick={handleCopy} /> : <Copy onClick={handleCopy} />}</div>;
 };
 
 export default CopyItem;
