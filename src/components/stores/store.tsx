@@ -15,21 +15,21 @@ export enum Platform {
 	whatsapp = 'whatsapp',
 }
 
+export const socialMediaLinks: any = {
+	facebook: 'https://www.facebook.com/sharer/sharer.php?u=',
+	twitter: 'https://twitter.com/intent/tweet?url=',
+	whatsapp: 'https://api.whatsapp.com/send?text=',
+};
+
+export const shareToSocialMedia = (platform: Platform, urlToShare: string) => {
+	const shareUrl = `${socialMediaLinks[platform]}${encodeURIComponent(urlToShare)}`;
+	window.open(shareUrl, '_blank', 'noopener,noreferrer');
+};
+
 const StoreComponent = () => {
 	const [store, _] = useAtom(storeAtom);
 
 	const {theme} = useTheme();
-
-	const socialMediaLinks: any = {
-		facebook: 'https://www.facebook.com/sharer/sharer.php?u=',
-		twitter: 'https://twitter.com/intent/tweet?url=',
-		whatsapp: 'https://api.whatsapp.com/send?text=',
-	};
-
-	const shareToSocialMedia = (platform: Platform, urlToShare: string) => {
-		const shareUrl = `${socialMediaLinks[platform]}${encodeURIComponent(urlToShare)}`;
-		window.open(shareUrl, '_blank', 'noopener,noreferrer');
-	};
 
 	return (
 		<div className='p-2 flex flex-col gap-5'>
@@ -122,7 +122,6 @@ const StoreComponent = () => {
 								shareToSocialMedia(Platform.whatsapp, `${process.env.NEXT_PUBLIC_DOMAIN}/shop/${store?.name}`);
 							}}
 						/>
-
 						<Icons.faceBook
 							className='h-5 w-5'
 							onClick={() => {

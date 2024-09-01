@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 
 import {siteConfig} from '@/config/site';
@@ -10,6 +11,7 @@ import {ModeToggle} from '@/components/mode-toggle';
 import {buttonVariants} from './ui/button';
 import UserNav from './dashboard/UserNav';
 import {FC} from 'react';
+import {useTheme} from 'next-themes';
 
 interface Props {
 	show?: boolean;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export const SiteHeader: FC<Props> = ({show, storeId}) => {
+	const {theme} = useTheme();
+
 	return (
 		<header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='container flex h-14 max-w-screen-2xl items-center'>
@@ -49,7 +53,7 @@ export const SiteHeader: FC<Props> = ({show, storeId}) => {
 									}),
 									'w-9 px-0'
 								)}>
-								<Icons.twitter className='h-3 w-3 fill-current' />
+								<Icons.twitter className='h-3 w-3 fill-current' color={theme} />
 								<span className='sr-only'>Twitter</span>
 							</div>
 						</Link>

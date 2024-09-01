@@ -1,6 +1,10 @@
 'use client';
 import {Edit, Eye, Trash2} from 'lucide-react';
 
+import {Icons} from '@/components/icons';
+import CopyItem from '@/components/shared/copy';
+import {Platform, shareToSocialMedia} from '@/components/stores/store';
+import {Dialog, DialogContent} from '@/components/ui/dialog';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,9 +15,9 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {Inventory} from '@/models/inventory/inventory';
+import {useTheme} from 'next-themes';
 import Link from 'next/link';
 import {FC, ReactNode, useState} from 'react';
-import {Dialog, DialogContent} from '@/components/ui/dialog';
 import DeleteInventory from './delete';
 
 interface Drop {
@@ -32,6 +36,8 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 	const handleClick = () => {
 		setOpen(!open);
 	};
+
+	const {theme} = useTheme();
 
 	return (
 		<Dialog open={open}>
@@ -53,6 +59,48 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 								<span>Edit Item </span>
 							</DropdownMenuItem>
 						</Link>
+
+						<DropdownMenuItem className='cursor-pointer'>
+							<div className='flex flex-col gap-4'>
+								<div className='flex flex-row gap-2'>
+									<span>Share To</span>
+								</div>
+
+								<div className='flex flex-row gap-4'>
+									<Icons.whatsapp
+										className='h-5 w-5'
+										onClick={() => {
+											shareToSocialMedia(
+												Platform.whatsapp,
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+											);
+										}}
+									/>
+									<Icons.faceBook
+										className='h-5 w-5'
+										onClick={() => {
+											shareToSocialMedia(
+												Platform.facebook,
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+											);
+										}}
+									/>
+
+									<Icons.twitter
+										className='h-5 w-5'
+										color={theme}
+										onClick={() =>
+											shareToSocialMedia(
+												Platform.twitter,
+												`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`
+											)
+										}
+									/>
+
+									<CopyItem copy={`${process.env.NEXT_PUBLIC_DOMAIN}/shop/item/${inventory.store.name}/${inventory.name}`} />
+								</div>
+							</div>
+						</DropdownMenuItem>
 
 						<DropdownMenuItem className='cursor-pointer' onClick={handleClick}>
 							<Trash2 className='mr-2 h-4 w-4' color='red' />
