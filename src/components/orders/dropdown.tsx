@@ -19,6 +19,7 @@ import {useSession} from 'next-auth/react';
 interface Drop {
 	label: string;
 	order: StoreOrder;
+	storeId: string;
 	teamId?: string;
 }
 
@@ -47,7 +48,11 @@ const StoreOrdersDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<Link
-						href={drop?.teamId ? `/teams/orders/order/${drop.teamId}/${drop.order.id}` : `/orders/order/${drop.order.id}`}>
+						href={
+							drop?.teamId
+								? `/teams/orders/order/${drop.teamId}/${drop.order.id}`
+								: `/orders/order/${drop.storeId}/${drop.order.id}`
+						}>
 						<DropdownMenuItem className='cursor-pointer'>
 							<EyeIcon className='mr-2 h-4 w-4' />
 							<span>View Order</span>
@@ -63,7 +68,11 @@ const StoreOrdersDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 
 					{drop.order.status !== OrderStatus.COMPLETED && (
 						<Link
-							href={drop?.teamId ? `/teams/orders/order/${drop.teamId}/${drop.order.id}` : `/orders/order/${drop.order.id}`}>
+							href={
+								drop?.teamId
+									? `/teams/orders/order/${drop.teamId}/${drop.order.id}`
+									: `/orders/order/${drop.storeId}/${drop.order.id}`
+							}>
 							<DropdownMenuItem className='cursor-pointer'>
 								<CheckCheck className='mr-2 h-4 w-4' color='green' />
 

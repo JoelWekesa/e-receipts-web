@@ -6,16 +6,18 @@ import React, {FC} from 'react';
 
 interface OrderProps {
 	params: {
-		id: string;
+		id: string[];
 	};
 }
 
 const Order: FC<OrderProps> = async ({params: {id}}) => {
+	const orderId = id[1];
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const order = await getOrder({token, id});
+	const order = await getOrder({token, id: orderId});
 
 	return <OrderComponent order={order} />;
 };

@@ -80,6 +80,7 @@ const StoreOrdersTable: FC<StoreOrdersTableProps> = ({orders, status, storeId, t
 								label: 'Actions',
 								order: row.original,
 								teamId,
+								storeId,
 							}}>
 							<Button variant='outline' size='icon'>
 								<MoreHorizontal className='h-4 w-4' />

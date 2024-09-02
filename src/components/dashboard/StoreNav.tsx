@@ -34,6 +34,14 @@ export function StoreNav({className, id, ...props}: Props) {
 				} transition-colors hover:text-primary`}>
 				Inventory
 			</Link>
+
+			<Link
+				href={`/orders/${id}`}
+				className={`text-sm font-medium ${
+					pathName === `/orders/${id}` ? 'text-primary' : 'text-muted-foreground'
+				} transition-colors hover:text-primary`}>
+				Orders
+			</Link>
 			<FloatNavMenu id={id} />
 		</nav>
 	);
