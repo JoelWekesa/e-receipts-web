@@ -5,11 +5,12 @@ import {FC} from 'react';
 
 interface Props {
 	storeId: string;
+	teamId?: string;
 }
 
-const BackButton: FC<Props> = ({storeId}) => {
+const BackButton: FC<Props> = ({storeId, teamId}) => {
 	return (
-		<Link href={`/orders/${storeId}`}>
+		<Link href={teamId ? `/teams/orders/${teamId}` : `/orders/${storeId}`}>
 			<Button className='my-2' variant='ghost'>
 				<ArrowLeft className='mr-2' size={16} />
 				Back To Orders

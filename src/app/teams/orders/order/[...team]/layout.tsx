@@ -10,7 +10,7 @@ import {getServerSession} from 'next-auth';
 
 interface InventoryLayoutProps {
 	children: React.ReactNode;
-	params: {team: string};
+	params: {team: string[]};
 }
 
 export default async function InventoryLayout({children, params}: InventoryLayoutProps) {
@@ -18,26 +18,28 @@ export default async function InventoryLayout({children, params}: InventoryLayou
 
 	const {team} = params;
 
+	const teamId = team[0];
+
 	const token = session?.accessToken || '';
 
 	const [stores, teams, permissions, {store}] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
-		getStoreFromTeam({id: team, token}),
+		getStoreFromTeam({id: teamId, token}),
 	]);
 
 	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
-					<TeamSiteHeader storeId={store.id} teamId={team} />
+					<TeamSiteHeader storeId={store.id} teamId={teamId} />
 					<main className='flex-1'>
 						<div className='hidden flex-col md:flex'>
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<TeamNav className='mx-6' id={team} />
+									<TeamNav className='mx-6' id={teamId} />
 								</div>
 							</div>
 						</div>

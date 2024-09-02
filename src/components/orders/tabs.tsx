@@ -8,9 +8,10 @@ interface Props {
 	processing: StoreOrder[];
 	completed: StoreOrder[];
 	storeId: string;
+	teamId?: string;
 }
 
-const OrderTabs: FC<Props> = ({pending, processing, completed, storeId}) => {
+const OrderTabs: FC<Props> = ({pending, processing, completed, storeId, teamId}) => {
 	return (
 		<Tabs defaultValue={OrderStatus.PENDING} className='pt-6'>
 			<div className='flex items-center px-7'>
@@ -28,7 +29,7 @@ const OrderTabs: FC<Props> = ({pending, processing, completed, storeId}) => {
 						<CardDescription>Orders that are pending.</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-2'>
-						<StoreOrdersTable orders={pending} storeId={storeId} status={OrderStatus.PENDING} />
+						<StoreOrdersTable orders={pending} storeId={storeId} status={OrderStatus.PENDING} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -39,7 +40,7 @@ const OrderTabs: FC<Props> = ({pending, processing, completed, storeId}) => {
 						<CardDescription>Orders that are being processed.</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-2'>
-						<StoreOrdersTable orders={processing} storeId={storeId} status={OrderStatus.PROCESSING} />
+						<StoreOrdersTable orders={processing} storeId={storeId} status={OrderStatus.PROCESSING} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>
@@ -50,7 +51,7 @@ const OrderTabs: FC<Props> = ({pending, processing, completed, storeId}) => {
 						<CardDescription>Orders that have been completed.</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-2'>
-						<StoreOrdersTable orders={completed} storeId={storeId} status={OrderStatus.COMPLETED} />
+						<StoreOrdersTable orders={completed} storeId={storeId} status={OrderStatus.COMPLETED} teamId={teamId} />
 					</CardContent>
 				</Card>
 			</TabsContent>

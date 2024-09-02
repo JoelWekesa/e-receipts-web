@@ -1,11 +1,14 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import {TeamSiteHeader} from '@/components/teams/site-header/site-header';
+import {Permissions} from '@/config/permissions';
 import {userStores} from '@/services/page/stores/user-stores';
+import {getTeam} from '@/services/page/teams/get-team';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {getServerSession} from 'next-auth';
+import {notFound, redirect} from 'next/navigation';
 
 const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 	const session = await getServerSession(options);
@@ -20,12 +23,25 @@ const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 
 	const {team: teamId} = params;
 
-	const storeFromTeam = await getStoreFromTeam({
-		token,
-		id: teamId,
-	});
+	const t = getTeam({token, id: teamId});
+
+	const sft = getStoreFromTeam({token, id: teamId});
+
+	const [team, storeFromTeam] = await Promise.all([t, sft]);
 
 	const {id: storeId} = storeFromTeam.store;
+
+	if (!team) {
+		return notFound();
+	}
+
+	if (team && team.permission.permission !== Permissions.Admin) {
+		redirect(`/teams/soon/${teamId}`);
+	}
+
+	if (team && team.permission.permission === Permissions.Admin) {
+		redirect(`/teams/dashboard/${teamId}`);
+	}
 
 	return (
 		<>
@@ -41,7 +57,7 @@ const TeamLandingPage = async ({params}: {params: {team: string}}) => {
 					</div>
 
 					<div className='flex-1 space-y-4 p-8 pt-6'>
-						<div>{JSON.stringify(session)}</div>
+						<div>{JSON.stringify(team)}</div>
 					</div>
 				</div>
 			</div>
