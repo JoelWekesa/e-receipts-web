@@ -14,9 +14,10 @@ import {cn} from '@/lib/utils';
 
 interface Props {
 	id: string;
+	teamId?: string;
 }
 
-const FloatNavMenu: React.FC<Props> = ({id}) => {
+const FloatNavMenu: React.FC<Props> = ({id, teamId}) => {
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>
@@ -38,32 +39,17 @@ const FloatNavMenu: React.FC<Props> = ({id}) => {
 									</a>
 								</NavigationMenuLink>
 							</li>
-							<ListItem href={`/store/float/${id}`} title='Float Top Ups'>
+							<ListItem href={teamId ? `/teams/float/${teamId}/${id}` : `/store/float/${id}`} title='Float Top Ups'>
 								Record and track all float top ups made to your M-Pesa Float account.
 							</ListItem>
-							<ListItem href={`/store/float/transactions/${id}`} title='Transactions'>
-								Record and track all transactions made from your M-Pesa Float account.
+							<ListItem
+								href={teamId ? `/teams/float/transactions/${teamId}/${id}` : `/store/float/transactions/${id}`}
+								title='Approve Transactions'>
+								See all transactions that require approval and approve or reject them.
 							</ListItem>
 						</ul>
 					</NavigationMenuContent>
 				</NavigationMenuItem>
-				{/* <NavigationMenuItem>
-					<NavigationMenuTrigger>Components</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
-							{components.map((component) => (
-								<ListItem key={component.title} title={component.title} href={component.href}>
-									{component.description}
-								</ListItem>
-							))}
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<Link href='/docs' legacyBehavior passHref>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>Documentation</NavigationMenuLink>
-					</Link>
-				</NavigationMenuItem> */}
 			</NavigationMenuList>
 		</NavigationMenu>
 	);

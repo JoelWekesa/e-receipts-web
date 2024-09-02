@@ -124,7 +124,7 @@ const StoreDashBoardLayout: FC<{
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<TeamNav className='mx-6' id={teamId} />
+									<TeamNav className='mx-6' id={teamId} storeId={storeFromTeam.id} />
 								</div>
 							</div>
 						</div>

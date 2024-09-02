@@ -112,7 +112,7 @@ export default async function InventoryLayout({children, params}: InventoryLayou
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<TeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<TeamNav className='mx-6' id={team} />
+									<TeamNav className='mx-6' id={team} storeId={store.id} />
 								</div>
 							</div>
 						</div>
