@@ -43,7 +43,8 @@ const useCreateOrder = (successFn: () => void) => {
 
             toast("Order successfully created", {
                 description: dayjs(data?.createdAt).format("DD/MM/YYYY HH:mm:ss"),
-                icon: "✅"
+                icon: "✅",
+                position: "top-right"
             })
         },
 

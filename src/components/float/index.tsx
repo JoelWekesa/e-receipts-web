@@ -12,6 +12,7 @@ interface Props {
 	storeFloat: StoreFloat | null;
 	topUps: FloatTopUp[];
 	storeId: string;
+	teamId?: string;
 }
 
 const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId}) => {

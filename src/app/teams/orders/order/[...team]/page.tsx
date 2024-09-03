@@ -6,18 +6,26 @@ import React, {FC} from 'react';
 
 interface OrderProps {
 	params: {
-		id: string;
+		team: string[];
 	};
 }
 
-const Order: FC<OrderProps> = async ({params: {id}}) => {
+const Order: FC<OrderProps> = async ({params: {team}}) => {
+	const id = team[1];
+
+	const teamId = team[0];
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
 	const order = await getOrder({token, id});
 
-	return <OrderComponent order={order} />;
+	return (
+		<div className='container mx-auto'>
+			<OrderComponent order={order} teamId={teamId} />
+		</div>
+	);
 };
 
 export default Order;

@@ -20,8 +20,9 @@ const useResetPasswordProfile = () => {
         mutationFn: resetPassword,
         onSuccess: () => {
             toast("Password set successfully", {
-                icon: "📧",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
         }

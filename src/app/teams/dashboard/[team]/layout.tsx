@@ -1,73 +1,87 @@
-import {Card, CardContent} from '@/components/ui/card';
-import {FC, ReactNode} from 'react';
+import {TeamNav} from '@/components/dashboard/TeamNav';
 import {TeamSiteHeader} from '@/components/teams/site-header/site-header';
+import {Card, CardContent} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {siteConfig} from '@/config/site';
+import {getStore} from '@/services/page/stores/store/get-store';
 import {userStores} from '@/services/page/stores/user-stores';
+import {getTeam} from '@/services/page/teams/get-team';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
-import {Metadata, Viewport} from 'next';
+import {Metadata} from 'next';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
+import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
-import {TeamNav} from '@/components/dashboard/TeamNav';
 
 const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-export const metadata: Metadata = {
-	title: {
-		default: 'Dashboard',
-		template: `%s - ${siteConfig.name}`,
-	},
-	metadataBase: new URL(siteConfig.url),
-	description: siteConfig.description,
-	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
-	authors: [
-		{
-			name: 'shadcn',
-			url: 'https://shadcn.com',
-		},
-	],
-	creator: 'shadcn',
-	openGraph: {
-		type: 'website',
-		locale: 'en_US',
-		url: siteConfig.url,
-		title: siteConfig.name,
-		description: siteConfig.description,
-		siteName: siteConfig.name,
-		images: [
-			{
-				url: siteConfig.ogImage,
-				width: 1200,
-				height: 630,
-				alt: siteConfig.name,
-			},
-		],
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: siteConfig.name,
-		description: siteConfig.description,
-		images: [siteConfig.ogImage],
-		creator: '@shadcn',
-	},
-	icons: {
-		icon: '/favicon.ico',
-		shortcut: '/favicon-16x16.png',
-		apple: '/apple-touch-icon.png',
-	},
-};
+export async function generateMetadata({params}: {params: {team: string}}): Promise<Metadata> {
+	const session = await getServerSession(options);
 
-export const viewport: Viewport = {
-	themeColor: [
-		{media: '(prefers-color-scheme: light)', color: 'white'},
-		{media: '(prefers-color-scheme: dark)', color: 'black'},
-	],
-};
+	const token = session?.accessToken || '';
+
+	const {team: teamId} = params;
+
+	const team = await getTeam({id: teamId, token});
+
+	const store = await getStore({
+		token,
+		id: team.storeId,
+	});
+
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+
+	const indexable = !!store?.logo;
+
+	return {
+		title: `Dashboard | ${store.displayName}`,
+		description: store.displayName,
+		keywords: [store.displayName, store.address],
+		metadataBase: new URL(shopUrl),
+		robots: {
+			index: indexable,
+			follow: indexable,
+			googleBot: {
+				index: indexable,
+				follow: indexable,
+			},
+		},
+
+		openGraph: {
+			type: 'website',
+			locale: 'en_US',
+			url: shopUrl,
+			title: store.displayName,
+			description: store.displayName,
+			siteName: store.displayName,
+			images: [
+				{
+					url: store.logo,
+					width: 1200,
+					height: 630,
+					alt: store.name,
+				},
+			],
+		},
+
+		twitter: {
+			card: 'summary_large_image',
+			title: store.displayName,
+			description: store.displayName,
+			images: [store.logo],
+			creator: '@joelwekesa_',
+		},
+		icons: {
+			icon: '/favicon.ico',
+			shortcut: '/favicon-16x16.png',
+			apple: '/apple-touch-icon.png',
+		},
+	};
+}
 
 const StoreDashBoardLayout: FC<{
 	periodsales: ReactNode;
@@ -110,7 +124,7 @@ const StoreDashBoardLayout: FC<{
 							<div className='border-b'>
 								<div className='flex h-16 items-center px-4'>
 									<DynamicTeamSwitcher teams={teams} stores={stores} permissions={permissions} />
-									<TeamNav className='mx-6' id={teamId} />
+									<TeamNav className='mx-6' id={teamId} storeId={storeFromTeam.id} />
 								</div>
 							</div>
 						</div>

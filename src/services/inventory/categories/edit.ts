@@ -25,8 +25,9 @@ export const useEditCategory = (successFn: () => void) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["storeCategories"] })
             toast("Category Edited", {
-                icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

@@ -30,6 +30,7 @@ const useEditTeam = (successFn: () => void) => {
             toast("Team updated successfully", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
 
             successFn()

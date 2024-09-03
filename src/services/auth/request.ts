@@ -17,8 +17,9 @@ const useRequestReset = (successFn: () => void) => {
         mutationFn: requestReset,
         onSuccess: () => {
             toast("Reset code sent successfully", {
-                icon: "📧",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
             successFn()
         }

@@ -40,6 +40,8 @@ const useAddStore = (successFn: () => void) => {
         onSuccess: (data) => {
             toast("Store created successfully", {
                 description: dayjs(data?.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

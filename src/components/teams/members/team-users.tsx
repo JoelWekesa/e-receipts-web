@@ -5,8 +5,9 @@ import {Dialog, DialogContent} from '@/components/ui/dialog';
 import {TeamMember, TeamUser} from '@/models/teams/team-users';
 import useTeamUsers from '@/services/teams/team-users';
 import {ColumnDef} from '@tanstack/react-table';
-import {ArrowUpDown, Ban} from 'lucide-react';
+import {ArrowUpDown, Ban, PlusCircle} from 'lucide-react';
 import {FC, useState} from 'react';
+import SendInvite from '../invites/send';
 import RemoveMember from './delete';
 
 interface Props {
@@ -19,11 +20,17 @@ const TeamUsersComponent: FC<Props> = ({data, id}) => {
 
 	const [open, setOpen] = useState(false);
 
+	const [openInvite, setOpenInvite] = useState(false);
+
 	const [member, setMember] = useState<TeamMember>();
 
 	const handleClick = (member?: TeamMember) => {
 		setOpen(!open);
 		setMember(member);
+	};
+
+	const handleInvite = () => {
+		setOpenInvite(!openInvite);
 	};
 
 	const columns: ColumnDef<TeamMember>[] = [
@@ -106,6 +113,12 @@ const TeamUsersComponent: FC<Props> = ({data, id}) => {
 	return (
 		<div className='flex p-3 flex-col'>
 			<div className='m-3 rounded-md border'>
+				<div className='px-4 pt-8'>
+					<Button onClick={handleInvite}>
+						<PlusCircle className='mr-2 h-4 w-4' /> Invite Team Member
+					</Button>
+				</div>
+
 				<DataTable
 					columns={columns}
 					data={members.TeamMembers}
@@ -118,6 +131,11 @@ const TeamUsersComponent: FC<Props> = ({data, id}) => {
 			<Dialog open={open}>
 				<DialogContent>
 					<RemoveMember member={member} handleClick={() => handleClick()} teamId={id} />
+				</DialogContent>
+			</Dialog>
+			<Dialog open={openInvite}>
+				<DialogContent>
+					<SendInvite teamId={id} close={handleInvite} teamName={members.name} />
 				</DialogContent>
 			</Dialog>
 		</div>

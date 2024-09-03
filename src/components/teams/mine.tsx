@@ -1,8 +1,8 @@
 'use client';
 import {MyTeam} from '@/models/teams/my-teams';
 import {ColumnDef} from '@tanstack/react-table';
-import {ArrowUpDown, MoreHorizontal} from 'lucide-react';
-import {FC} from 'react';
+import {ArrowUpDown, CirclePlus, MoreHorizontal} from 'lucide-react';
+import {FC, useState} from 'react';
 import {DataTable} from '../shared/datatable';
 import {Button} from '../ui/button';
 import useMyTeams from '@/services/teams/mine';
@@ -11,6 +11,8 @@ import {Store} from '@/models/store';
 import useUserStores from '@/services/stores/user-stores';
 import {useSession} from 'next-auth/react';
 import {Permission} from '@/models/teams/permissions';
+import {Dialog} from '../ui/dialog';
+import AddTeamComponent from './add/add-team';
 
 interface Props {
 	data: MyTeam[];
@@ -27,7 +29,13 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 
 	const token = session?.accessToken || '';
 
-	const {data: allStores} = useUserStores({initialData: stores, token});
+	const {data: allStores = []} = useUserStores({initialData: stores, token});
+
+	const [open, setOpen] = useState(false);
+
+	const toggle = () => {
+		setOpen(!open);
+	};
 
 	const columns: ColumnDef<MyTeam>[] = [
 		{
@@ -111,11 +119,21 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 	];
 
 	return (
-		<div className='flex p-3 flex-col'>
-			<div className='m-3 p-5 rounded-md border'>
-				<DataTable columns={columns} data={teams} searchColumn='name' searchPlaceholder='Search by team name...' />
+		<>
+			<div className='flex p-3 flex-col'>
+				<div className='m-3 p-5 rounded-md border'>
+					<div className='pt-8 px-4'>
+						<Button onClick={toggle}>
+							<CirclePlus className='mr-2 h-4 w-4' /> Create New Team
+						</Button>
+					</div>
+					<DataTable columns={columns} data={teams} searchColumn='name' searchPlaceholder='Search by team name...' />
+				</div>
 			</div>
-		</div>
+			<Dialog open={open} onOpenChange={toggle}>
+				<AddTeamComponent stores={allStores} permissions={permissions} close={toggle} />
+			</Dialog>
+		</>
 	);
 };
 

@@ -40,6 +40,8 @@ const useRegisterUser = (successFn: () => void) => {
         onSuccess: (data) => {
             toast("Registered successfully", {
                 description: dayjs(data?.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
             successFn()
         },

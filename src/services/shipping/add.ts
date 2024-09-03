@@ -34,7 +34,8 @@ const useAddShipping = () => {
 
             toast("Shipping details updated", {
                 description: dayjs(data?.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
-                icon: "✅"
+                icon: "✅",
+                position: "top-right"
             })
         }
     })

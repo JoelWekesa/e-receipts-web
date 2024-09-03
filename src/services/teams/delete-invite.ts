@@ -29,6 +29,7 @@ const useDeleteInvite = (successFn: () => void) => {
             toast("Invite successfully cancelled", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
         }
     })

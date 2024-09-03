@@ -45,7 +45,7 @@ const formSchema = z
 			.instanceof(File, {message: 'File is required'})
 			.refine((file) => {
 				if (file) {
-					return !file || file.size >= MAX_UPLOAD_SIZE;
+					return file.size <= MAX_UPLOAD_SIZE;
 				} else {
 					return true;
 				}

@@ -24,8 +24,9 @@ export const useDeleteCategory = (successFn: () => void) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["storeCategories"] })
             toast("Category Deleted", {
-                icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

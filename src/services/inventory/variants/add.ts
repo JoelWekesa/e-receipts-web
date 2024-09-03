@@ -34,8 +34,9 @@ const useAddVariant = (successFn: () => void) => {
             ]
             await Promise.all(invalidate)
             toast("Variant Added", {
-                icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

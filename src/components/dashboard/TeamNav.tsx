@@ -3,12 +3,14 @@ import Link from 'next/link';
 
 import {cn} from '@/lib/utils';
 import {usePathname} from 'next/navigation';
+import FloatNavMenu from '../shared/nav/m-pesa-float';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
 	id: string;
+	storeId: string;
 }
 
-export function TeamNav({className, id, ...props}: Props) {
+export function TeamNav({className, id, storeId, ...props}: Props) {
 	const pathName = usePathname();
 
 	return (
@@ -34,6 +36,15 @@ export function TeamNav({className, id, ...props}: Props) {
 				} transition-colors hover:text-primary`}>
 				Inventory
 			</Link>
+
+			<Link
+				href={`/teams/orders/${id}`}
+				className={`text-sm font-medium ${
+					pathName === `/teams/orders/${id}` ? 'text-primary' : 'text-muted-foreground'
+				} transition-colors hover:text-primary`}>
+				Orders
+			</Link>
+			<FloatNavMenu id={storeId} teamId={id} />
 		</nav>
 	);
 }
