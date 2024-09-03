@@ -30,8 +30,9 @@ const useDeleteVariant = (successFn: () => void) => {
             await queryClient.invalidateQueries({ queryKey: ["inventory"] }),
 
                 toast("Variant Deleted", {
-                    icon: "✅",
                     description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                    icon: "✅",
+                    position: "top-right"
                 })
 
             successFn()

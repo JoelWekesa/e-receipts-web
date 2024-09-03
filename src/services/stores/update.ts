@@ -46,6 +46,8 @@ const useUpdateStore = (successFn: () => void) => {
             })
             toast("Store updates successfully", {
                 description: dayjs(data?.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

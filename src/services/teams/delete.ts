@@ -27,6 +27,7 @@ const useDeleteTeam = (successFn: () => void) => {
             toast("Team deleted successfully", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
 
             successFn()

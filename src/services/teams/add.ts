@@ -29,6 +29,7 @@ const useAddTeam = (successFn: () => void) => {
             toast("Team created successfully", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
 
             successFn()

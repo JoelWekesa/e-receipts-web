@@ -27,6 +27,7 @@ const useRemoveUser = (successFn: () => void) => {
             toast("User removed from team", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
         }
     })

@@ -22,8 +22,9 @@ const useDeleteInventory = (successFn: () => void) => {
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["inventory"] })
             toast("Inventory Deleted", {
-                icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()

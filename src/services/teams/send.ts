@@ -30,6 +30,7 @@ const useSendInvite = (successFn: () => void) => {
             toast("Invite sent", {
                 description: dayjs(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 icon: "✅",
+                position: "top-right"
             })
         }
     })

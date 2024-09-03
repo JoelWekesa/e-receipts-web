@@ -24,6 +24,8 @@ const useDeleteStore = (successFn: () => void) => {
         onSuccess: () => {
             toast("Store deleted successfully", {
                 description: dayjs(new Date()).format("DD/MMMM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             queryClient.invalidateQueries({

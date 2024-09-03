@@ -70,8 +70,9 @@ const useAddProduct = (successFn: () => void) => {
             await Promise.all(invalidate)
 
             toast("Product Added", {
-                icon: "✅",
                 description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+                icon: "✅",
+                position: "top-right"
             })
 
             successFn()
