@@ -117,7 +117,7 @@ const EditTeamComponent: FC<Props> = ({stores, permissions, team, close}) => {
 												</PopoverTrigger>
 												<PopoverContent className=' p-0'>
 													<Command>
-														<CommandInput placeholder='Search category...' />
+														<CommandInput placeholder='Search store...' />
 														<CommandEmpty>No store found</CommandEmpty>
 														<CommandGroup>
 															{fStores.map((store) => (
@@ -163,7 +163,7 @@ const EditTeamComponent: FC<Props> = ({stores, permissions, team, close}) => {
 												</PopoverTrigger>
 												<PopoverContent className=' p-0'>
 													<Command>
-														<CommandInput placeholder='Search category...' />
+														<CommandInput placeholder='Search permission...' />
 														<CommandEmpty>No permission found</CommandEmpty>
 														<CommandGroup>
 															{fPermissions.map((permission) => (
