@@ -124,7 +124,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 				<div className='m-3 p-5 rounded-md border'>
 					<div className='pt-8 px-4'>
 						<Button onClick={toggle}>
-							<CirclePlus className='mr-2 h-4 w-4' /> Create Team
+							<CirclePlus className='mr-2 h-4 w-4' /> Create New Team
 						</Button>
 					</div>
 					<DataTable columns={columns} data={teams} searchColumn='name' searchPlaceholder='Search by team name...' />
