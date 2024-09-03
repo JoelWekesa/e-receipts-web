@@ -8,6 +8,7 @@ import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
+import {FC} from 'react';
 
 interface GetData {
 	id: string;
@@ -26,12 +27,16 @@ async function getData({id, token}: GetData): Promise<Store> {
 	return res;
 }
 
-const StoresPage = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
+interface Props {
+	params: {
+		id: string;
+	};
+}
+
+const StoresPage: FC<Props> = async ({params: {id}}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken;
-
-	const id = '' + searchParams?.id;
 
 	const [data, teams, stores, permissions] = await Promise.all([
 		getData({id, token: token ? token : ''}),

@@ -15,51 +15,7 @@ import ReactQueryProvider from '@/providers/react-query';
 import {getCookies, setCookie} from 'cookies-next';
 import {Provider} from 'jotai';
 import {v4 as uuidv4} from 'uuid';
-
-// export const metadata: Metadata = {
-// 	// title: {
-// 	// 	default: siteConfig.name,
-// 	// 	template: `%s | ${siteConfig.name}`,
-// 	// },
-// 	// metadataBase: new URL(siteConfig.url),
-// 	description: siteConfig.description,
-// 	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
-// 	authors: [
-// 		{
-// 			name: 'Joel Wekesa',
-// 			url: 'https://joelwekesa.com',
-// 		},
-// 	],
-// 	creator: 'Joel Wekesa',
-// 	// openGraph: {
-// 	// 	type: 'website',
-// 	// 	locale: 'en_US',
-// 	// 	url: siteConfig.url,
-// 	// 	title: siteConfig.name,
-// 	// 	description: siteConfig.description,
-// 	// 	siteName: siteConfig.name,
-// 	// 	images: [
-// 	// 		{
-// 	// 			url: siteConfig.ogImage,
-// 	// 			width: 1200,
-// 	// 			height: 630,
-// 	// 			alt: siteConfig.name,
-// 	// 		},
-// 	// 	],
-// 	// },
-// 	twitter: {
-// 		card: 'summary_large_image',
-// 		title: siteConfig.name,
-// 		description: siteConfig.description,
-// 		images: [siteConfig.ogImage],
-// 		creator: '@joelwekesa_',
-// 	},
-// 	icons: {
-// 		icon: '/favicon.ico',
-// 		shortcut: '/favicon-16x16.png',
-// 		apple: '/apple-touch-icon.png',
-// 	},
-// };
+import IdleTime from '@/providers/idle-time';
 
 export const viewport: Viewport = {
 	themeColor: [
@@ -84,31 +40,33 @@ export default async function RootLayout({children}: RootLayoutProps) {
 
 	return (
 		<NextAuthProvider>
-			<Provider>
-				<ReactQueryProvider>
-					<html lang='en' suppressHydrationWarning>
-						<head />
-						<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
-							<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-								<div vaul-drawer-wrapper=''>
-									<div className='relative flex min-h-screen flex-col bg-background'>
-										{/* <SiteHeader /> */}
-										<main className='flex-1'>{children}</main>
-										<Toaster />
-										<SiteFooter />
+			<IdleTime>
+				<Provider>
+					<ReactQueryProvider>
+						<html lang='en' suppressHydrationWarning>
+							<head />
+							<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
+								<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+									<div vaul-drawer-wrapper=''>
+										<div className='relative flex min-h-screen flex-col bg-background'>
+											{/* <SiteHeader /> */}
+											<main className='flex-1'>{children}</main>
+											<Toaster />
+											<SiteFooter />
+										</div>
 									</div>
-								</div>
-								<TailwindIndicator />
-								<ThemeSwitcher />
-								<Analytics />
-								<NewYorkToaster />
-								<DefaultToaster />
-								<NewYorkSonner />
-							</ThemeProvider>
-						</body>
-					</html>
-				</ReactQueryProvider>
-			</Provider>
+									<TailwindIndicator />
+									<ThemeSwitcher />
+									<Analytics />
+									<NewYorkToaster />
+									<DefaultToaster />
+									<NewYorkSonner />
+								</ThemeProvider>
+							</body>
+						</html>
+					</ReactQueryProvider>
+				</Provider>
+			</IdleTime>
 		</NextAuthProvider>
 	);
 }

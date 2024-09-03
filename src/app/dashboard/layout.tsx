@@ -12,6 +12,7 @@ import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 import {options} from '../api/auth/[...nextauth]/options';
 import {getSetting} from '@/services/page/settings/get-setting';
+import TimerProvider from '@/providers/timer';
 
 const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
 	loading: () => <Skeleton className='h-10 w-full' />,
@@ -92,7 +93,7 @@ const DashBoardLayout: FC<{
 	]);
 
 	return (
-		<>
+		<TimerProvider>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
 					<SiteHeader storeId={setting?.storeId || ''} />
@@ -127,7 +128,7 @@ const DashBoardLayout: FC<{
 					</main>
 				</div>
 			</div>
-		</>
+		</TimerProvider>
 	);
 };
 

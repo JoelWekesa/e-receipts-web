@@ -4,6 +4,7 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {options} from '../api/auth/[...nextauth]/options';
 import {getSetting} from '@/services/page/settings/get-setting';
+import TimerProvider from '@/providers/timer';
 
 export const metadata: Metadata = {
 	title: {
@@ -69,14 +70,14 @@ const TeamsLayout = async ({children}: StoreLayoutProps) => {
 	const setting = await getSetting(token);
 
 	return (
-		<>
+		<TimerProvider>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>
 					<SiteHeader show={false} storeId={setting?.storeId || ''} />
 					<main className='flex-1'>{children}</main>
 				</div>
 			</div>
-		</>
+		</TimerProvider>
 	);
 };
 

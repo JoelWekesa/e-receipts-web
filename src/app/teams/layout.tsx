@@ -1,3 +1,4 @@
+import TimerProvider from '@/providers/timer';
 import {Viewport} from 'next';
 
 export const viewport: Viewport = {
@@ -12,5 +13,5 @@ interface StoreLayoutProps {
 }
 
 export default function AcceptLayout({children}: StoreLayoutProps) {
-	return <>{children}</>;
+	return <TimerProvider>{children}</TimerProvider>;
 }

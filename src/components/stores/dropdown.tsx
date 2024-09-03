@@ -66,7 +66,7 @@ const StoreButtonDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, child
 							<span>View Store</span>
 						</DropdownMenuItem>
 					</SheetTrigger>
-					<Link href={`/stores/update?id=${drop.store.id}`}>
+					<Link href={`/stores/update/${drop.store.id}`}>
 						<DropdownMenuItem className='cursor-pointer'>
 							<Edit className='mr-2 h-4 w-4' />
 							<span>Edit Store</span>
