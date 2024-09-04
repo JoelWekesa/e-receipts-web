@@ -20,7 +20,7 @@ export const PreviewBox: FC<Props> = ({store, token, products}) => {
 						<Card x-chunk='dashboard-05-chunk-3' className='w-full'>
 							<CardHeader className='px-7'>
 								<CardTitle>Send Receipt</CardTitle>
-								<CardDescription>Send your receipt in 4 easy steps</CardDescription>
+								<CardDescription>Send your receipt in 3 easy steps</CardDescription>
 							</CardHeader>
 							<CardContent>
 								<GenerateSuperMarketTemplate storeId={store.id} token={token} products={products} />

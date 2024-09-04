@@ -12,6 +12,7 @@ import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Icons} from '../icons';
+import Image from 'next/image';
 
 const formSchema = z.object({
 	username: z.string().refine(() => usernamePattern || emailPattern || phoneNumberPattern, {
@@ -42,7 +43,12 @@ export const LoginForm: FC<{path?: string}> = ({path}) => {
 	return (
 		<Card className='mx-auto max-w-sm md:max-w-lg'>
 			<CardHeader>
-				<CardTitle className='text-2xl text-center'>Login</CardTitle>
+				<CardTitle>
+					<div className='flex justify-center py-2'>
+						<Image src='/logo.png' alt='logo' width={50} height={50} />
+					</div>
+					<p className='text-2xl text-center'>Login</p>
+				</CardTitle>
 				<CardDescription>Enter your email, username, or phone below to login to your account</CardDescription>
 			</CardHeader>
 			<CardContent>

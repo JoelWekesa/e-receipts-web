@@ -180,7 +180,7 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 								name='price'
 								render={({field}) => (
 									<FormItem>
-										<FormLabel>Price</FormLabel>
+										<FormLabel>Price Each</FormLabel>
 										<FormControl>
 											<Input placeholder='Price of item sold' {...field} />
 										</FormControl>

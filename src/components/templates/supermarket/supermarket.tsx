@@ -35,7 +35,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 				<tr>
 					<td>
 						<div className='my-12 sm:my-8 text-center'>
-							<a href='https://maizzle.com'>
+							<a href={process.env.NEXT_PUBLIC_DOMAIN}>
 								<Image id='barcode' alt='barcode' src={store?.logo || ''} className='block m-auto' width={70} height={70} />
 							</a>
 							<h1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>{store?.displayName}</h1>
@@ -204,7 +204,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 								</tr>
 							</table>
 						)}
-						<table className='w-full my-2 mb-5'>
+						{/* <table className='w-full my-2 mb-5'>
 							<tr>
 								<td className='w-1/4'>
 									<p className='uppercase  font-bold'>code</p>
@@ -255,7 +255,7 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 									<p className=' font-bold'>0123456789</p>
 								</td>
 							</tr>
-						</table>
+						</table> */}
 
 						{controlUnits.length > 0 && (
 							<table className='w-full my-2 '>
@@ -285,38 +285,40 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 							</table>
 						)}
 
-						<table className='w-full my-2 border-t border-b border-black dark:border-white'>
-							<th align='left'>
-								<p className='uppercase font-bold '>rewarded discounts</p>
-							</th>
-							<tr>
-								<td className='w-1/2'>
-									<p className='capitalize '>Item</p>
-								</td>
-								<td align='right' className='w-1/2'>
-									<p className='capitalize '>Rewarded discount</p>
-								</td>
-							</tr>
-							{discountedItems.map((item, index) => (
-								<tr key={index}>
+						{discountedItems.length > 0 && (
+							<table className='w-full my-2 border-t border-b border-black dark:border-white'>
+								<th align='left'>
+									<p className='uppercase font-bold '>rewarded discounts</p>
+								</th>
+								<tr>
 									<td className='w-1/2'>
-										<p className='capitalize '>{item.item}</p>
+										<p className='capitalize '>Item</p>
 									</td>
 									<td align='right' className='w-1/2'>
-										<p className='capitalize '>{Number(item.discount) * Number(item.quantity)}</p>
+										<p className='capitalize '>Rewarded discount</p>
 									</td>
 								</tr>
-							))}
+								{discountedItems.map((item, index) => (
+									<tr key={index}>
+										<td className='w-1/2'>
+											<p className='capitalize '>{item.item}</p>
+										</td>
+										<td align='right' className='w-1/2'>
+											<p className='capitalize '>{Number(item.discount) * Number(item.quantity)}</p>
+										</td>
+									</tr>
+								))}
 
-							<tr>
-								<td className='w-1/2'>
-									<p className='capitalize '>total discount</p>
-								</td>
-								<td align='right' className='w-1/2'>
-									<p className='capitalize '>{totalDiscounts}</p>
-								</td>
-							</tr>
-						</table>
+								<tr>
+									<td className='w-1/2'>
+										<p className='capitalize '>total discount</p>
+									</td>
+									<td align='right' className='w-1/2'>
+										<p className='capitalize '>{totalDiscounts}</p>
+									</td>
+								</tr>
+							</table>
+						)}
 
 						<table className='w-full my-2'>
 							<th align='left'>

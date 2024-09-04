@@ -115,7 +115,7 @@ const AddPaymentDetails = () => {
 			},
 		});
 
-		setPath(Path.CONTROL_UNIT);
+		setPath(Path.LOYALTY_POINTS);
 	};
 
 	return (
