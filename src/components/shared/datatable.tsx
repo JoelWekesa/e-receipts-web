@@ -17,6 +17,7 @@ import {ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRight
 import React, {useState} from 'react';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
+import {DownloadIcon} from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -26,6 +27,7 @@ interface DataTableProps<TData, TValue> {
 	black?: boolean;
 	title?: string;
 	subtitle?: string;
+	download?: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -36,6 +38,7 @@ export function DataTable<TData, TValue>({
 	black,
 	title,
 	subtitle,
+	download,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -61,6 +64,14 @@ export function DataTable<TData, TValue>({
 				<div className='mb-6 p-5'>
 					<h2 className='text-2xl font-bold text-primary'>{title}</h2>
 					{subtitle && <p className='text-muted-foreground text-sm'>{subtitle}</p>}
+				</div>
+			)}
+			{download && (
+				<div className='flex items-center justify-end space-x-2 py-4'>
+					<Button className='h-8 w-8 p-0' onClick={download}>
+						<span className='sr-only'>Download</span>
+						<DownloadIcon className='h-4 w-4' />
+					</Button>
 				</div>
 			)}
 			<div className='flex items-center py-4 px-4'>

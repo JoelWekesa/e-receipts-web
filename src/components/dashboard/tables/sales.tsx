@@ -9,6 +9,7 @@ import {ArrowUpDown, Eye} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {FC, useMemo} from 'react';
+import * as XLSX from 'xlsx';
 
 interface Item {
 	logo: string;
@@ -150,10 +151,38 @@ const SalesTable: FC<{receipts: Receipt[]}> = ({receipts}) => {
 		},
 	];
 
+	const handleDownload = () => {
+		const data = items.map((item) => ({
+			Store: item.store,
+			Client: item.client,
+			Phone: item.phone,
+			Items: item.receipt.ReceiptItem.map((item) => item.item).join('\r\n'),
+			Each: item.receipt.ReceiptItem.map((item) => currencyFormat.format(item.price)).join('\r\n'),
+			Discount: item.receipt.ReceiptItem.map((item) => currencyFormat.format(item.discount)).join('\r\n'),
+			Quantity: item.receipt.ReceiptItem.map((item) => item.quantity).join('\r\n'),
+			Amount: currencyFormat.format(item.amount),
+			Date: dayjs(item.date).format('ddd DD MMMM YYYY'),
+		}));
+
+		const ws = XLSX.utils.json_to_sheet(data);
+
+		const wb = XLSX.utils.book_new();
+
+		XLSX.utils.book_append_sheet(wb, ws, 'Sales');
+
+		XLSX.writeFile(wb, 'sales.xlsx');
+	};
+
 	return (
 		<div className='flex p-3 flex-col'>
 			<div className='m-3 p-5 rounded-md border'>
-				<DataTable columns={columns} data={items} searchColumn='client' searchPlaceholder='Search by client name' />
+				<DataTable
+					columns={columns}
+					data={items}
+					searchColumn='client'
+					searchPlaceholder='Search by client name'
+					download={handleDownload}
+				/>
 				{/* <DeleteDialog open={open} setOpen={handleDeleteDialog} /> */}
 			</div>
 		</div>
