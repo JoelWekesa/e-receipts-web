@@ -53,12 +53,14 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 								<span>View Item </span>
 							</DropdownMenuItem>
 						</Link>
-						<Link href={isTeam ? `/teams/inventory/edit/${teamId}/${inventory.id}` : `/inventory/edit/${inventory.id}`}>
-							<DropdownMenuItem className='cursor-pointer'>
-								<Edit className='mr-2 h-4 w-4' />
-								<span>Edit Item </span>
-							</DropdownMenuItem>
-						</Link>
+						{!teamId && (
+							<Link href={isTeam ? `/teams/inventory/edit/${teamId}/${inventory.id}` : `/inventory/edit/${inventory.id}`}>
+								<DropdownMenuItem className='cursor-pointer'>
+									<Edit className='mr-2 h-4 w-4' />
+									<span>Edit Item </span>
+								</DropdownMenuItem>
+							</Link>
+						)}
 
 						<DropdownMenuItem className='cursor-pointer'>
 							<div className='flex flex-col gap-4'>
@@ -112,10 +114,12 @@ const InventoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({
 							</div>
 						</DropdownMenuItem>
 
-						<DropdownMenuItem className='cursor-pointer' onClick={handleClick}>
-							<Trash2 className='mr-2 h-4 w-4' color='red' />
-							<span>Delete Item </span>
-						</DropdownMenuItem>
+						{!teamId && (
+							<DropdownMenuItem className='cursor-pointer' onClick={handleClick}>
+								<Trash2 className='mr-2 h-4 w-4' color='red' />
+								<span>Delete Item </span>
+							</DropdownMenuItem>
+						)}
 					</DropdownMenuGroup>
 				</DropdownMenuContent>
 			</DropdownMenu>

@@ -117,11 +117,11 @@ const SeeProductVariants: FC<Props> = ({inventory, isTeam, teamId}) => {
 		{
 			accessorKey: 'id',
 			header: () => {
-				return <div className='flex justify-end'>Actions</div>;
+				return <div className='flex justify-end'>{teamId ? '' : 'Actions'}</div>;
 			},
 			cell: ({row: {original: row}}) => {
 				return (
-					<div className='flex justify-end pr-5'>
+					<div className={`flex justify-end pr-5 ${teamId && 'hidden'}`}>
 						<SeeInventoryDropDown
 							drop={{
 								label: 'Manage Variant',

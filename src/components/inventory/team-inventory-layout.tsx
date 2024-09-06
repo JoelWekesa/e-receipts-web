@@ -55,31 +55,31 @@ const TeamInventoryLayout: FC<Props> = ({children, teamId}) => {
 							Categories
 						</Link>
 
-						<Link
+						{/* <Link
 							href={`/teams/inventory/add/${teamId}`}
 							className={`font-semibold ${activeTab === 'add' ? 'text-primary' : 'text-muted-foreground'}`}>
 							Add Inventory
-						</Link>
-						<Link
+						</Link> */}
+						{/* <Link
 							href='#'
 							className={`font-semibold ${activeTab === 'integrations' ? 'text-primary' : 'text-muted-foreground'}`}>
 							Integrations
-						</Link>
-						<Link href='#' className={`font-semibold ${activeTab === 'support' ? 'text-primary' : 'text-muted-foreground'}`}>
+						</Link> */}
+						{/* <Link href='#' className={`font-semibold ${activeTab === 'support' ? 'text-primary' : 'text-muted-foreground'}`}>
 							Support
-						</Link>
-						<Link
+						</Link> */}
+						{/* <Link
 							href='#'
 							className={`font-semibold ${activeTab === 'organizations' ? 'text-primary' : 'text-muted-foreground'}`}
 							onClick={() => setActiveTab('organizations')}>
 							Organizations
-						</Link>
-						<Link
+						</Link> */}
+						{/* <Link
 							href='#'
 							className={`font-semibold ${activeTab === 'advanced' ? 'text-primary' : 'text-muted-foreground'}`}
 							onClick={() => setActiveTab('advanced')}>
 							Advanced
-						</Link>
+						</Link> */}
 					</nav>
 					<div className='grid gap-6'>{children}</div>
 				</div>

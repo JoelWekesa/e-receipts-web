@@ -19,5 +19,7 @@ export const config = {
         "/store/:id*",
         "/stores",
         "/stores/:id*",
+        "/teams",
+        "/teams/:id*",
     ],
 }

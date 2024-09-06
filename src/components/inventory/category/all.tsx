@@ -9,62 +9,66 @@ import {ArrowUpDown, MoreHorizontal} from 'lucide-react';
 import {FC} from 'react';
 import CategoryDropDown from './dropdown';
 
-const columns: ColumnDef<Category>[] = [
-	{
-		accessorKey: 'name',
-		header: ({column}) => {
-			return (
-				<div className='flex justify-start'>
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Category
-						<ArrowUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
-
-		cell: ({row}) => <div className='flex justify-start'>{row.original.name}</div>,
-	},
-
-	{
-		accessorKey: 'date',
-		header: ({column}) => {
-			return (
-				<div className='flex justify-start '>
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Created
-						<ArrowUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
-		cell: ({row}) => {
-			return <div className='flex justify-start '>{dayjs(row.original.createdAt).format('ddd DD MMM YYYY')}</div>;
-		},
-	},
-
-	{
-		accessorKey: 'id',
-		header: 'Action',
-		cell: ({row}) => {
-			return (
-				<div className='flex flex-row gap-2'>
-					<CategoryDropDown
-						drop={{
-							label: 'Actions',
-							category: row.original,
-						}}>
-						<Button variant='outline' size='icon'>
-							<MoreHorizontal className='h-4 w-4' />
+const CategoriesTable: FC<{category: Category[]; storeId: string; isTeam?: boolean}> = ({
+	category,
+	storeId,
+	isTeam,
+}) => {
+	const columns: ColumnDef<Category>[] = [
+		{
+			accessorKey: 'name',
+			header: ({column}) => {
+				return (
+					<div className='flex justify-start'>
+						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+							Category
+							<ArrowUpDown className='ml-2 h-4 w-4' />
 						</Button>
-					</CategoryDropDown>
-				</div>
-			);
-		},
-	},
-];
+					</div>
+				);
+			},
 
-const CategoriesTable: FC<{category: Category[]; storeId: string}> = ({category, storeId}) => {
+			cell: ({row}) => <div className='flex justify-start'>{row.original.name}</div>,
+		},
+
+		{
+			accessorKey: 'date',
+			header: ({column}) => {
+				return (
+					<div className='flex justify-start '>
+						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+							Created
+							<ArrowUpDown className='ml-2 h-4 w-4' />
+						</Button>
+					</div>
+				);
+			},
+			cell: ({row}) => {
+				return <div className='flex justify-start '>{dayjs(row.original.createdAt).format('ddd DD MMM YYYY')}</div>;
+			},
+		},
+
+		{
+			accessorKey: 'id',
+			header: () => <div className={`${isTeam ? 'hidden' : ''}`}>Actions</div>,
+			cell: ({row}) => {
+				return (
+					<div className={`flex flex-row gap-2 ${isTeam && 'hidden'}`}>
+						<CategoryDropDown
+							drop={{
+								label: 'Actions',
+								category: row.original,
+							}}>
+							<Button variant='outline' size='icon'>
+								<MoreHorizontal className='h-4 w-4' />
+							</Button>
+						</CategoryDropDown>
+					</div>
+				);
+			},
+		},
+	];
+
 	const {data: categories} = useStoreCategories({storeId, categories: category});
 
 	return (
