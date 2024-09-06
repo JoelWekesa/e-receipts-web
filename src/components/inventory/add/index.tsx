@@ -1,17 +1,17 @@
 'use client';
-import addImagesAtom, { thumbnailAtom } from '@/atoms/inventory/addimage';
+import addImagesAtom, {thumbnailAtom} from '@/atoms/inventory/addimage';
 import optionsAtom from '@/atoms/inventory/options';
 import variantsAtom from '@/atoms/inventory/variants';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form } from '@/components/ui/form';
-import { Category } from '@/models/inventory/category';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Form} from '@/components/ui/form';
+import {Category} from '@/models/inventory/category';
 import useAddProduct from '@/services/inventory/products/add';
-import { pricePAttern } from '@/utils/regex';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAtom } from 'jotai';
-import { FC, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import {pricePAttern} from '@/utils/regex';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useAtom} from 'jotai';
+import {FC, useEffect} from 'react';
+import {useForm} from 'react-hook-form';
+import {z} from 'zod';
 import ProductImages from './images/images';
 import Thumbnail from './images/thumbnail';
 import AddProductComponent from './product';
@@ -94,7 +94,7 @@ const AddProduct: FC<{categories: Category[]; storeId: string; token: string}> =
 		setOptions([]);
 		setThumbnail(null);
 		setVariants([]);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {

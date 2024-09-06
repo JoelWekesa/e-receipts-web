@@ -98,6 +98,22 @@ const AddVariant = () => {
 			</div>
 			<div className='grid gap-3'>
 				<FormField
+					name='discount'
+					control={form.control}
+					rules={{required: true}}
+					render={({field}) => (
+						<FormItem>
+							<FormLabel>Variant Discount</FormLabel>
+							<FormControl>
+								<Input id='discount' placeholder='0.00' {...field} required />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			</div>
+			<div className='grid gap-3'>
+				<FormField
 					name='quantity'
 					control={form.control}
 					rules={{required: true}}

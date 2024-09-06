@@ -29,6 +29,10 @@ const formSchema = z.object({
 	price: z.string({required_error: 'Please enter a variant price'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid price',
 	}),
+
+	discount: z.string().regex(positiveNumberRegex, {
+		message: 'Please enter a valid discount',
+	}),
 	quantity: z.string({required_error: 'Please enter a variant quantity'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid quantity',
 	}),
@@ -58,6 +62,7 @@ const VariantsDialog = () => {
 			quantity: variant?.quantity ? '' + variant.quantity : '',
 			warnLevel: variant?.warnLevel ? '' + variant.warnLevel : '',
 			description: variant?.description || '',
+			discount: variant?.discount ? '' + variant.discount : '',
 		},
 	});
 
@@ -71,6 +76,7 @@ const VariantsDialog = () => {
 			price: Number(data.price),
 			quantity: Number(data.quantity),
 			warnLevel: Number(data.warnLevel),
+			discount: Number(data.discount),
 		};
 
 		const variantExists = variants.some((variant) =>

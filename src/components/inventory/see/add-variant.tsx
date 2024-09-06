@@ -42,6 +42,10 @@ const formSchema = z.object({
 	quantity: z.string({required_error: 'Please enter a variant quantity'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid quantity',
 	}),
+
+	discount: z.string().regex(positiveNumberRegex, {
+		message: 'Please enter a valid discount',
+	}),
 	warnLevel: z
 		.string()
 		.regex(positiveNumberRegex, {
@@ -60,6 +64,7 @@ const AddVariant: FC<Props> = ({options, inventory}) => {
 			quantity: '',
 			warnLevel: '',
 			description: '',
+			discount: '',
 		},
 	});
 
@@ -95,6 +100,7 @@ const AddVariant: FC<Props> = ({options, inventory}) => {
 			warnLevel: Number(data.warnLevel),
 			inventoryId: inventory?.id || '',
 			storeId: inventory?.storeId || '',
+			discount: Number(data.discount),
 		};
 
 		add({data: curr, token});

@@ -40,6 +40,10 @@ const formSchema = z.object({
 	price: z.string({required_error: 'Please enter a variant price'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid price',
 	}),
+
+	discount: z.string({required_error: 'Please enter a variant discount'}).regex(positiveNumberRegex, {
+		message: 'Please enter a valid price',
+	}),
 	quantity: z.string({required_error: 'Please enter a variant quantity'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid quantity',
 	}),
@@ -72,6 +76,7 @@ const EditVariant: FC<Props> = ({variant, options}) => {
 			quantity: (data?.quantity || 0).toString(),
 			warnLevel: (data?.warnLevel || 0).toString(),
 			description: data?.description || '',
+			discount: (data?.discount || 0).toString(),
 		},
 	});
 
@@ -88,6 +93,7 @@ const EditVariant: FC<Props> = ({variant, options}) => {
 			id: variant?.id || '',
 			price: Number(data.price),
 			quantity: Number(data.quantity),
+			discount: Number(data.discount),
 			warnLevel: Number(data.warnLevel),
 			inventoryId: variant?.inventoryId || '',
 			storeId: variant?.storeId || '',
@@ -177,6 +183,22 @@ const EditVariant: FC<Props> = ({variant, options}) => {
 											<FormLabel>Variant Price</FormLabel>
 											<FormControl>
 												<Input id='price' placeholder='0.00' {...field} required />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className='grid gap-3'>
+								<FormField
+									name='discount'
+									control={form.control}
+									rules={{required: true}}
+									render={({field}) => (
+										<FormItem>
+											<FormLabel>Variant Discount</FormLabel>
+											<FormControl>
+												<Input id='discount' placeholder='0.00' {...field} required />
 											</FormControl>
 											<FormMessage />
 										</FormItem>

@@ -31,6 +31,7 @@ export interface Variant {
     id: string;
     name: NameElement[];
     variant_name: string;
+    discount: number;
     description: string;
     price: number;
     quantity: number;

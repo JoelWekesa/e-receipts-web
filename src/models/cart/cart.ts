@@ -21,6 +21,7 @@ export interface Variant {
     createdAt: Date;
     updatedAt: Date;
     inventory: Inventory;
+    discount: number;
 }
 
 export interface Inventory {

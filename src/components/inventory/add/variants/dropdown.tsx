@@ -33,6 +33,9 @@ const formSchema = z.object({
 	price: z.string({required_error: 'Please enter a variant price'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid price',
 	}),
+	discount: z.string({required_error: 'Please enter a variant discount'}).regex(positiveNumberRegex, {
+		message: 'Please enter a valid price',
+	}),
 	quantity: z.string({required_error: 'Please enter a variant quantity'}).regex(positiveNumberRegex, {
 		message: 'Please enter a valid quantity',
 	}),
@@ -70,6 +73,7 @@ const VariantsDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, children
 			quantity: variant?.quantity ? '' + variant.quantity : '',
 			warnLevel: variant?.warnLevel ? '' + variant.warnLevel : '',
 			description: variant?.description || '',
+			discount: variant?.discount ? '' + variant.discount : '',
 		},
 	});
 
@@ -79,6 +83,7 @@ const VariantsDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, children
 			price: Number(data.price),
 			quantity: Number(data.quantity),
 			warnLevel: Number(data.warnLevel),
+			discount: Number(data.discount),
 		};
 
 		const updatedVariants = variants.map((v) => {

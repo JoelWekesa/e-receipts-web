@@ -12,7 +12,10 @@ import {loyaltyAtom} from '@/atoms/receiptgen/loyalty';
 const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 	const [items] = useAtom(receiptItemsAtom);
 
-	const total = useMemo(() => items.reduce((acc, item) => acc + +item.price * +item.quantity, 0), [items]);
+	const total = useMemo(
+		() => items.reduce((acc, item) => acc + (+item.price - +item.discount) * +item.quantity, 0),
+		[items]
+	);
 
 	const discountedItems = useMemo(() => items.filter((item) => item.discount !== 0), [items]);
 
@@ -95,10 +98,10 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 										<p className='uppercase p-2'>{item.quantity}</p>
 									</td>
 									<td className='w-1/6' align='center'>
-										<p className='uppercase p-2'>{item.price}</p>
+										<p className='uppercase p-2'>{item.price - item.discount}</p>
 									</td>
 									<td className='w-1/6' align='center'>
-										<p className='uppercase p-2'>{+item.price * +item.quantity}</p>
+										<p className='uppercase p-2'>{(+item.price - +item.discount) * +item.quantity}</p>
 									</td>
 								</tr>
 							))}

@@ -20,7 +20,12 @@ interface Props {
 	shop: string;
 }
 
-export const AddToCart: FC<Props> = ({product, shop}) => {
+export const AddToCart: FC<Props> = ({ product, shop }) => {
+	
+
+	
+
+
 	const {cartId} = useLoadedCartItems();
 	const buttonClasses =
 		'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
@@ -93,7 +98,7 @@ export const AddToCart: FC<Props> = ({product, shop}) => {
 						<div className='absolute left-0 ml-4'>
 							{loading || isPending ? <LoadingDots className='bg-white justify-center' /> : <PlusIcon className='h-5' />}
 						</div>
-						Add To Cart
+						Add To Carts
 					</button>
 				) : (
 					<button

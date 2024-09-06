@@ -30,7 +30,9 @@ export function VariantSelector({options, variants}: {options: Option[]; variant
 	useEffect(() => {
 		const optionKeys = options.map((option) => option.name.toLowerCase());
 
-		if (optionKeys.length === 0) {
+		console.log(optionKeys);
+
+		if (optionKeys.length === 0 || variants.length === 1) {
 			setSelectedVariant(variants[0]);
 			return;
 		}

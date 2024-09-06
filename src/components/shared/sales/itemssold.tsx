@@ -41,6 +41,17 @@ const ItemsSoldTable: FC<{items: ReceiptItem[]}> = ({items}) => {
 		},
 
 		{
+			accessorKey: 'discount',
+			header: () => {
+				return <div className='flex'>Discount Each</div>;
+			},
+
+			cell: ({row}) => {
+				return <div className='flex'>{currencyFormat.format(row.original.discount)}</div>;
+			},
+		},
+
+		{
 			accessorKey: 'total',
 			accessorFn: (row) => row.price * row.quantity - row.discount,
 			header: ({column}) => {
@@ -53,7 +64,7 @@ const ItemsSoldTable: FC<{items: ReceiptItem[]}> = ({items}) => {
 			},
 
 			cell: ({row}) => {
-				const total = row.original.price * row.original.quantity - row.original.discount;
+				const total = row.original.price * row.original.quantity - row.original.discount * row.original.quantity;
 
 				return <div className='flex'>{currencyFormat.format(total)}</div>;
 			},

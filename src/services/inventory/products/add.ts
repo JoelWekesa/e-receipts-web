@@ -11,6 +11,7 @@ type VariantType = Omit<ModeVariant, 'price' | 'quantity' | 'warnLevel'>
 interface VariantProps extends VariantType {
     price: number
     quantity: number
+    discount: number
     warnLevel: number
 }
 

@@ -33,6 +33,7 @@ export interface Variant {
     variant_name: string;
     description: string;
     price: number;
+    discount: number;
     quantity: number;
     inventoryId: string;
     warnLevel: number;

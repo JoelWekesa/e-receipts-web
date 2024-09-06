@@ -25,6 +25,8 @@ interface Props {
 const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 	const [selected, setSelected] = useState<string>('');
 
+	const [product, setProduct] = useState<Product | null>(null);
+
 	const fProducts = useMemo(
 		() =>
 			products.map((product) => ({
@@ -34,22 +36,27 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 		[products]
 	);
 
-	const formSchema = z.object({
-		item: z.string().min(1, {message: 'Item name is required'}),
-		quantity: z
-			.string()
-			.min(1, {message: 'Quantity is required'})
-			.refine((value) => !isNaN(Number(value)), {message: 'Quantity must be a number'}),
-		price: z
-			.string()
-			.min(1, {message: 'Price is required'})
-			.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
+	const formSchema = z
+		.object({
+			item: z.string().min(1, {message: 'Item name is required'}),
+			quantity: z
+				.string()
+				.min(1, {message: 'Quantity is required'})
+				.refine((value) => !isNaN(Number(value)), {message: 'Quantity must be a number'}),
+			price: z
+				.string()
+				.min(1, {message: 'Price is required'})
+				.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
 
-		discount: z
-			.string()
-			.min(1, {message: 'Discount is required. If you are not providing a discount, enter 0'})
-			.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
-	});
+			discount: z
+				.string()
+				.min(1, {message: 'Discount is required. If you are not providing a discount, enter 0'})
+				.refine((value) => !isNaN(Number(value)), {message: 'Price must be a number'}),
+		})
+		.refine((data) => +data.discount <= +data.price, {message: 'Discount cannot be greater than price'})
+		.refine((data) => +data.discount <= product?.discount!, {
+			message: 'Discount cannot be greater than product discount',
+		});
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -57,7 +64,7 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 			item: '',
 			quantity: '',
 			price: '',
-			discount: '0',
+			discount: '',
 		},
 	});
 
@@ -72,7 +79,14 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 
 		if (!product) return;
 
+		setProduct(product);
+
 		form.setValue('price', product.price.toString(), {
+			shouldValidate: true,
+			shouldDirty: true,
+		});
+
+		form.setValue('discount', product.discount.toString(), {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
