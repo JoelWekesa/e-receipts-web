@@ -3,11 +3,11 @@ import {Button} from '@/components/ui/button';
 import {Loader2} from 'lucide-react';
 import {FC} from 'react';
 
-const ProductHeader: FC<{isPending: boolean; edit?: boolean}> = ({isPending, edit}) => {
+const ProductHeader: FC<{isPending: boolean; edit?: boolean; title?: string}> = ({isPending, edit, title}) => {
 	return (
 		<div className='flex items-center gap-4 my-3'>
 			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
-				{edit ? 'Edit Product' : 'Add Product'}
+				{edit ? 'Edit Product' : title}
 			</h1>
 			<Badge variant='outline' className='ml-auto sm:ml-0'>
 				New
