@@ -1,26 +1,33 @@
 'use client';
 import {DataTable} from '@/components/shared/datatable';
+import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
-import {StoreFloat} from '@/models/floats/store';
+import {StoreCash, StoreFloat} from '@/models/floats/store';
 import {Transaction} from '@/models/floats/transactions';
+import useTransactions from '@/services/float/transactions';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown, EyeIcon} from 'lucide-react';
-import {FC} from 'react';
-import FloatBalance from '../float-balance';
-import {Badge} from '@/components/ui/badge';
 import Link from 'next/link';
-import useTransactions from '@/services/float/transactions';
+import {FC} from 'react';
+import Balances from '../balances';
 
 interface StoreTransactionsProps {
 	transactions: Transaction[];
 	storeFloat: StoreFloat | null;
+	storeCash: StoreCash | null;
 	storeId: string;
 	teamId?: string;
 }
 
-const StoreTransactionsComponent: FC<StoreTransactionsProps> = ({transactions, storeFloat, storeId, teamId}) => {
+const StoreTransactionsComponent: FC<StoreTransactionsProps> = ({
+	transactions,
+	storeFloat,
+	storeId,
+	teamId,
+	storeCash,
+}) => {
 	const {data} = useTransactions({
 		storeId,
 		transactions,
@@ -164,7 +171,7 @@ const StoreTransactionsComponent: FC<StoreTransactionsProps> = ({transactions, s
 
 	return (
 		<div className='flex flex-col my-5 gap-4'>
-			{storeFloat && <FloatBalance storeFloat={storeFloat} storeId={storeId} />}
+			{storeFloat && <Balances storeFloat={storeFloat} storeId={storeId} storeCash={storeCash} />}
 			<div>
 				<DataTable columns={columns} data={data} searchColumn='name' searchPlaceholder='Search by name' black />
 			</div>

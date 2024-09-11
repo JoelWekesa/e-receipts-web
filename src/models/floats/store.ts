@@ -6,3 +6,10 @@ export interface StoreFloat {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface StoreCash {
+    id: string;
+    floatId: string;
+    balance: number;
+    updatedAt: Date;
+}

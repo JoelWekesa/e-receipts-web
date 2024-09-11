@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import {cn} from '@/lib/utils';
 import {usePathname} from 'next/navigation';
-import FloatNavMenu from '../shared/nav/m-pesa-float';
+import {MpesaMenuBar} from '../shared/nav/m-pesa';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
 	id: string;
@@ -42,7 +42,8 @@ export function StoreNav({className, id, ...props}: Props) {
 				} transition-colors hover:text-primary`}>
 				Orders
 			</Link>
-			<FloatNavMenu id={id} />
+			<MpesaMenuBar id={id} />
+			{/* <FloatNavMenu id={id} /> */}
 		</nav>
 	);
 }

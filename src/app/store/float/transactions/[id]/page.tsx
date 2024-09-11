@@ -1,5 +1,6 @@
 import {options} from '@/app/api/auth/[...nextauth]/options';
 import StoreTransactionsComponent from '@/components/float/transaction/table';
+import {getStoreCash} from '@/services/page/float/cash';
 import {getStoreFloat} from '@/services/page/float/get-store-float';
 import {getStoreTransactions} from '@/services/page/float/transactions';
 import {getServerSession} from 'next-auth';
@@ -20,13 +21,20 @@ const StoreFloatTransactions: FC<Props> = async ({params: {id: storeId}}) => {
 
 		const float = getStoreFloat({storeId, token});
 
+		const cash = getStoreCash({storeId, token});
+
 		const storeTransactions = getStoreTransactions({storeId, token});
 
-		const [storeFloat, transactions] = await Promise.all([float, storeTransactions]);
+		const [storeFloat, storeCash, transactions] = await Promise.all([float, cash, storeTransactions]);
 
 		return (
 			<div className='container mx-auto my-4'>
-				<StoreTransactionsComponent storeFloat={storeFloat} transactions={transactions} storeId={storeId} />
+				<StoreTransactionsComponent
+					storeFloat={storeFloat}
+					storeCash={storeCash}
+					transactions={transactions}
+					storeId={storeId}
+				/>
 			</div>
 		);
 	} catch (error) {

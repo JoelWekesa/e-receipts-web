@@ -1,17 +1,17 @@
 'use client';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
-import {FloatTopUp} from '@/models/floats/top-up';
+import {CashTopUp} from '@/models/floats/cash-topups';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown} from 'lucide-react';
 import {FC} from 'react';
 
-const columns: ColumnDef<FloatTopUp>[] = [
+const columns: ColumnDef<CashTopUp>[] = [
 	{
 		accessorKey: 'name',
-		accessorFn: (row) => row.user.name,
+		accessorFn: (row) => row.createdBy.name,
 		header: ({column}) => {
 			return (
 				<div className=''>
@@ -23,12 +23,12 @@ const columns: ColumnDef<FloatTopUp>[] = [
 			);
 		},
 
-		cell: ({row}) => <div className='pl-3'>{row.original.user.name}</div>,
+		cell: ({row}) => <div className='pl-3'>{row.original.createdBy.name}</div>,
 	},
 
 	{
 		accessorKey: 'email',
-		accessorFn: (row) => row.user?.email,
+		accessorFn: (row) => row.createdBy?.email,
 		header: ({column}) => {
 			return (
 				<div className=''>
@@ -40,12 +40,12 @@ const columns: ColumnDef<FloatTopUp>[] = [
 			);
 		},
 
-		cell: ({row}) => <div className='pl-3'>{row.original.user?.email || 'N/A'}</div>,
+		cell: ({row}) => <div className='pl-3'>{row.original.createdBy?.email || 'N/A'}</div>,
 	},
 
 	{
 		accessorKey: 'phone',
-		accessorFn: (row) => row.user?.phone,
+		accessorFn: (row) => row.createdBy?.phone,
 		header: ({column}) => {
 			return (
 				<div className=''>
@@ -57,24 +57,7 @@ const columns: ColumnDef<FloatTopUp>[] = [
 			);
 		},
 
-		cell: ({row}) => <div className='pl-3'>{row.original.user?.phone || 'N/A'}</div>,
-	},
-
-	{
-		accessorKey: 'transactionId',
-		accessorFn: (row) => row.transactionId,
-		header: ({column}) => {
-			return (
-				<div className=''>
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Transaction ID
-						<ArrowUpDown className='ml-2 h-4 w-4' />
-					</Button>
-				</div>
-			);
-		},
-
-		cell: ({row}) => <div className='pl-3'>{row.original.transactionId}</div>,
+		cell: ({row}) => <div className='pl-3'>{row.original.createdBy?.phone || 'N/A'}</div>,
 	},
 
 	{
@@ -112,11 +95,11 @@ const columns: ColumnDef<FloatTopUp>[] = [
 	},
 ];
 
-interface StoreFloatTopUpsProps {
-	topUps: FloatTopUp[];
+interface StoreCashTopUpsProps {
+	topUps: CashTopUp[];
 }
 
-const StoreFloatTopUps: FC<StoreFloatTopUpsProps> = ({topUps}) => {
+const StoreCashTopUps: FC<StoreCashTopUpsProps> = ({topUps}) => {
 	return (
 		<div className='flex flex-col my-5 gap-4'>
 			<div>
@@ -126,4 +109,4 @@ const StoreFloatTopUps: FC<StoreFloatTopUpsProps> = ({topUps}) => {
 	);
 };
 
-export default StoreFloatTopUps;
+export default StoreCashTopUps;

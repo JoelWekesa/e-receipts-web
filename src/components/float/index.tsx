@@ -1,21 +1,26 @@
 'use client';
-import {StoreFloat} from '@/models/floats/store';
+import {CashTopUp} from '@/models/floats/cash-topups';
+import {StoreCash, StoreFloat} from '@/models/floats/store';
 import {FloatTopUp} from '@/models/floats/top-up';
-import useFloatTopUps from '@/services/float/top-ups';
-import React, {FC} from 'react';
-import StoreFloatTopUps from './topups';
-import StoreFloatOnboardingScreen from './onboarding';
+import useCashTopUps from '@/services/float/cashTopUps';
 import useStoreFloat from '@/services/float/store-float';
+import useFloatTopUps from '@/services/float/top-ups';
 import {useSession} from 'next-auth/react';
+import {FC} from 'react';
+import Balances from './balances';
+import StoreFloatOnboardingScreen from './onboarding';
+import TopUpsTabs from './tabs';
 
 interface Props {
 	storeFloat: StoreFloat | null;
 	topUps: FloatTopUp[];
+	cashTopUps: CashTopUp[];
 	storeId: string;
 	teamId?: string;
+	storeCash: StoreCash | null;
 }
 
-const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId}) => {
+const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId, storeCash, cashTopUps}) => {
 	const {data: session} = useSession({
 		required: true,
 	});
@@ -26,10 +31,15 @@ const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId}) => {
 
 	const {data = []} = useFloatTopUps({floatId: float?.id || '', topUps});
 
+	const {data: cTopUps = []} = useCashTopUps({floatId: float?.id || '', cashTopUps, token});
+
 	return (
 		<>
 			{data.length > 0 ? (
-				<StoreFloatTopUps topUps={data} storeFloat={float} storeId={storeId} />
+				<div className='flex flex-col gap-2'>
+					{storeFloat && <Balances storeFloat={storeFloat} storeCash={storeCash} storeId={storeId} />}
+					<TopUpsTabs floatTopUps={data} cashTopUps={cTopUps} />
+				</div>
 			) : (
 				<StoreFloatOnboardingScreen storeFloat={float} storeId={storeId} />
 			)}
