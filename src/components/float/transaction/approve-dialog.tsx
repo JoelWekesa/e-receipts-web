@@ -28,9 +28,13 @@ interface Props {
 }
 
 const validationSchema = z.object({
-	approve: z.string({
-		message: 'Approval confirmation is required',
-	}),
+	approve: z
+		.string({
+			message: 'Approval confirmation is required',
+		})
+		.refine((value) => value === 'confirm', {
+			message: 'Approval confirmation must be confirm',
+		}),
 });
 
 const ApproveFloatDialog: FC<Props> = ({open, onClose, transaction}) => {
