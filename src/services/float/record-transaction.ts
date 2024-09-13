@@ -1,21 +1,31 @@
 import InventoryClient from "@/config/axios-inventory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import dayjs from "dayjs";
 
 interface Props {
     floatId: string;
     token: string;
-    transactionId: string;
-    amount: number;
+    evidence: File;
+    amount: string
 }
 
-const floatTopUp = async ({ token, ...data }: Props) => {
-    const response = await InventoryClient({ token }).post('floats/top-up', data).then(res => res.data);
+
+const recordTransaction = async ({ token, floatId, evidence, amount }: Props) => {
+
+    const formData = new FormData()
+
+    formData.append('evidence', evidence)
+    formData.append('floatId', floatId)
+    formData.append('amount', amount)
+
+    const response = await InventoryClient({ token }).post('floats/transaction', formData).then(res => res.data)
+
     return response
+
 }
 
-const useFloatTopUp = (successFn: () => void) => {
+const useRecordTransaction = (successFn: () => void) => {
+
     const queryClient = useQueryClient()
 
     const toInvalidate = [
@@ -26,24 +36,23 @@ const useFloatTopUp = (successFn: () => void) => {
         'float-statements'
     ]
 
-
     return useMutation({
-        mutationFn: floatTopUp,
+        mutationFn: recordTransaction,
         onSuccess: async () => {
             await Promise.all(toInvalidate.map(key => queryClient.invalidateQueries(
                 {
                     queryKey: [key]
                 }
             )))
-            toast.success("Float Added", {
-                icon: "✅",
-                description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-                position: 'top-right'
-            })
 
             successFn()
+
+            toast.success("Transaction Recorded", {
+                icon: "✅",
+                position: 'top-right'
+            })
         }
     })
 }
 
-export default useFloatTopUp
+export default useRecordTransaction;

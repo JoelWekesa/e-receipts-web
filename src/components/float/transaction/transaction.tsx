@@ -17,9 +17,10 @@ import useTransaction from '@/services/float/transaction';
 
 interface Props {
 	transaction: Transaction;
+	teamId?: string;
 }
 
-const TransactionComponent: FC<Props> = ({transaction}) => {
+const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 	const {data: mountedTransaction} = useTransaction({transactionId: transaction.id, transaction});
 
 	const [mounted, setMounted] = useState(false);
@@ -197,23 +198,29 @@ const TransactionComponent: FC<Props> = ({transaction}) => {
 							</>
 						)}
 					</CardContent>
-					<CardFooter className='flex justify-end space-x-2'>
-						<Button
-							variant='destructive'
-							onClick={handleReject}
-							disabled={mountedTransaction.approved || mountedTransaction.rejected}>
-							<AlertCircle className='mr-2 h-4 w-4' />
-							Reject
-						</Button>
-						<Button variant='default' onClick={handleApprove} disabled={mountedTransaction.approved}>
-							<CheckCircle2 className='mr-2 h-4 w-4' />
-							Approve
-						</Button>
-					</CardFooter>
+					{!!!teamId && (
+						<CardFooter className='flex justify-end space-x-2'>
+							<Button
+								variant='destructive'
+								onClick={handleReject}
+								disabled={mountedTransaction.approved || mountedTransaction.rejected}>
+								<AlertCircle className='mr-2 h-4 w-4' />
+								Reject
+							</Button>
+							<Button variant='default' onClick={handleApprove} disabled={mountedTransaction.approved}>
+								<CheckCircle2 className='mr-2 h-4 w-4' />
+								Approve
+							</Button>
+						</CardFooter>
+					)}
 				</Card>
 			</div>
-			<ApproveFloatDialog open={open} onClose={handleApprove} transaction={transaction} />
-			<RejectFloatDialog open={rejectOpen} onClose={handleReject} transaction={transaction} />
+			{!!!teamId && (
+				<>
+					<ApproveFloatDialog open={open} onClose={handleApprove} transaction={transaction} />
+					<RejectFloatDialog open={rejectOpen} onClose={handleReject} transaction={transaction} />
+				</>
+			)}
 		</>
 	);
 };

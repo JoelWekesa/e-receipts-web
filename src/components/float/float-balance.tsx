@@ -11,9 +11,10 @@ import AddFloatDialog from './add-float-dialog';
 interface Props {
 	storeId: string;
 	storeFloat: StoreFloat | null;
+	team?: boolean;
 }
 
-const FloatBalance: FC<Props> = ({storeId, storeFloat}) => {
+const FloatBalance: FC<Props> = ({storeId, storeFloat, team}) => {
 	const {data: session} = useSession({
 		required: true,
 	});
@@ -56,15 +57,17 @@ const FloatBalance: FC<Props> = ({storeId, storeFloat}) => {
 							</div>
 						</div>
 					</div>
-					<div className='flex py-3'>
-						<Button onClick={handleOpen}>
-							<Banknote className='w-6 h-6 mr-2' />
-							Top Up Float
-						</Button>
-					</div>
+					{!team && (
+						<div className='flex py-3'>
+							<Button onClick={handleOpen} disabled={team}>
+								<Banknote className='w-6 h-6 mr-2' />
+								Top Up Float
+							</Button>
+						</div>
+					)}
 				</div>
 			</div>
-			<AddFloatDialog open={open} onClose={handleOpen} storeFloat={storeFloat} />
+			{!team && <AddFloatDialog open={open} onClose={handleOpen} storeFloat={storeFloat} />}
 		</>
 	);
 };

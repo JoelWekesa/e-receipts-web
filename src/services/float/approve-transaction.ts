@@ -20,6 +20,7 @@ const useApproveTransaction = () => {
         'transactions',
         'transaction',
         'storeFloat',
+        'float-statements'
     ]
 
 

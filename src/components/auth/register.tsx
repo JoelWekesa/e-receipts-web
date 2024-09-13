@@ -183,7 +183,7 @@ const RegisterForm = () => {
 								render={() => (
 									<Dropzone
 										accept={{
-											'image/*': ['.png'],
+											'image/*': ['.png', '.jpg', '.jpeg'],
 										}}
 										multiple={true}
 										maxSize={1024 * 1024 * 5}

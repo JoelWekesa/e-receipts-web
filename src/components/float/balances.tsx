@@ -7,13 +7,14 @@ interface Props {
 	storeFloat: StoreFloat | null;
 	storeCash: StoreCash | null;
 	storeId: string;
+	team?: boolean;
 }
 
-const Balances: FC<Props> = ({ storeCash, storeFloat, storeId}) => {
+const Balances: FC<Props> = ({storeCash, storeFloat, storeId, team}) => {
 	return (
 		<div className='flex flex-row gap-2'>
-			<FloatBalance storeFloat={storeFloat} storeId={storeId} />
-			<CashBalance storeCash={storeCash} storeId={storeId} />
+			<FloatBalance storeFloat={storeFloat} storeId={storeId} team={team} />
+			<CashBalance storeCash={storeCash} storeId={storeId} team={team} />
 		</div>
 	);
 };

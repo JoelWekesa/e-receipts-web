@@ -1,21 +1,20 @@
 'use client';
 import {DataTable} from '@/components/shared/datatable';
 import {Button} from '@/components/ui/button';
-import {CashStatement} from '@/models/floats/cash-statements';
-import useStoreCashStatements from '@/services/statements/cash';
+import {FloatStatement} from '@/models/floats/float-statements';
+import {StoreCash, StoreFloat} from '@/models/floats/store';
+import useStoreFloatStatements from '@/services/statements/store-float-statements';
 import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown} from 'lucide-react';
 import {FC} from 'react';
-import {Badge} from '../ui/badge';
 import Balances from '../float/balances';
-import {StoreCash, StoreFloat} from '@/models/floats/store';
+import {Badge} from '../ui/badge';
 
 export enum TransactionType {
 	TopUp = 'Top Up',
-	Collect = 'Collect',
-	Approval = 'Approval',
+	Approve = 'Approve',
 	Unknown = 'Unknown',
 }
 
@@ -26,46 +25,34 @@ interface User {
 	type: TransactionType;
 }
 
-const extractUser = (statement: CashStatement): User => {
+const extractUser = (statement: FloatStatement): User => {
 	let name = '';
 	let email = '';
 	let phone = '';
 	let type = TransactionType.Unknown;
 
 	switch (true) {
-		case statement.cashAtHandTopUp !== null:
-			const topUpName = statement.cashAtHandTopUp?.createdBy?.name;
-			const topUpEmail = statement.cashAtHandTopUp?.createdBy?.email;
-			const topUpPhone = statement.cashAtHandTopUp?.createdBy?.phone;
+		case statement.aprroval !== null:
+			const topUpName = statement.aprroval?.user?.name;
+			const topUpEmail = statement.aprroval?.user?.email;
+			const topUpPhone = statement.aprroval?.user?.phone;
 
 			name = topUpName || 'N/A';
 			email = topUpEmail || 'N/A';
 			phone = topUpPhone || 'N/A';
-			type = TransactionType.TopUp;
+			type = TransactionType.Approve;
 
 			return {name, email, phone, type};
 
-		case statement.cashAtHandTransaction !== null:
-			const transactionName = statement.cashAtHandTransaction.approval.user.name;
-			const transactionEmail = statement.cashAtHandTransaction.approval.user.email;
-			const transactionPhone = statement.cashAtHandTransaction.approval.user.phone;
+		case statement.floatTransaction !== null:
+			const transactionName = statement.floatTransaction.user.name;
+			const transactionEmail = statement.floatTransaction.user.email;
+			const transactionPhone = statement.floatTransaction.user.phone;
 
 			name = transactionName || 'N/A';
 			email = transactionEmail || 'N/A';
 			phone = transactionPhone || 'N/A';
-			type = TransactionType.Approval;
-
-			return {name, email, phone, type};
-
-		case statement.cashWithDrawal !== null:
-			const withdrawalName = statement.cashWithDrawal.user?.name;
-			const withdrawalEmail = statement.cashWithDrawal.user?.email;
-			const withdrawalPhone = statement.cashWithDrawal.user?.phone;
-
-			name = withdrawalName || 'N/A';
-			email = withdrawalEmail || 'N/A';
-			phone = withdrawalPhone || 'N/A';
-			type = TransactionType.Collect;
+			type = TransactionType.TopUp;
 
 			return {name, email, phone, type};
 
@@ -79,7 +66,7 @@ const extractUser = (statement: CashStatement): User => {
 	}
 };
 
-const columns: ColumnDef<CashStatement>[] = [
+const columns: ColumnDef<FloatStatement>[] = [
 	{
 		accessorKey: 'name',
 		accessorFn: (row) => extractUser(row).name,
@@ -149,7 +136,7 @@ const columns: ColumnDef<CashStatement>[] = [
 			<div className='pl-3'>
 				<Badge
 					className={`${
-						extractUser(row.original).type === TransactionType.Collect ? 'bg-red-500' : 'bg-green-500'
+						extractUser(row.original).type === TransactionType.Approve ? 'bg-red-500' : 'bg-green-500'
 					} text-white`}>
 					{extractUser(row.original).type}
 				</Badge>
@@ -171,8 +158,8 @@ const columns: ColumnDef<CashStatement>[] = [
 		},
 		cell: ({row}) => {
 			return (
-				<div className={`pl-3 ${extractUser(row.original).type === TransactionType.Collect && 'text-red-500'}`}>
-					{extractUser(row.original).type === TransactionType.Collect
+				<div className={`pl-3 ${extractUser(row.original).type === TransactionType.Approve && 'text-red-500'}`}>
+					{extractUser(row.original).type === TransactionType.Approve
 						? currencyFormat.format(row.original.amount * -1)
 						: currencyFormat.format(row.original.amount)}
 				</div>
@@ -210,13 +197,13 @@ const columns: ColumnDef<CashStatement>[] = [
 			);
 		},
 		cell: ({row}) => {
-			return <div className='pl-3'>{dayjs(row.original.createdAt).format('ddd DD MMM YYYY HH:mm')}</div>;
+			return <div className='pl-3'>{dayjs(row.original.createAt).format('ddd DD MMM YYYY HH:mm')}</div>;
 		},
 	},
 ];
 
-interface StoreCashStatements {
-	statements: CashStatement[];
+interface StoreFloatStatements {
+	statements: FloatStatement[];
 	storeId: string;
 	token: string;
 	storeFloat: StoreFloat | null;
@@ -224,7 +211,7 @@ interface StoreCashStatements {
 	team?: boolean;
 }
 
-const StoreCashStatementsComponent: FC<StoreCashStatements> = ({
+const StoreFloatStatementsComponent: FC<StoreFloatStatements> = ({
 	statements,
 	storeId,
 	token,
@@ -232,7 +219,7 @@ const StoreCashStatementsComponent: FC<StoreCashStatements> = ({
 	storeCash,
 	team,
 }) => {
-	const {data = []} = useStoreCashStatements({statements, storeId, token});
+	const {data = []} = useStoreFloatStatements({statements, storeId, token});
 
 	return (
 		<div className='flex flex-col my-5 gap-4'>
@@ -244,4 +231,4 @@ const StoreCashStatementsComponent: FC<StoreCashStatements> = ({
 	);
 };
 
-export default StoreCashStatementsComponent;
+export default StoreFloatStatementsComponent;

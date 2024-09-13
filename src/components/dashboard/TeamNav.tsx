@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import {cn} from '@/lib/utils';
 import {usePathname} from 'next/navigation';
+import {MpesaMenuBar} from '../shared/nav/m-pesa';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
 	id: string;
@@ -43,6 +44,7 @@ export function TeamNav({className, id, storeId, ...props}: Props) {
 				} transition-colors hover:text-primary`}>
 				Orders
 			</Link>
+			<MpesaMenuBar id={storeId} teamId={id} />
 		</nav>
 	);
 }

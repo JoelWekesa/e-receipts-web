@@ -12,9 +12,10 @@ import CollectCashDialog from './transaction/collect-cash-dialog';
 interface Props {
 	storeId: string;
 	storeCash: StoreCash | null;
+	team?: boolean;
 }
 
-const CashBalance: FC<Props> = ({storeId, storeCash}) => {
+const CashBalance: FC<Props> = ({storeId, storeCash, team}) => {
 	const {data: float, refetch, isRefetching} = useStoreCash({storeId, storeCash});
 
 	const [open, setOpen] = useState(false);
@@ -57,21 +58,27 @@ const CashBalance: FC<Props> = ({storeId, storeCash}) => {
 							</div>
 						</div>
 					</div>
-					<div className='flex  flex-row gap-2 py-3'>
-						<Button onClick={handleOpen}>
-							<BanknoteIcon className='w-6 h-6 mr-2' />
-							Top Up Cash
-						</Button>
+					{!team && (
+						<div className='flex  flex-row gap-2 py-3'>
+							<Button onClick={handleOpen} disabled={team}>
+								<BanknoteIcon className='w-6 h-6 mr-2' />
+								Top Up Cash
+							</Button>
 
-						<Button onClick={handleOpenCollect} variant='destructive'>
-							<BanknoteIcon className='w-6 h-6 mr-2' />
-							Collect Cash
-						</Button>
-					</div>
+							<Button onClick={handleOpenCollect} variant='destructive' disabled={team}>
+								<BanknoteIcon className='w-6 h-6 mr-2' />
+								Collect Cash
+							</Button>
+						</div>
+					)}
 				</div>
 			</div>
-			<AddCashDialog open={open} onClose={handleOpen} storeCash={storeCash} />
-			<CollectCashDialog open={openCollect} onClose={handleOpenCollect} storeCash={storeCash} storeId={storeId} />
+			{!team && (
+				<>
+					<AddCashDialog open={open} onClose={handleOpen} storeCash={storeCash} />
+					<CollectCashDialog open={openCollect} onClose={handleOpenCollect} storeCash={storeCash} storeId={storeId} />
+				</>
+			)}
 		</>
 	);
 };

@@ -16,9 +16,10 @@ import {FC} from 'react';
 
 interface Props {
 	id: string;
+	teamId?: string;
 }
 
-export const MpesaMenuBar: FC<Props> = ({id}) => {
+export const MpesaMenuBar: FC<Props> = ({id, teamId}) => {
 	const pathName = usePathname();
 
 	return (
@@ -33,20 +34,31 @@ export const MpesaMenuBar: FC<Props> = ({id}) => {
 					</span>
 				</MenubarTrigger>
 				<MenubarContent>
-					<MenubarItem>
-						<Link href={`/store/float/${id}`}>Float Top Ups</Link>
-					</MenubarItem>
-					<MenubarItem>
-						<Link href={`/store/float/transactions/${id}`}>Approve Transactions</Link>
-					</MenubarItem>
+					{teamId ? (
+						<MenubarItem>
+							<Link href={`/teams/float/${teamId}`}>Record Daily Float Balance</Link>
+						</MenubarItem>
+					) : (
+						<>
+							<MenubarItem>
+								<Link href={`/store/float/${id}`}>Float Top Ups</Link>
+							</MenubarItem>
+							<MenubarItem>
+								<Link href={`/store/float/transactions/${id}`}>Approve Transactions</Link>
+							</MenubarItem>
+						</>
+					)}
+
 					<MenubarSeparator />
 					<MenubarSub>
 						<MenubarSubTrigger>Statements</MenubarSubTrigger>
 						<MenubarSubContent>
 							<MenubarItem>
-								<Link href={`/store/statements/cash/${id}`}>Cash At Hand</Link>
+								<Link href={teamId ? `/teams/statements/cash/${teamId}` : `/store/statements/cash/${id}`}>Cash At Hand</Link>
 							</MenubarItem>
-							<MenubarItem>Float</MenubarItem>
+							<MenubarItem>
+								<Link href={teamId ? `/teams/statements/float/${teamId}` : `/store/statements/float/${id}`}>Float</Link>
+							</MenubarItem>
 						</MenubarSubContent>
 					</MenubarSub>
 					<MenubarSeparator />
