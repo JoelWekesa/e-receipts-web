@@ -1,6 +1,6 @@
 import {Viewport} from 'next';
 import '../styles/globals.css';
-
+import {GoogleAnalytics} from '@next/third-parties/google';
 import {Analytics} from '@/components/analytics';
 import {ThemeProvider} from '@/components/providers';
 import {SiteFooter} from '@/components/site-footer';
@@ -30,6 +30,8 @@ interface RootLayoutProps {
 
 export default async function RootLayout({children}: RootLayoutProps) {
 	const cookies = await getCookies();
+
+	const GAID = process.env.NEXT_GOOGLE_ANALYTICS_ID || '';
 
 	if (!cookies?.cartId) {
 		const cartId = 'cart-' + uuidv4();
@@ -63,6 +65,7 @@ export default async function RootLayout({children}: RootLayoutProps) {
 									<NewYorkSonner />
 								</ThemeProvider>
 							</body>
+							<GoogleAnalytics gaId={GAID} />
 						</html>
 					</ReactQueryProvider>
 				</Provider>
