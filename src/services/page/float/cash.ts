@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const getStoreCash = async ({ storeId, token }: Props) => {
-    const response: StoreCash = await InventoryClient({ token }).get(`floats/cash/balance?storeId=${storeId}`).then((res) => res.data);
+    const response: StoreCash | null = await InventoryClient({ token }).get(`floats/cash/balance?storeId=${storeId}`).then((res) => res.data);
 
     return response;
 }
