@@ -16,7 +16,7 @@ const useStoreCash = ({ storeId, storeCash }: Props) => {
     const token = session?.accessToken || ''
 
     return useQuery({
-        queryKey: ["storeCash", { storeId }],
+        queryKey: ["storeCash", { storeId, id: storeCash?.id }],
         queryFn: async () => await getStoreCash({ storeId, token }),
         initialData: storeCash
     })

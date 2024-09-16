@@ -9,7 +9,7 @@ interface Props {
 
 const useStoreFloat = ({ token, storeId, storeFloat }: Props) => {
     return useQuery({
-        queryKey: ['storeFloat', { storeId }],
+        queryKey: ['storeFloat', { storeId, id: storeFloat?.id }],
         queryFn: async () => await getStoreFloat({ token, storeId }),
         initialData: storeFloat
     })

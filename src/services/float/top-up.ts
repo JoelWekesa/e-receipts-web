@@ -23,7 +23,8 @@ const useFloatTopUp = (successFn: () => void) => {
         'floatTopUps',
         'transaction',
         'transactions',
-        'float-statements'
+        'float-statements',
+        'storeCash',
     ]
 
 

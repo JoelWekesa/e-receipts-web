@@ -10,6 +10,7 @@ import {FC} from 'react';
 import Balances from './balances';
 import StoreFloatOnboardingScreen from './onboarding';
 import TopUpsTabs from './tabs';
+import useStoreCash from '@/services/float/cash';
 
 interface Props {
 	storeFloat: StoreFloat | null;
@@ -29,6 +30,8 @@ const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId, store
 
 	const {data: float} = useStoreFloat({token, storeId, storeFloat});
 
+	const {data: cash} = useStoreCash({storeId, storeCash});
+
 	const {data = []} = useFloatTopUps({floatId: float?.id || '', topUps});
 
 	const {data: cTopUps = []} = useCashTopUps({floatId: float?.id || '', cashTopUps, token});
@@ -37,7 +40,7 @@ const FloatManagementComponent: FC<Props> = ({storeFloat, topUps, storeId, store
 		<>
 			{data.length > 0 ? (
 				<div className='flex flex-col gap-2'>
-					{storeFloat && <Balances storeFloat={storeFloat} storeCash={storeCash} storeId={storeId} />}
+					{float && <Balances storeFloat={float} storeCash={cash} storeId={storeId} />}
 					<TopUpsTabs floatTopUps={data} cashTopUps={cTopUps} />
 				</div>
 			) : (

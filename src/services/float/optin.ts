@@ -16,6 +16,7 @@ const useOptIn = () => {
 
     const toInvalidate = [
         'storeFloat',
+        'storeCash',
     ]
 
     return useMutation({
