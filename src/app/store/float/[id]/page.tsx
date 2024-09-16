@@ -21,21 +21,9 @@ const StoreFloat = async ({params: {id: storeId}}: Props) => {
 
 	const [storeFloat, storeCash] = await Promise.all([float, cash]);
 
-	if (!storeFloat) {
-		return (
-			<FloatManagementComponent
-				storeFloat={storeFloat}
-				topUps={[]}
-				storeId={storeId}
-				storeCash={storeCash}
-				cashTopUps={[]}
-			/>
-		);
-	}
+	const cTopUps = getCashTopUps({token, floatId: storeFloat?.id || 'placeholder'});
 
-	const cTopUps = getCashTopUps({token, floatId: storeFloat?.id || ''});
-
-	const fTopUps = getFloatTopUps({token, floatId: storeFloat?.id || ''});
+	const fTopUps = getFloatTopUps({token, floatId: storeFloat?.id || 'placeholder'});
 
 	const [cashTopUps, floatTopUps] = await Promise.all([cTopUps, fTopUps]);
 
