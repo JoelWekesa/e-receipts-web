@@ -5,6 +5,7 @@ import {getStoreFloat} from '@/services/page/float/get-store-float';
 import getCashStatements from '@/services/page/float/statements';
 import {getServerSession} from 'next-auth';
 import React, {FC} from 'react';
+import dayjs from 'dayjs';
 interface Props {
 	params: {
 		id: string;
@@ -12,6 +13,9 @@ interface Props {
 }
 
 const StoreCashStatement: FC<Props> = async ({params: {id: storeId}}) => {
+	const startDate = dayjs().startOf('month').startOf('day').toISOString();
+	const endDate = dayjs().endOf('month').endOf('day').toISOString();
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -20,7 +24,7 @@ const StoreCashStatement: FC<Props> = async ({params: {id: storeId}}) => {
 
 	const cash = getStoreCash({storeId, token});
 
-	const cashStatement = getCashStatements({storeId, token});
+	const cashStatement = getCashStatements({storeId, token, startDate, endDate});
 
 	const [storeFloat, storeCash, statements] = await Promise.all([float, cash, cashStatement]);
 

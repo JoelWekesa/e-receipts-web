@@ -8,9 +8,12 @@ import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown} from 'lucide-react';
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import Balances from '../float/balances';
 import {Badge} from '../ui/badge';
+import {DateRange} from 'react-day-picker';
+import {StatementsDatePicker} from './picker';
+import * as XLSX from 'xlsx';
 
 export enum TransactionType {
 	TopUp = 'Top Up',
@@ -58,7 +61,7 @@ const extractUser = (statement: FloatStatement): User => {
 
 		default:
 			return {
-				name,
+				name: 'Joel',
 				email,
 				phone,
 				type: TransactionType.Unknown,
@@ -219,13 +222,56 @@ const StoreFloatStatementsComponent: FC<StoreFloatStatements> = ({
 	storeCash,
 	team,
 }) => {
-	const {data = []} = useStoreFloatStatements({statements, storeId, token});
+	const [date, setDate] = useState<DateRange | undefined>({
+		from: new Date(dayjs().startOf('month').startOf('day').toDate()),
+		to: new Date(dayjs().endOf('month').endOf('day').toDate()),
+	});
+
+	const {data = []} = useStoreFloatStatements({
+		statements,
+		storeId,
+		token,
+		startDate: dayjs(date?.from).format('YYYY-MM-DD'),
+		endDate: dayjs(date?.to).format('YYYY-MM-DD'),
+	});
+
+	const handleDownload = () => {
+		const toDownload = data.map((item) => ({
+			Name: extractUser(item).name,
+			Email: extractUser(item).email,
+			Phone: extractUser(item).phone,
+			TransactionType: extractUser(item).type,
+			Amount:
+				extractUser(item).type === TransactionType.Approve
+					? currencyFormat.format(-1 * item.amount)
+					: currencyFormat.format(item.amount),
+			Balance: currencyFormat.format(item.balance),
+			Date: dayjs(item.createAt).format('ddd DD MMMM YYYY'),
+		}));
+
+		const ws = XLSX.utils.json_to_sheet(toDownload);
+
+		const wb = XLSX.utils.book_new();
+
+		XLSX.utils.book_append_sheet(wb, ws, 'FloatStatements');
+
+		XLSX.writeFile(wb, 'sales.xlsx');
+	};
 
 	return (
 		<div className='flex flex-col my-5 gap-4'>
+			<p className='text-3xl font-bold px-4'>Float Statements</p>
 			<Balances storeId={storeId} storeCash={storeCash} storeFloat={storeFloat} team={team} />
+			<StatementsDatePicker setDate={setDate} date={date} className='' />
 			<div>
-				<DataTable columns={columns} data={data} searchColumn='name' searchPlaceholder='Search by name' black />
+				<DataTable
+					columns={columns}
+					data={data}
+					searchColumn='name'
+					searchPlaceholder='Search by name'
+					black
+					download={handleDownload}
+				/>
 			</div>
 		</div>
 	);

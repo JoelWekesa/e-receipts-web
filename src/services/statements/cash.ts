@@ -6,15 +6,17 @@ interface Props {
     token: string
     storeId: string
     statements: CashStatement[]
+    startDate: string
+    endDate: string
 }
 
 
-const useStoreCashStatements = ({ token, storeId, statements }: Props) => {
+const useStoreCashStatements = ({ token, storeId, startDate, endDate, statements }: Props) => {
     return useQuery({
-        queryKey: ['cash-statements', { storeId }],
-        queryFn: () => getCashStatements({ token, storeId }),
+        queryKey: ['cash-statements', { storeId, startDate, endDate }],
+        queryFn: () => getCashStatements({ token, storeId, startDate, endDate }),
         enabled: !!token && !!storeId,
-        initialData: statements
+        placeholderData: statements
     })
 
 }

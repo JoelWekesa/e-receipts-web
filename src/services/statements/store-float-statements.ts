@@ -6,14 +6,16 @@ interface Props {
     storeId: string;
     token: string;
     statements: FloatStatement[];
+    startDate: string
+    endDate: string
 }
 
-const useStoreFloatStatements = ({ storeId, token, statements }: Props) => {
+const useStoreFloatStatements = ({ storeId, token, statements, startDate, endDate }: Props) => {
 
     return useQuery({
-        queryKey: ['float-statements', storeId],
-        queryFn: () => getStoreFloatStatements({ storeId, token }),
-        initialData: statements,
+        queryKey: ['float-statements', { storeId, startDate, endDate }],
+        queryFn: () => getStoreFloatStatements({ storeId, token, startDate, endDate }),
+        placeholderData: statements,
     })
 }
 

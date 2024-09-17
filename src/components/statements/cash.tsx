@@ -7,10 +7,13 @@ import currencyFormat from '@/utils/currency';
 import {ColumnDef} from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import {ArrowUpDown} from 'lucide-react';
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {Badge} from '../ui/badge';
 import Balances from '../float/balances';
 import {StoreCash, StoreFloat} from '@/models/floats/store';
+import {StatementsDatePicker} from './picker';
+import {DateRange} from 'react-day-picker';
+import * as XLSX from 'xlsx';
 
 export enum TransactionType {
 	TopUp = 'Top Up',
@@ -232,13 +235,56 @@ const StoreCashStatementsComponent: FC<StoreCashStatements> = ({
 	storeCash,
 	team,
 }) => {
-	const {data = []} = useStoreCashStatements({statements, storeId, token});
+	const [date, setDate] = useState<DateRange | undefined>({
+		from: new Date(dayjs().startOf('month').startOf('day').toDate()),
+		to: new Date(dayjs().endOf('month').endOf('day').toDate()),
+	});
+
+	const {data = []} = useStoreCashStatements({
+		statements,
+		storeId,
+		token,
+		startDate: dayjs(date?.from).format('YYYY-MM-DD'),
+		endDate: dayjs(date?.to).format('YYYY-MM-DD'),
+	});
+
+	const handleDownload = () => {
+		const toDownload = data.map((item) => ({
+			Name: extractUser(item).name,
+			Email: extractUser(item).email,
+			Phone: extractUser(item).phone,
+			TransactionType: extractUser(item).type,
+			Amount:
+				extractUser(item).type === TransactionType.Collect
+					? currencyFormat.format(-1 * item.amount)
+					: currencyFormat.format(item.amount),
+			Balance: currencyFormat.format(item.balance),
+			Date: dayjs(item.createdAt).format('ddd DD MMMM YYYY'),
+		}));
+
+		const ws = XLSX.utils.json_to_sheet(toDownload);
+
+		const wb = XLSX.utils.book_new();
+
+		XLSX.utils.book_append_sheet(wb, ws, 'CashStatements');
+
+		XLSX.writeFile(wb, 'sales.xlsx');
+	};
 
 	return (
 		<div className='flex flex-col my-5 gap-4'>
+			<p className='text-3xl font-bold px-4'>Cash Statements</p>
 			<Balances storeId={storeId} storeCash={storeCash} storeFloat={storeFloat} team={team} />
+			<StatementsDatePicker setDate={setDate} date={date} className='' />
 			<div>
-				<DataTable columns={columns} data={data} searchColumn='name' searchPlaceholder='Search by name' black />
+				<DataTable
+					columns={columns}
+					data={data}
+					searchColumn='name'
+					searchPlaceholder='Search by name'
+					black
+					download={handleDownload}
+				/>
 			</div>
 		</div>
 	);

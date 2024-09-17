@@ -6,6 +6,7 @@ import getStoreFloatStatements from '@/services/page/float/float-statements';
 import {getStoreFloat} from '@/services/page/float/get-store-float';
 import {getStore} from '@/services/page/stores/store/get-store';
 import {getTeam} from '@/services/page/teams/get-team';
+import dayjs from 'dayjs';
 import {Metadata} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC} from 'react';
@@ -81,6 +82,9 @@ export async function generateMetadata({params}: {params: {team: string}}): Prom
 }
 
 const FloatStatements: FC<Props> = async ({params: {team: teamId}}) => {
+	const startDate = dayjs().startOf('month').startOf('day').toISOString();
+	const endDate = dayjs().endOf('month').endOf('day').toISOString();
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -94,13 +98,11 @@ const FloatStatements: FC<Props> = async ({params: {team: teamId}}) => {
 
 	const {id: storeId} = store;
 
-	console.log({storeId});
-
 	const float = getStoreFloat({storeId, token});
 
 	const cash = getStoreCash({storeId, token});
 
-	const floatStatements = getStoreFloatStatements({storeId, token});
+	const floatStatements = getStoreFloatStatements({storeId, token, startDate, endDate});
 
 	const [storeFloat, storeCash, statements] = await Promise.all([float, cash, floatStatements]);
 

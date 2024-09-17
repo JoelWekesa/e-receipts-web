@@ -4,10 +4,12 @@ import { FloatStatement } from "@/models/floats/float-statements";
 interface Props {
     storeId: string;
     token: string;
+    startDate: string
+    endDate: string
 }
 
-const getStoreFloatStatements = async ({ storeId, token }: Props) => {
-    const response: FloatStatement[] = await InventoryClient({ token }).get(`floats/statements?storeId=${storeId}`).then(res => res.data);
+const getStoreFloatStatements = async ({ storeId, token, startDate, endDate }: Props) => {
+    const response: FloatStatement[] = await InventoryClient({ token }).get(`floats/statements?storeId=${storeId}&startDate=${startDate}&endDate=${endDate}`).then(res => res.data);
     return response;
 }
 
