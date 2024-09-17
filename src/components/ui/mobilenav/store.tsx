@@ -5,18 +5,21 @@ import {useRouter} from 'next/navigation';
 import * as React from 'react';
 
 import {Icons} from '@/components/icons';
-// import {docsConfig} from '@/config/docs';
 import {siteConfig} from '@/config/site';
 import {cn} from '@/lib/utils';
-import {Button} from './ui/button';
-import {ScrollArea} from './ui/scroll-area';
-import {Sheet, SheetContent, SheetTrigger} from './ui/sheet';
-import baseNav from './ui/mobilenav/main-nav-items';
+import {Button} from '../button';
+import {ScrollArea} from '../scroll-area';
+import {Sheet, SheetContent, SheetTrigger} from '../sheet';
+import storeNav from './store-nav-items';
 
-export function MobileNav() {
+interface Props {
+	storeId: string;
+}
+
+const StoreMobileNav: React.FC<Props> = ({storeId}) => {
 	const [open, setOpen] = React.useState(false);
 
-	const docsConfig = baseNav();
+	const navItems = storeNav({storeId});
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -39,7 +42,7 @@ export function MobileNav() {
 				</MobileLink>
 				<ScrollArea className='my-4 h-[calc(100vh-8rem)] pb-10 pl-6'>
 					<div className='flex flex-col space-y-3'>
-						{docsConfig.mainNav?.map(
+						{navItems.mainNav?.map(
 							(item) =>
 								item.href && (
 									<MobileLink key={item.href} href={item.href} onOpenChange={setOpen}>
@@ -49,7 +52,7 @@ export function MobileNav() {
 						)}
 					</div>
 					<div className='flex flex-col space-y-2'>
-						{docsConfig?.sidebarNav?.map((item, index) => (
+						{navItems.sidebarNav?.map((item, index) => (
 							<div key={index} className='flex flex-col space-y-3 pt-6'>
 								<h4 className='font-medium'>{item.title}</h4>
 								{item?.items?.length &&
@@ -77,7 +80,9 @@ export function MobileNav() {
 			</SheetContent>
 		</Sheet>
 	);
-}
+};
+
+export default StoreMobileNav;
 
 interface MobileLinkProps extends LinkProps {
 	onOpenChange?: (open: boolean) => void;

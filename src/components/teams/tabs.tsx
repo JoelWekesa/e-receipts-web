@@ -1,5 +1,5 @@
 'use client';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {Store} from '@/models/store';
 import {MyTeam} from '@/models/teams/my-teams';
 import {Permission} from '@/models/teams/permissions';
@@ -18,7 +18,7 @@ interface Props {
 const TeamsTabs: FC<Props> = ({data, stores, permissions, invites}) => {
 	return (
 		<Tabs defaultValue='teams' className='w-full'>
-			<TabsList className='grid w-[400px] grid-cols-2'>
+			<TabsList className='grid md:w-[400px] w-full grid-cols-2'>
 				<TabsTrigger value='teams'>My Teams</TabsTrigger>
 				<TabsTrigger value='pending'>Pending Invites</TabsTrigger>
 			</TabsList>

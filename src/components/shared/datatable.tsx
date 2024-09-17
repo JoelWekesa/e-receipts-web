@@ -82,7 +82,9 @@ export function DataTable<TData, TValue>({
 					className='max-w-sm'
 				/>
 			</div>
-			<div className='p-4'>
+
+			{/* For larger screens, render the table */}
+			<div className='hidden md:block p-4'>
 				<Table className='relative'>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -117,6 +119,28 @@ export function DataTable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
+			</div>
+
+			{/* For smaller screens, render cards instead of table */}
+			<div className='block md:hidden p-4'>
+				{table.getRowModel().rows?.length ? (
+					table.getRowModel().rows.map((row) => (
+						<div key={row.id} className='p-4 mb-4  rounded-lg shadow-md border'>
+							{row.getVisibleCells().map((cell) => {
+								const header = cell.column.columnDef.header as string;
+
+								return (
+									<div key={cell.id} className='mb-2'>
+										<span className='font-semibold'>{header}</span>
+										<span>{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+									</div>
+								);
+							})}
+						</div>
+					))
+				) : (
+					<div className='text-center py-6'>No results found.</div>
+				)}
 			</div>
 
 			{data.length > 0 && (

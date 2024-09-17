@@ -41,7 +41,7 @@ export const MpesaMenuBar: FC<Props> = ({id, teamId}) => {
 					) : (
 						<>
 							<MenubarItem>
-								<Link href={`/store/float/${id}`}>Float Top Ups</Link>
+								<Link href={`/store/float/${id}`}>Top Ups</Link>
 							</MenubarItem>
 							<MenubarItem>
 								<Link href={`/store/float/transactions/${id}`}>Approve Transactions</Link>

@@ -42,7 +42,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			accessorKey: 'name',
 			header: ({column}) => {
 				return (
-					<div className='flex justify-start'>
+					<div className='flex md:justify-start'>
 						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 							Team
 							<ArrowUpDown className='ml-2 h-4 w-4' />
@@ -52,7 +52,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			},
 
 			cell: ({row}) => {
-				return <div className='flex justify-start'>{row.original.name}</div>;
+				return <div className='flex md:justify-start'>{row.original.name}</div>;
 			},
 		},
 
@@ -60,7 +60,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			accessorKey: 'store',
 			header: ({column}) => {
 				return (
-					<div className='flex justify-end'>
+					<div className='flex md:justify-end'>
 						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 							Store
 							<ArrowUpDown className='ml-2 h-4 w-4' />
@@ -70,7 +70,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			},
 
 			cell: ({row}) => {
-				return <div className='flex justify-end mr-5'>{row.original.store.displayName}</div>;
+				return <div className='flex md:justify-end mr-5'>{row.original.store.displayName}</div>;
 			},
 		},
 
@@ -78,7 +78,7 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			accessorKey: 'permission',
 			header: ({column}) => {
 				return (
-					<div className='flex justify-end'>
+					<div className='flex md:justify-end'>
 						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
 							Permission
 							<ArrowUpDown className='ml-2 h-4 w-4' />
@@ -88,19 +88,19 @@ const MyTeamsComponent: FC<Props> = ({data, stores, permissions}) => {
 			},
 
 			cell: ({row}) => {
-				return <div className='flex justify-end mr-5'>{row.original.permission.permission}</div>;
+				return <div className='flex md:justify-end mr-5'>{row.original.permission.permission}</div>;
 			},
 		},
 
 		{
 			accessorKey: 'action',
 			header: () => {
-				return <div className='flex justify-end'>Action</div>;
+				return <div className='flex md:justify-end'>Action</div>;
 			},
 
 			cell: ({row}) => {
 				return (
-					<div className='flex justify-end'>
+					<div className='flex md:justify-end'>
 						<MineDropDown
 							drop={{
 								label: 'Team Actions',

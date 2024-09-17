@@ -1,17 +1,17 @@
 'use client';
 
-import Link from 'next/link';
 import {CommandMenu} from '@/components/command-menu';
 import {Icons} from '@/components/icons';
-import {MobileNav} from '@/components/mobile-nav';
 import {ModeToggle} from '@/components/mode-toggle';
 import {siteConfig} from '@/config/site';
 import {cn} from '@/lib/utils';
+import {useTheme} from 'next-themes';
+import Link from 'next/link';
 import {FC} from 'react';
 import UserNav from '../dashboard/UserNav';
 import {buttonVariants} from '../ui/button';
+import StoreMobileNav from '../ui/mobilenav/store';
 import {StoreNavSite} from './store-nav';
-import {useTheme} from 'next-themes';
 
 interface Props {
 	show?: boolean;
@@ -25,7 +25,7 @@ export const StoreSiteHeader: FC<Props> = ({show, storeId}) => {
 		<header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
 			<div className='container flex h-14 max-w-screen-2xl items-center'>
 				<StoreNavSite storeId={storeId} />
-				<MobileNav />
+				<StoreMobileNav storeId={storeId} />
 				<div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
 					{show && (
 						<div className='w-full flex-1 md:w-auto md:flex-none'>

@@ -12,7 +12,7 @@ interface Props {
 
 const Balances: FC<Props> = ({storeCash, storeFloat, storeId, team}) => {
 	return (
-		<div className='flex flex-row gap-2'>
+		<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 			<FloatBalance storeFloat={storeFloat} storeId={storeId} team={team} />
 			<CashBalance storeCash={storeCash} storeId={storeId} team={team} />
 		</div>
