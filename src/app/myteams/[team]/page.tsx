@@ -7,7 +7,9 @@ import {teamUsers} from '@/services/page/teams/team-users';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 
-const DynamicMainNav = dynamic(() => import('../../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
+const DynamicMainNav = dynamic(() => import('../../../components/dashboard/MainNav').then((mod) => ({
+    default: mod.MainNav
+})), {
 	loading: () => <Skeleton className='h-8 w-full' />,
 });
 
@@ -19,19 +21,20 @@ const DynamicTeamUsers = dynamic(() => import('../../../components/teams/members
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-const TeamUsersPage = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const TeamUsersPage = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const [teams, stores, permissions, team_users] = await Promise.all([
+    const [teams, stores, permissions, team_users] = await Promise.all([
 		getTeams({token}),
 		userStores(token),
 		getPermissions({token}),
 		teamUsers({token, id: params.team}),
 	]);
 
-	return (
+    return (
 		<>
 			<div className='hidden flex-col md:flex'>
 				<div className='border-b'>

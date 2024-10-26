@@ -5,6 +5,10 @@ import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
+type Params = Promise<{
+	inventory: string[];
+}>;
+
 // export const metadata: Metadata = {
 // 	title: {
 // 		default: 'Shop',
@@ -59,8 +63,12 @@ import {FC, ReactNode} from 'react';
 
 const ShopItemLayout: FC<{
 	children: ReactNode;
-	params: {inventory: string[]};
-}> = async ({children, params}) => {
+	params: Params;
+}> = async (props) => {
+	const params = await props.params;
+
+	const {children} = props;
+
 	const {inventory} = params;
 
 	const store_name = inventory[0];

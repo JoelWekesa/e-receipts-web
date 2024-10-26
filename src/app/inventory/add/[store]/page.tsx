@@ -14,16 +14,17 @@ const getCategories = async ({storeId, token}: {storeId: string; token: string})
 	return response;
 };
 
-const AddInventoryPage = async ({params}: {params: {store: string}}) => {
-	const session = await getServerSession(options);
+const AddInventoryPage = async (props: {params: Promise<{store: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const storeId = params.store;
+    const storeId = params.store;
 
-	const [categories] = await Promise.all([getCategories({storeId, token})]);
+    const [categories] = await Promise.all([getCategories({storeId, token})]);
 
-	return (
+    return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<InventoryLayout storeId={storeId}>
 				<AddInventoryTabs categories={categories} storeId={storeId} token={token} />

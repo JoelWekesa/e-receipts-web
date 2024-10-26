@@ -3,7 +3,7 @@ import {StoreNav} from '@/components/dashboard/StoreNav';
 import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import {StoreSiteHeader} from '@/components/shared/store-site-header';
 import {siteConfig} from '@/config/site';
-import { getStore } from '@/services/page/stores/store/get-store';
+import {getStore} from '@/services/page/stores/store/get-store';
 import {userStores} from '@/services/page/stores/user-stores';
 import {getTeams} from '@/services/page/teams/member-teams';
 import {getPermissions} from '@/services/page/teams/permissions';
@@ -11,7 +11,10 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
-export async function generateMetadata({params}: {params: {id: string}}): Promise<Metadata> {
+type Params = Promise<{id: string}>;
+
+export async function generateMetadata(props: {params: Promise<{id: string}>}): Promise<Metadata> {
+	const params = await props.params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -72,7 +75,6 @@ export async function generateMetadata({params}: {params: {id: string}}): Promis
 	};
 }
 
-
 export const viewport: Viewport = {
 	themeColor: [
 		{media: '(prefers-color-scheme: light)', color: 'white'},
@@ -82,8 +84,12 @@ export const viewport: Viewport = {
 
 const StoreClientsLayout: FC<{
 	children: ReactNode;
-	params: {id: string};
-}> = async ({children, params}) => {
+	params: Params;
+}> = async (props) => {
+	const params = await props.params;
+
+	const {children} = props;
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';

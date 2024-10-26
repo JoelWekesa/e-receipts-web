@@ -5,7 +5,10 @@ import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {getServerSession} from 'next-auth';
 import React from 'react';
 
-const StoreClientsPage = async ({params}: {params: {id: string}}) => {
+type Params = Promise<{id: string}>;
+
+const StoreClientsPage = async (props: {params: Params}) => {
+	const params = await props.params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';

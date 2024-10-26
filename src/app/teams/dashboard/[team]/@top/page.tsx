@@ -9,24 +9,25 @@ const DynamicTopsComponent = dynamic(() => import('../../../../../components/sto
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-const StoreTopCustomers = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const StoreTopCustomers = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const id = params.team;
+    const id = params.team;
 
-	const storeFromTeam = await getStoreFromTeam({
+    const storeFromTeam = await getStoreFromTeam({
 		id,
 		token,
 	});
 
-	const topCustomers = await getStoreTopCustomers({
+    const topCustomers = await getStoreTopCustomers({
 		storeId: storeFromTeam?.store?.id || '',
 		token,
 	});
 
-	return <DynamicTopsComponent topCustomers={topCustomers} storeId={storeFromTeam.store.id} />;
+    return <DynamicTopsComponent topCustomers={topCustomers} storeId={storeFromTeam.store.id} />;
 };
 
 export default StoreTopCustomers;

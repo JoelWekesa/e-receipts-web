@@ -9,44 +9,45 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import {getServerSession} from 'next-auth';
 dayjs.extend(quarterOfYear);
 
-const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
-	const token = session?.accessToken || '';
+const PeriodSalesPage = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
+    const token = session?.accessToken || '';
 
-	const id = params.team;
+    const id = params.team;
 
-	const storeFromTeam = await getStoreFromTeam({
+    const storeFromTeam = await getStoreFromTeam({
 		id,
 		token,
 	});
 
-	const storeId = storeFromTeam?.store?.id || '';
+    const storeId = storeFromTeam?.store?.id || '';
 
-	const receiptsDay = getStorePeriodSales({
+    const receiptsDay = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.day,
 	});
 
-	const receiptsWeek = getStorePeriodSales({
+    const receiptsWeek = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.week,
 	});
 
-	const receiptsMonth = getStorePeriodSales({
+    const receiptsMonth = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.month,
 	});
 
-	const receiptsYear = getStorePeriodSales({
+    const receiptsYear = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.year,
 	});
 
-	const customReceipts = getCustomStorePeriodSales({
+    const customReceipts = getCustomStorePeriodSales({
 		token,
 		period: Period.custom,
 		startDate: dayjs(new Date()).startOf('Q').format('YYYY-MM-DD'),
@@ -54,15 +55,15 @@ const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
 		storeId,
 	});
 
-	const allReceipts = getStorePeriodSales({
+    const allReceipts = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.alltime,
 	});
 
-	const str = getStore({token, id: storeId});
+    const str = getStore({token, id: storeId});
 
-	const [day, week, month, year, all, custom, store] = await Promise.all([
+    const [day, week, month, year, all, custom, store] = await Promise.all([
 		receiptsDay,
 		receiptsWeek,
 		receiptsMonth,
@@ -72,7 +73,7 @@ const PeriodSalesPage = async ({params}: {params: {team: string}}) => {
 		str,
 	]);
 
-	return (
+    return (
 		<StorePeriodSales
 			receiptsDay={day}
 			receiptsWeek={week}

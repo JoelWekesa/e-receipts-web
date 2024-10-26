@@ -17,22 +17,23 @@ const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboa
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-export async function generateMetadata({params}: {params: {id: string}}): Promise<Metadata> {
-	const session = await getServerSession(options);
+export async function generateMetadata(props: {params: Promise<{id: string}>}): Promise<Metadata> {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {id} = params;
-	const store = await getStore({
+    const {id} = params;
+    const store = await getStore({
 		token,
 		id,
 	});
 
-	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-	const indexable = !!store?.logo;
+    const indexable = !!store?.logo;
 
-	return {
+    return {
 		title: `Dashboard | ${store.displayName}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -92,19 +93,29 @@ const StoreDashBoardLayout: FC<{
 	receipts: ReactNode;
 	top: ReactNode;
 	params: {id: string};
-}> = async ({periodsales, period_all_annual_month, periodtotals, receipts, top, params}) => {
-	const {id} = params;
-	const session = await getServerSession(options);
+}> = async props => {
+    const params = await props.params;
 
-	const token = session?.accessToken || '';
+    const {
+        periodsales,
+        period_all_annual_month,
+        periodtotals,
+        receipts,
+        top
+    } = props;
 
-	const [stores, teams, permissions] = await Promise.all([
+    const {id} = params;
+    const session = await getServerSession(options);
+
+    const token = session?.accessToken || '';
+
+    const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 	]);
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

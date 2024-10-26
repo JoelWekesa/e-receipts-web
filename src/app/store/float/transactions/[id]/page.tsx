@@ -7,13 +7,11 @@ import {getServerSession} from 'next-auth';
 import {redirect} from 'next/navigation';
 import {FC} from 'react';
 
-interface Props {
-	params: {
-		id: string;
-	};
-}
+type Params = Promise<{id: string}>;
 
-const StoreFloatTransactions: FC<Props> = async ({params: {id: storeId}}) => {
+const StoreFloatTransactions: FC<{params: Params}> = async ({params}) => {
+	const {id: storeId} = await params;
+
 	try {
 		const session = await getServerSession(options);
 

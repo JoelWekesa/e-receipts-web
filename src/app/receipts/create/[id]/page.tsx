@@ -48,16 +48,17 @@ const getStoresProduct = async ({token, storeId}: {token: string; storeId: strin
 	return products;
 };
 
-const StoresPage = async ({params}: {params: {id: string}}) => {
-	const session = await getServerSession(options);
+const StoresPage = async (props: {params: Promise<{id: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	console.log({token});
+    console.log({token});
 
-	const {id} = params;
+    const {id} = params;
 
-	const [data, products] = await Promise.all([
+    const [data, products] = await Promise.all([
 		getData({
 			id: id as string,
 			token: token,
@@ -66,7 +67,7 @@ const StoresPage = async ({params}: {params: {id: string}}) => {
 		getStoresProduct({token: token, storeId: id as string}),
 	]);
 
-	return (
+    return (
 		<div className='p-3'>
 			<PreviewBox store={data} token={token} products={products} />
 		</div>

@@ -4,15 +4,21 @@ import { v4 as uuidv4 } from "uuid"
 import { cookies } from "next/headers"
 
 export const getOrGenCookie = async () => {
+    const random = await uuidv4()
+
     let cartId: string
-    const id = await cookies().get('cartId')?.value
+
+
+
+    const id = await (await cookies()).get('cartId')?.value
 
     if (!id) {
-        cartId = uuidv4()
-        cookies().set({
+        (await cookies()).set({
             name: 'cartId',
-            value: cartId,
+            value: random,
         })
+
+        cartId = random
     } else {
         cartId = id
     }
@@ -21,19 +27,19 @@ export const getOrGenCookie = async () => {
 }
 
 export const delCookies = async () => {
-    await cookies().delete('cartId')
+    await (await cookies()).delete('cartId')
 
     const cartId = uuidv4()
-    await cookies().set({
+    await (await cookies()).set({
         name: 'cartId',
         value: cartId,
     })
 }
 
 export const genOrderCookie = async (orderId: string) => {
-    await cookies().delete('orderId')
+    await (await cookies()).delete('orderId')
 
-    await cookies().set({
+    await (await cookies()).set({
         name: 'orderId',
         value: orderId
     })

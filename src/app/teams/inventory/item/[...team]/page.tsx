@@ -6,24 +6,25 @@ import {getInventoryTotal} from '@/services/page/inventory/total';
 import {getInventoryOptions} from '@/services/page/inventory/variants/options';
 import {getServerSession} from 'next-auth';
 
-const InventoryItemPage = async ({params}: {params: {team: string[]}}) => {
-	const {team} = params;
+const InventoryItemPage = async (props: {params: Promise<{team: string[]}>}) => {
+    const params = await props.params;
+    const {team} = params;
 
-	const teamId = team[0];
+    const teamId = team[0];
 
-	const id = team[1];
+    const id = team[1];
 
-	const session = await getServerSession(options);
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const [inventory, data, total] = await Promise.all([
+    const [inventory, data, total] = await Promise.all([
 		getInventory({id, token}),
 		getInventoryOptions({id, token}),
 		getInventoryTotal({id, token}),
 	]);
 
-	return (
+    return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<TeamInventoryLayout teamId={teamId}>
 				<ViewProductComponent inventory={inventory} data={data} total={total} isTeam={true} teamId={teamId} />

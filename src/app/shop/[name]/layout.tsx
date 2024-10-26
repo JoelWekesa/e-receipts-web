@@ -8,20 +8,26 @@ import { options } from '../../api/auth/[...nextauth]/options';
 const StoreClientsLayout: FC<{
 	children: ReactNode;
 	params: {name: string};
-}> = async ({children, params}) => {
-	const {name} = params;
+}> = async props => {
+    const params = await props.params;
 
-	const session = await getServerSession(options);
+    const {
+        children
+    } = props;
 
-	const token = session?.accessToken || '';
+    const {name} = params;
 
-	const [store] = await Promise.all([storeFromName({name})]);
+    const session = await getServerSession(options);
 
-	const storeId = store.id;
+    const token = session?.accessToken || '';
 
-	const categories = await getCategories({storeId, token});
+    const [store] = await Promise.all([storeFromName({name})]);
 
-	return (
+    const storeId = store.id;
+
+    const categories = await getCategories({storeId, token});
+
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

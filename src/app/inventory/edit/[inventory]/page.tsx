@@ -36,21 +36,22 @@ const getCategories = async ({storeId, token}: {storeId: string; token: string})
 	return response;
 };
 
-const InventoryPage = async ({params}: {params: {inventory: string}}) => {
-	const id = params.inventory;
+const InventoryPage = async (props: {params: Promise<{inventory: string}>}) => {
+    const params = await props.params;
+    const id = params.inventory;
 
-	const session = await getServerSession(options);
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const inventory = await getInventory({id, token});
+    const inventory = await getInventory({id, token});
 
-	const [categories, opts] = await Promise.all([
+    const [categories, opts] = await Promise.all([
 		getCategories({storeId: inventory.storeId, token}),
 		getInventoryOptions({id, token}),
 	]);
 
-	return (
+    return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<InventoryLayout storeId={inventory.storeId}>
 				<EditProduct categories={categories} inventory={inventory} opts={opts} token={token} />

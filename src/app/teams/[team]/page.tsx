@@ -10,40 +10,41 @@ import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {getServerSession} from 'next-auth';
 import {notFound, redirect} from 'next/navigation';
 
-const TeamLandingPage = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const TeamLandingPage = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const [teams, stores, permissions] = await Promise.all([
+    const [teams, stores, permissions] = await Promise.all([
 		getTeams({token}),
 		userStores(token),
 		getPermissions({token}),
 	]);
 
-	const {team: teamId} = params;
+    const {team: teamId} = params;
 
-	const t = getTeam({token, id: teamId});
+    const t = getTeam({token, id: teamId});
 
-	const sft = getStoreFromTeam({token, id: teamId});
+    const sft = getStoreFromTeam({token, id: teamId});
 
-	const [team, storeFromTeam] = await Promise.all([t, sft]);
+    const [team, storeFromTeam] = await Promise.all([t, sft]);
 
-	const {id: storeId} = storeFromTeam.store;
+    const {id: storeId} = storeFromTeam.store;
 
-	if (!team) {
+    if (!team) {
 		return notFound();
 	}
 
-	if (team && team.permission.permission !== Permissions.Admin) {
+    if (team && team.permission.permission !== Permissions.Admin) {
 		redirect(`/teams/soon/${teamId}`);
 	}
 
-	if (team && team.permission.permission === Permissions.Admin) {
+    if (team && team.permission.permission === Permissions.Admin) {
 		redirect(`/teams/dashboard/${teamId}`);
 	}
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

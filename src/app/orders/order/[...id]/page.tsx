@@ -4,13 +4,11 @@ import {getOrder} from '@/services/orders/get-order';
 import {getServerSession} from 'next-auth';
 import React, {FC} from 'react';
 
-interface OrderProps {
-	params: {
-		id: string[];
-	};
-}
+type Params = Promise<{id: string[]}>;
 
-const Order: FC<OrderProps> = async ({params: {id}}) => {
+const Order: FC<{params: Params}> = async ({params}) => {
+	const {id} = await params;
+
 	const orderId = id[1];
 
 	const session = await getServerSession(options);

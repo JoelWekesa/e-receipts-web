@@ -7,27 +7,33 @@ import {getFloatTopUps} from '@/services/page/float/top-ups';
 import {getServerSession} from 'next-auth';
 
 interface Props {
-	params: {id: string};
+	params: Promise<{id: string}>;
 }
 
-const StoreFloat = async ({params: {id: storeId}}: Props) => {
-	const session = await getServerSession(options);
+const StoreFloat = async (props: Props) => {
+    const params = await props.params;
 
-	const token = session?.accessToken || '';
+    const {
+        id: storeId
+    } = params;
 
-	const float = getStoreFloat({token, storeId});
+    const session = await getServerSession(options);
 
-	const cash = getStoreCash({storeId, token});
+    const token = session?.accessToken || '';
 
-	const [storeFloat, storeCash] = await Promise.all([float, cash]);
+    const float = getStoreFloat({token, storeId});
 
-	const cTopUps = getCashTopUps({token, floatId: storeFloat?.id || 'placeholder'});
+    const cash = getStoreCash({storeId, token});
 
-	const fTopUps = getFloatTopUps({token, floatId: storeFloat?.id || 'placeholder'});
+    const [storeFloat, storeCash] = await Promise.all([float, cash]);
 
-	const [cashTopUps, floatTopUps] = await Promise.all([cTopUps, fTopUps]);
+    const cTopUps = getCashTopUps({token, floatId: storeFloat?.id || 'placeholder'});
 
-	return (
+    const fTopUps = getFloatTopUps({token, floatId: storeFloat?.id || 'placeholder'});
+
+    const [cashTopUps, floatTopUps] = await Promise.all([cTopUps, fTopUps]);
+
+    return (
 		<div className='container mx-auto my-4'>
 			<FloatManagementComponent
 				storeFloat={storeFloat}

@@ -11,6 +11,8 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
+type Params = Promise<{id: string}>;
+
 export const metadata: Metadata = {
 	title: {
 		default: 'Receipt',
@@ -65,13 +67,13 @@ export const viewport: Viewport = {
 
 const StoreDashBoardLayout: FC<{
 	children: ReactNode;
-	params: {id: string};
+	params: Params;
 }> = async ({children, params}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
 
-	const {id: teamId} = params;
+	const {id: teamId} = await params;
 
 	const [stores, teams, permissions, {store}] = await Promise.all([
 		userStores(token),

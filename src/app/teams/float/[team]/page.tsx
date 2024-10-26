@@ -10,13 +10,10 @@ import {Metadata} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC} from 'react';
 
-interface Props {
-	params: {
-		team: string;
-	};
-}
+type Params = Promise<{team: string}>;
 
-export async function generateMetadata({params}: {params: {team: string}}): Promise<Metadata> {
+export async function generateMetadata(props: {params: Params}): Promise<Metadata> {
+	const params = await props.params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -80,7 +77,9 @@ export async function generateMetadata({params}: {params: {team: string}}): Prom
 	};
 }
 
-const CashStatements: FC<Props> = async ({params: {team: teamId}}) => {
+const CashStatements: FC<{params: Params}> = async ({params}) => {
+	const {team: teamId} = await params;
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';

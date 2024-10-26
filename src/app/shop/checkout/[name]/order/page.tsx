@@ -12,7 +12,7 @@ import React from 'react';
 export async function generateMetadata(): Promise<Metadata> {
 	const session = await getServerSession(options);
 
-	const id = (await cookies().get('orderId')?.value) || '';
+	const id = (await (await cookies()).get('orderId')?.value) || '';
 
 	const token = session?.accessToken || '';
 	const order = await getOrder({
@@ -82,7 +82,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const OrderSuccess = async () => {
 	const session = await getServerSession(options);
 
-	const id = (await cookies().get('orderId')?.value) || '';
+	const id = (await (await cookies()).get('orderId')?.value) || '';
 
 	const token = session?.accessToken || '';
 

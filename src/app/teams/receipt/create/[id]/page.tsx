@@ -4,20 +4,21 @@ import {getStoreProducts} from '@/services/page/inventory/store/store-variants';
 import {getStoreFromTeam} from '@/services/page/teams/store-from-team';
 import {getServerSession} from 'next-auth';
 
-const CreateReceiptPage = async ({params}: {params: {id: string}}) => {
-	const session = await getServerSession(options);
+const CreateReceiptPage = async (props: {params: Promise<{id: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {id} = params;
+    const {id} = params;
 
-	const storeFromTeam = await getStoreFromTeam({id, token});
+    const storeFromTeam = await getStoreFromTeam({id, token});
 
-	const {store} = storeFromTeam;
+    const {store} = storeFromTeam;
 
-	const products = await getStoreProducts({token, storeId: store.id});
+    const products = await getStoreProducts({token, storeId: store.id});
 
-	return (
+    return (
 		<div className='p-3'>
 			<PreviewBox
 				store={{

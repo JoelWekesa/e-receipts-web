@@ -64,26 +64,32 @@ export const viewport: Viewport = {
 
 interface InventoryLayoutProps {
 	children: React.ReactNode;
-	params: {team: string[]};
+	params: Promise<{team: string[]}>;
 }
 
-export default async function InventoryLayout({children, params}: InventoryLayoutProps) {
-	const session = await getServerSession(options);
+export default async function InventoryLayout(props: InventoryLayoutProps) {
+    const params = await props.params;
 
-	const {team} = params;
+    const {
+        children
+    } = props;
 
-	const teamId = team[0];
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const {team} = params;
 
-	const [stores, teams, permissions, {store}] = await Promise.all([
+    const teamId = team[0];
+
+    const token = session?.accessToken || '';
+
+    const [stores, teams, permissions, {store}] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 		getStoreFromTeam({id: teamId, token}),
 	]);
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

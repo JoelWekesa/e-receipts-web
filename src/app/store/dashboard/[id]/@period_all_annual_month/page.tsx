@@ -17,33 +17,34 @@ const DynamicDropTotal = dynamic(() => import('../../../../../components/store/d
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-const StorePeriodSalesAllAnnualMonth = async ({params}: {params: {id: string}}) => {
-	const session = await getServerSession(options);
-	const token = session?.accessToken || '';
+const StorePeriodSalesAllAnnualMonth = async (props: {params: Promise<{id: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
+    const token = session?.accessToken || '';
 
-	const storeId = params.id;
+    const storeId = params.id;
 
-	const allTimeSales = getStorePeriodTotals({
+    const allTimeSales = getStorePeriodTotals({
 		token,
 		storeId,
 		period: Period.alltime,
 	});
 
-	const monthlySales = getStorePeriodTotals({
+    const monthlySales = getStorePeriodTotals({
 		token,
 		storeId,
 		period: Period.month,
 	});
 
-	const annualSales = getStorePeriodTotals({
+    const annualSales = getStorePeriodTotals({
 		token,
 		storeId,
 		period: Period.year,
 	});
 
-	const [all, yearly, monthly] = await Promise.all([allTimeSales, annualSales, monthlySales]);
+    const [all, yearly, monthly] = await Promise.all([allTimeSales, annualSales, monthlySales]);
 
-	return (
+    return (
 		<CardHeader className='flex flex-row items-start bg-muted/50'>
 			<DynamicAllTimeTotal storeId={storeId} totals={all} period={Period.alltime} />
 			<div className='ml-auto flex items-center gap-1'>

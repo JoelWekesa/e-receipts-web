@@ -11,13 +11,14 @@ const acceptInvitation = async ({token, acceptToken}: {token: string; acceptToke
 	return response;
 };
 
-const ConfirmPage = async ({params}: {params: {token: string}}) => {
-	const {token: acceptToken} = params;
-	const session = await getServerSession(options);
-	const token = session?.accessToken || '';
-	const {teamId} = await acceptInvitation({token, acceptToken});
+const ConfirmPage = async (props: {params: Promise<{token: string}>}) => {
+    const params = await props.params;
+    const {token: acceptToken} = params;
+    const session = await getServerSession(options);
+    const token = session?.accessToken || '';
+    const {teamId} = await acceptInvitation({token, acceptToken});
 
-	return (
+    return (
 		<div>
 			<AcceptComponent teamId={teamId} />
 		</div>

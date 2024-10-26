@@ -8,14 +8,12 @@ import {getServerSession} from 'next-auth';
 import {notFound} from 'next/navigation';
 import {FC} from 'react';
 
-interface Props {
-	params: {
-		name: string;
-		checkout: string;
-	};
-}
+type Params = Promise<{
+	name: string;
+}>;
 
-export async function generateMetadata({params}: {params: {name: string}}): Promise<Metadata> {
+export async function generateMetadata(props: {params: Params}): Promise<Metadata> {
+	const params = await props.params;
 	const {name} = params;
 	const shop = await storeFromName({name});
 
@@ -73,10 +71,8 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 	};
 }
 
-const CheckOut: FC<Props> = async ({params}) => {
-	const {name} = params;
-
-	console.log({name});
+const CheckOut: FC<{params: Params}> = async ({params}) => {
+	const {name} = await params;
 
 	const session = await getServerSession(options);
 

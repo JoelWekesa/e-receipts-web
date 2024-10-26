@@ -8,28 +8,29 @@ import {Metadata} from 'next';
 import {FC, Suspense} from 'react';
 
 interface Props {
-	params: {inventory: string[]};
+	params: Promise<{inventory: string[]}>;
 }
 
-export async function generateMetadata({params}: Props): Promise<Metadata> {
-	const {inventory} = params;
+export async function generateMetadata(props: Props): Promise<Metadata> {
+    const params = await props.params;
+    const {inventory} = params;
 
-	const storeName = inventory[0];
+    const storeName = inventory[0];
 
-	const name = inventory[1];
+    const name = inventory[1];
 
-	const [inventoryItem, storeItem] = await Promise.all([
+    const [inventoryItem, storeItem] = await Promise.all([
 		getStoreInventoryItem({store: storeName, name}),
 		storeFromName({name: storeName}),
 	]);
 
-	const shopUrl = `${siteConfig.url}/shop/${storeName}`;
+    const shopUrl = `${siteConfig.url}/shop/${storeName}`;
 
-	const itemUrl = `${shopUrl}/item/${name}`;
+    const itemUrl = `${shopUrl}/item/${name}`;
 
-	const indexable = !!inventoryItem?.thumbnail;
+    const indexable = !!inventoryItem?.thumbnail;
 
-	return {
+    return {
 		title: {
 			default: `${inventoryItem.name} | ${storeItem?.displayName}`,
 			template: `%s | ${storeItem?.displayName}`,
@@ -78,35 +79,36 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	};
 }
 
-const Item: FC<Props> = async ({params}) => {
-	const {inventory} = params;
+const Item: FC<Props> = async props => {
+    const params = await props.params;
+    const {inventory} = params;
 
-	const store = inventory[0];
-	const name = inventory[1];
+    const store = inventory[0];
+    const name = inventory[1];
 
-	const inventoryItem = await getStoreInventoryItem({store, name});
+    const inventoryItem = await getStoreInventoryItem({store, name});
 
-	const thumbnailImage = {
+    const thumbnailImage = {
 		src: inventoryItem?.thumbnail || '',
 		altText: Math.random().toString(),
 	};
 
-	const allImages = [
+    const allImages = [
 		thumbnailImage,
 		...inventoryItem?.images.map((image) => ({src: image, altText: Math.random().toString()})),
 	];
 
-	const maxVariantPrice = inventoryItem?.Variant.reduce(
+    const maxVariantPrice = inventoryItem?.Variant.reduce(
 		(max, variant) => (variant.price > max ? variant.price : max),
 		0
 	);
 
-	const minVariantPrice = inventoryItem?.Variant.reduce(
+    const minVariantPrice = inventoryItem?.Variant.reduce(
 		(min, variant) => (variant.price < min ? variant.price : min),
 		Infinity
 	);
 
-	const productJsonLd = {
+    const productJsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Product',
 		name: inventoryItem?.name,
@@ -124,7 +126,7 @@ const Item: FC<Props> = async ({params}) => {
 		},
 	};
 
-	return (
+    return (
 		<ProductProvider>
 			<script
 				type='application/ld+json'

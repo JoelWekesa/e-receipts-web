@@ -63,6 +63,7 @@ const CategoryDropDown: FC<{drop: Drop; children: ReactNode}> = ({drop, children
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<DialogContent className='sm:max-w-[425px]'>
+				
 				{type === ActionType.EDIT ? (
 					<EditCategory category={drop.category} handleClick={handleClick} />
 				) : (

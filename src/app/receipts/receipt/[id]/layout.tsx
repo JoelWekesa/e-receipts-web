@@ -13,11 +13,14 @@ import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
 import {getStore} from '@/services/page/stores/store/get-store';
 
+type Params = Promise<{id: string}>;
+
 const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-export async function generateMetadata({params}: {params: {id: string}}): Promise<Metadata> {
+export async function generateMetadata(props: {params: Params}): Promise<Metadata> {
+	const params = await props.params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -93,8 +96,12 @@ export const viewport: Viewport = {
 
 const StoreDashBoardLayout: FC<{
 	children: ReactNode;
-	params: {id: string};
-}> = async ({children, params}) => {
+	params: Params;
+}> = async (props) => {
+	const params = await props.params;
+
+	const {children} = props;
+
 	const {id} = params;
 	const session = await getServerSession(options);
 

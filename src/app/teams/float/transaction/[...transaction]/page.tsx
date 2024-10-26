@@ -10,30 +10,31 @@ import {getServerSession} from 'next-auth';
 import {FC} from 'react';
 
 interface Props {
-	params: {
+	params: Promise<{
 		transaction: string[];
-	};
+	}>;
 }
 
-export async function generateMetadata({params}: Props): Promise<Metadata> {
-	const session = await getServerSession(options);
+export async function generateMetadata(props: Props): Promise<Metadata> {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const teamId = params.transaction[0];
+    const teamId = params.transaction[0];
 
-	const team = await getTeam({id: teamId, token});
+    const team = await getTeam({id: teamId, token});
 
-	const store = await getStore({
+    const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-	const indexable = !!store?.logo;
+    const indexable = !!store?.logo;
 
-	return {
+    return {
 		title: `Float Transaction | ${store.displayName}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -79,33 +80,34 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	};
 }
 
-const CashStatements: FC<Props> = async ({params}) => {
-	const teamId = params.transaction[0];
-	const transactionId = params.transaction[1];
-	const session = await getServerSession(options);
+const CashStatements: FC<Props> = async props => {
+    const params = await props.params;
+    const teamId = params.transaction[0];
+    const transactionId = params.transaction[1];
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const team = await getTeam({id: teamId, token});
+    const team = await getTeam({id: teamId, token});
 
-	const store = await getStore({
+    const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-	const {id: storeId} = store;
+    const {id: storeId} = store;
 
-	const float = getStoreFloat({storeId, token});
+    const float = getStoreFloat({storeId, token});
 
-	const storeTransaction = getStoreTransaction({token, transactionId});
+    const storeTransaction = getStoreTransaction({token, transactionId});
 
-	const [storeFloat, transaction] = await Promise.all([float, storeTransaction]);
+    const [storeFloat, transaction] = await Promise.all([float, storeTransaction]);
 
-	if (!storeFloat) {
+    if (!storeFloat) {
 		return null;
 	}
 
-	return (
+    return (
 		<div className='container mx-auto my-4'>
 			<TransactionComponent transaction={transaction} teamId={teamId} />
 		</div>

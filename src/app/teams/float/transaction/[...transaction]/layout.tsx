@@ -10,24 +10,30 @@ import {getServerSession} from 'next-auth';
 
 interface RecordFloatBalanceProps {
 	children: React.ReactNode;
-	params: {transaction: string[]};
+	params: Promise<{transaction: string[]}>;
 }
 
-export default async function RecordFloatBalance({children, params}: RecordFloatBalanceProps) {
-	const session = await getServerSession(options);
+export default async function RecordFloatBalance(props: RecordFloatBalanceProps) {
+    const params = await props.params;
 
-	const team = params.transaction[0];
+    const {
+        children
+    } = props;
 
-	const token = session?.accessToken || '';
+    const session = await getServerSession(options);
 
-	const [stores, teams, permissions, {store}] = await Promise.all([
+    const team = params.transaction[0];
+
+    const token = session?.accessToken || '';
+
+    const [stores, teams, permissions, {store}] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 		getStoreFromTeam({id: team, token}),
 	]);
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

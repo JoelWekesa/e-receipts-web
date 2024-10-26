@@ -4,13 +4,11 @@ import {getStoreTransaction} from '@/services/page/float/transaction';
 import {getServerSession} from 'next-auth';
 import React, {FC} from 'react';
 
-interface Props {
-	params: {
-		id: string;
-	};
-}
+type Params = Promise<{id: string}>;
 
-const FloatTransaction: FC<Props> = async ({params: {id: transactionId}}) => {
+const FloatTransaction: FC<{params: Params}> = async ({params}) => {
+	const {id: transactionId} = await params;
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';

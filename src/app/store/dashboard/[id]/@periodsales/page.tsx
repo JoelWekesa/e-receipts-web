@@ -13,37 +13,38 @@ const DynamicPeriodSales = dynamic(() => import('../../../../../components/store
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-const PeriodSalesPage = async ({params}: {params: {id: string}}) => {
-	const session = await getServerSession(options);
-	const token = session?.accessToken || '';
+const PeriodSalesPage = async (props: {params: Promise<{id: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
+    const token = session?.accessToken || '';
 
-	const storeId = params.id;
+    const storeId = params.id;
 
-	const receiptsDay = getStorePeriodSales({
+    const receiptsDay = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.day,
 	});
 
-	const receiptsWeek = getStorePeriodSales({
+    const receiptsWeek = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.week,
 	});
 
-	const receiptsMonth = getStorePeriodSales({
+    const receiptsMonth = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.month,
 	});
 
-	const receiptsYear = getStorePeriodSales({
+    const receiptsYear = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.year,
 	});
 
-	const customReceipts = getCustomStorePeriodSales({
+    const customReceipts = getCustomStorePeriodSales({
 		token,
 		period: Period.custom,
 		startDate: dayjs(new Date()).startOf('Q').format('YYYY-MM-DD'),
@@ -51,15 +52,15 @@ const PeriodSalesPage = async ({params}: {params: {id: string}}) => {
 		storeId,
 	});
 
-	const allReceipts = getStorePeriodSales({
+    const allReceipts = getStorePeriodSales({
 		token,
 		storeId,
 		period: Period.alltime,
 	});
 
-	const str = getStore({token, id: storeId});
+    const str = getStore({token, id: storeId});
 
-	const [day, week, month, year, custom, all, store] = await Promise.all([
+    const [day, week, month, year, custom, all, store] = await Promise.all([
 		receiptsDay,
 		receiptsWeek,
 		receiptsMonth,
@@ -69,7 +70,7 @@ const PeriodSalesPage = async ({params}: {params: {id: string}}) => {
 		str,
 	]);
 
-	return (
+    return (
 		<DynamicPeriodSales
 			receiptsDay={day}
 			receiptsWeek={week}

@@ -5,26 +5,27 @@ import {getTeam} from '@/services/page/teams/get-team';
 import {getServerSession} from 'next-auth';
 import {notFound, redirect} from 'next/navigation';
 
-const TeamLandingPage = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const TeamLandingPage = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {team: teamId} = params;
+    const {team: teamId} = params;
 
-	const t = getTeam({token, id: teamId});
+    const t = getTeam({token, id: teamId});
 
-	const [team] = await Promise.all([t]);
+    const [team] = await Promise.all([t]);
 
-	if (!team) {
+    if (!team) {
 		return notFound();
 	}
 
-	if (team && team.permission.permission === Permissions.Admin) {
+    if (team && team.permission.permission === Permissions.Admin) {
 		redirect(`/teams/${teamId}`);
 	}
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

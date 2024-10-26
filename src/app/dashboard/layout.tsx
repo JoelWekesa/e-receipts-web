@@ -14,7 +14,9 @@ import {options} from '../api/auth/[...nextauth]/options';
 import {getSetting} from '@/services/page/settings/get-setting';
 import TimerProvider from '@/providers/timer';
 
-const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
+const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => ({
+    default: mod.MainNav
+})), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 

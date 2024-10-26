@@ -13,42 +13,43 @@ const DynamicStoreTimeTotal = dynamic(() => import('../../../../../components/st
 	loading: () => <Skeleton />,
 });
 
-const PeriodTotals = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const PeriodTotals = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const id = params.team;
+    const id = params.team;
 
-	const storeFromTeam = await getStoreFromTeam({
+    const storeFromTeam = await getStoreFromTeam({
 		id,
 		token,
 	});
 
-	const storeId = storeFromTeam?.store?.id || '';
+    const storeId = storeFromTeam?.store?.id || '';
 
-	console.log({storeId});
+    console.log({storeId});
 
-	const weeklySales = getStorePeriodTotals({
+    const weeklySales = getStorePeriodTotals({
 		token,
 		storeId,
 		period: Period.week,
 	});
 
-	const dailySales = getStorePeriodTotals({
+    const dailySales = getStorePeriodTotals({
 		token,
 		storeId,
 		period: Period.day,
 	});
 
-	const invValue = getStoreInvValue({
+    const invValue = getStoreInvValue({
 		token,
 		storeId,
 	});
 
-	const [weekly, daily, inventoryValue] = await Promise.all([weeklySales, dailySales, invValue]);
+    const [weekly, daily, inventoryValue] = await Promise.all([weeklySales, dailySales, invValue]);
 
-	return (
+    return (
 		<div className='grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4'>
 			<Card className='sm:col-span-2' x-chunk='dashboard-05-chunk-0'>
 				<CardHeader className='pb-3'>

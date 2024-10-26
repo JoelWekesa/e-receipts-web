@@ -11,7 +11,10 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 import {FC, ReactNode} from 'react';
 
-export async function generateMetadata({params}: {params: {id: string[]}}): Promise<Metadata> {
+type Params = Promise<{id: string[]}>;
+
+export async function generateMetadata(props: {params: Promise<{id: string[]}>}): Promise<Metadata> {
+	const params = await props.params;
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -82,9 +85,9 @@ export const viewport: Viewport = {
 
 const StoreOrderLayout: FC<{
 	children: ReactNode;
-	params: {id: string[]};
+	params: Params;
 }> = async ({children, params}) => {
-	const {id} = params;
+	const {id} = await params;
 	const session = await getServerSession(options);
 
 	const storeId = id[0];

@@ -4,7 +4,7 @@ import {cookies} from 'next/headers';
 import React, {ReactNode} from 'react';
 
 const ShopLayout = async ({children}: {children: ReactNode}) => {
-	const cartId = (await cookies().get('cartId')?.value) || 'none';
+	const cartId = (await (await cookies()).get('cartId')?.value) || 'none';
 	const cartItems = await getCartItems({cartId});
 
 	return (

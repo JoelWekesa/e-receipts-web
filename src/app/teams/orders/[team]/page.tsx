@@ -9,30 +9,31 @@ import {Metadata} from 'next';
 import {getServerSession} from 'next-auth';
 
 interface Props {
-	params: {
+	params: Promise<{
 		team: string;
-	};
+	}>;
 }
 
-export async function generateMetadata({params}: {params: {team: string}}): Promise<Metadata> {
-	const session = await getServerSession(options);
+export async function generateMetadata(props: {params: Promise<{team: string}>}): Promise<Metadata> {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {team: teamId} = params;
+    const {team: teamId} = params;
 
-	const team = await getTeam({id: teamId, token});
+    const team = await getTeam({id: teamId, token});
 
-	const store = await getStore({
+    const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-	const indexable = !!store?.logo;
+    const indexable = !!store?.logo;
 
-	return {
+    return {
 		title: `Orders | ${store.displayName}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -78,22 +79,28 @@ export async function generateMetadata({params}: {params: {team: string}}): Prom
 	};
 }
 
-const Orders = async ({params: {team: id}}: Props) => {
-	const session = await getServerSession(options);
+const Orders = async (props: Props) => {
+    const params = await props.params;
 
-	const team = await getTeam({id, token: session?.accessToken || ''});
+    const {
+        team: id
+    } = params;
 
-	const storeId = team.storeId;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const team = await getTeam({id, token: session?.accessToken || ''});
 
-	const [pending, processing, completed] = await Promise.all([
+    const storeId = team.storeId;
+
+    const token = session?.accessToken || '';
+
+    const [pending, processing, completed] = await Promise.all([
 		orderStores({storeId, status: OrderStatus.PENDING, token}),
 		orderStores({storeId, status: OrderStatus.PROCESSING, token}),
 		orderStores({storeId, status: OrderStatus.COMPLETED, token}),
 	]);
 
-	return (
+    return (
 		<OrderTabs pending={pending} processing={processing} completed={completed} storeId={storeId} teamId={team.id} />
 	);
 };

@@ -25,16 +25,17 @@ const getInventoryOptions = async ({id, token}: {id: string; token: string}) => 
 	return response;
 };
 
-const InventoryVariantsPage = async ({params}: {params: {inventory: string}}) => {
-	const session = await getServerSession(options);
+const InventoryVariantsPage = async (props: {params: Promise<{inventory: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const id = params.inventory;
+    const id = params.inventory;
 
-	const [inventory, opts] = await Promise.all([getInventory({id, token}), getInventoryOptions({id, token})]);
+    const [inventory, opts] = await Promise.all([getInventory({id, token}), getInventoryOptions({id, token})]);
 
-	return (
+    return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<InventoryLayout storeId={inventory.storeId}>
 				<ViewProductVariantsComponent inventory={inventory} options={opts} />

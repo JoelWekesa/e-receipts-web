@@ -8,7 +8,9 @@ import {getPermissions} from '@/services/page/teams/permissions';
 import {getServerSession} from 'next-auth';
 import dynamic from 'next/dynamic';
 
-const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => mod.MainNav), {
+const DynamicMainNav = dynamic(() => import('../../components/dashboard/MainNav').then((mod) => ({
+    default: mod.MainNav
+})), {
 	loading: () => <Skeleton className='h-8 w-full' />,
 });
 

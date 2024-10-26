@@ -10,25 +10,26 @@ const DynamicReceiptsDistribution = dynamic(() => import('../../../../../compone
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
 
-const Receipts = async ({params}: {params: {team: string}}) => {
-	const session = await getServerSession(options);
+const Receipts = async (props: {params: Promise<{team: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const id = params.team;
+    const id = params.team;
 
-	const storeFromTeam = await getStoreFromTeam({
+    const storeFromTeam = await getStoreFromTeam({
 		id,
 		token,
 	});
 
-	const storeId = storeFromTeam?.store?.id || '';
+    const storeId = storeFromTeam?.store?.id || '';
 
-	const [today, week, month, year, alltime] = await Promise.all(
+    const [today, week, month, year, alltime] = await Promise.all(
 		durations.map((period) => storeReceiptsCount({storeId, period, token}))
 	);
 
-	return (
+    return (
 		<DynamicReceiptsDistribution
 			todayCount={today}
 			weekCount={week}

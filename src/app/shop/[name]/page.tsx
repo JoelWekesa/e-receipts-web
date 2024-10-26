@@ -5,16 +5,17 @@ import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 
-export async function generateMetadata({params}: {params: {name: string}}): Promise<Metadata> {
-	const {name: storeName} = params;
+export async function generateMetadata(props: {params: Promise<{name: string}>}): Promise<Metadata> {
+    const params = await props.params;
+    const {name: storeName} = params;
 
-	const shopUrl = `${siteConfig.url}/shop/${storeName}`;
+    const shopUrl = `${siteConfig.url}/shop/${storeName}`;
 
-	const store = await storeFromName({name: storeName});
+    const store = await storeFromName({name: storeName});
 
-	const indexable = !!store?.logo;
+    const indexable = !!store?.logo;
 
-	return {
+    return {
 		title: `${store.displayName} | ${siteConfig.name}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -60,17 +61,18 @@ export async function generateMetadata({params}: {params: {name: string}}): Prom
 	};
 }
 
-const Shop = async ({params}: {params: {name: string}}) => {
-	const {name} = params;
+const Shop = async (props: {params: Promise<{name: string}>}) => {
+    const params = await props.params;
+    const {name} = params;
 
-	const prods = getStoreProductStoreFront({name});
-	const store = storeFromName({name});
+    const prods = getStoreProductStoreFront({name});
+    const store = storeFromName({name});
 
-	const [shop, products] = await Promise.all([store, prods]);
+    const [shop, products] = await Promise.all([store, prods]);
 
-	if (!shop) return notFound();
+    if (!shop) return notFound();
 
-	const productJsonLd = {
+    const productJsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Product',
 		name: shop.name,
@@ -85,7 +87,7 @@ const Shop = async ({params}: {params: {name: string}}) => {
 		},
 	};
 
-	return (
+    return (
 		<div className='mx-auto max-w-7xl p-8 pb-16'>
 			<script
 				type='application/ld+json'

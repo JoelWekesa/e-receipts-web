@@ -6,13 +6,12 @@ import getCashStatements from '@/services/page/float/statements';
 import {getServerSession} from 'next-auth';
 import React, {FC} from 'react';
 import dayjs from 'dayjs';
-interface Props {
-	params: {
-		id: string;
-	};
-}
 
-const StoreCashStatement: FC<Props> = async ({params: {id: storeId}}) => {
+type Params = Promise<{id: string}>;
+
+const StoreCashStatement: FC<{params: Params}> = async ({params}) => {
+	const {id: storeId} = await params;
+
 	const startDate = dayjs().startOf('month').startOf('day').toISOString();
 	const endDate = dayjs().endOf('month').endOf('day').toISOString();
 

@@ -3,16 +3,17 @@ import StoreClients from '@/components/clients/store';
 import {getStoreClients} from '@/services/page/clients/store';
 import {getServerSession} from 'next-auth';
 
-const StoreClientsPage = async ({params}: {params: {id: string}}) => {
-	const session = await getServerSession(options);
+const StoreClientsPage = async (props: {params: Promise<{id: string}>}) => {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {id: storeId} = params;
+    const {id: storeId} = params;
 
-	const clients = await getStoreClients({storeId, token});
+    const clients = await getStoreClients({storeId, token});
 
-	return (
+    return (
 		<div>
 			<StoreClients storeId={storeId} clients={clients} />
 		</div>

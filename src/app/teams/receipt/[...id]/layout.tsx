@@ -11,6 +11,8 @@ import {FC, ReactNode} from 'react';
 import {options} from '../../../api/auth/[...nextauth]/options';
 import {TeamNav} from '@/components/dashboard/TeamNav';
 
+type Params = Promise<{id: string[]}>;
+
 const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboard/TeamSwitcher'), {
 	loading: () => <Skeleton className='h-10 w-full' />,
 });
@@ -69,8 +71,8 @@ export const viewport: Viewport = {
 
 const StoreDashBoardLayout: FC<{
 	children: ReactNode;
-	params: {id: string[]};
-}> = async ({children, params}) => {
+	params: Params;
+}> = async ({params, children}) => {
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken || '';
@@ -81,9 +83,11 @@ const StoreDashBoardLayout: FC<{
 		getPermissions({token}),
 	]);
 
-	const teamId = params.id[0];
+	const {id} = await params;
 
-	const storeId = params.id[1];
+	const teamId = id[0];
+
+	const storeId = id[1];
 
 	return (
 		<>

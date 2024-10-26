@@ -52,34 +52,34 @@ const SEO: FC<Props> = ({title, description, openGraph, robots, children}) => {
 	 * The `key` property makes the tag is only rendered once,
 	 */
 	return (
-		<Head>
-			<title key='title'>{title ? `${config.titleTemplate.replace(/%s/g, title)}` : config.title}</title>
-			<meta key='description' name='description' content={description || config.description} />
-			<meta key='og:type' property='og:type' content={openGraph?.type ?? config.openGraph.type} />
-			<meta
+        (<Head>
+            <title key='title'>{title ? `${config.titleTemplate.replace(/%s/g, title)}` : config.title}</title>
+            <meta key='description' name='description' content={description || config.description} />
+            <meta key='og:type' property='og:type' content={openGraph?.type ?? config.openGraph.type} />
+            <meta
 				key='og:title'
 				property='og:title'
 				content={openGraph?.title ?? config.openGraph.title ?? title ?? config.title}
 			/>
-			<meta
+            <meta
 				key='og:description'
 				property='og:description'
 				content={openGraph?.description ?? config.openGraph.description ?? description ?? config.description}
 			/>
-			<meta key='og:site_name' property='og:site_name' content={openGraph?.site_name ?? config.openGraph.site_name} />
-			<meta key='og:url' property='og:url' content={openGraph?.url ?? config.openGraph.url}></meta>
-			{openGraph?.locale && <meta key='og:locale' property='og:locale' content={openGraph.locale} />}
-			{openGraph?.images?.length
+            <meta key='og:site_name' property='og:site_name' content={openGraph?.site_name ?? config.openGraph.site_name} />
+            <meta key='og:url' property='og:url' content={openGraph?.url ?? config.openGraph.url}></meta>
+            {openGraph?.locale && <meta key='og:locale' property='og:locale' content={openGraph.locale} />}
+            {openGraph?.images?.length
 				? openGraph.images.map((img, index) => ogImage(img, index))
 				: ogImage(config.openGraph.images[0], 0)}
-			{config.twitter.cardType && <meta key='twitter:card' name='twitter:card' content={config.twitter.cardType} />}
-			{config.twitter.site && <meta key='twitter:site' name='twitter:site' content={config.twitter.site} />}
-			{config.twitter.handle && <meta key='twitter:creator' name='twitter:creator' content={config.twitter.handle} />}
-			<meta key='robots' name='robots' content={robots ?? 'index,follow'} />
-			<meta key='googlebot' name='googlebot' content={robots ?? 'index,follow'}></meta>
-			{children}
-		</Head>
-	);
+            {config.twitter.cardType && <meta key='twitter:card' name='twitter:card' content={config.twitter.cardType} />}
+            {config.twitter.site && <meta key='twitter:site' name='twitter:site' content={config.twitter.site} />}
+            {config.twitter.handle && <meta key='twitter:creator' name='twitter:creator' content={config.twitter.handle} />}
+            <meta key='robots' name='robots' content={robots ?? 'index,follow'} />
+            <meta key='googlebot' name='googlebot' content={robots ?? 'index,follow'}></meta>
+            {children}
+        </Head>)
+    );
 };
 
 export default SEO;

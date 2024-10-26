@@ -10,22 +10,23 @@ import {getPermissions} from '@/services/page/teams/permissions';
 import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 
-export async function generateMetadata({params}: {params: {store: string}}): Promise<Metadata> {
-	const session = await getServerSession(options);
+export async function generateMetadata(props: {params: Promise<{store: string}>}): Promise<Metadata> {
+    const params = await props.params;
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const {store: id} = params;
-	const store = await getStore({
+    const {store: id} = params;
+    const store = await getStore({
 		token,
 		id,
 	});
 
-	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-	const indexable = !!store?.logo;
+    const indexable = !!store?.logo;
 
-	return {
+    return {
 		title: `Inventory | ${store.displayName}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -80,23 +81,29 @@ export const viewport: Viewport = {
 
 interface InventoryLayoutProps {
 	children: React.ReactNode;
-	params: {store: string};
+	params: Promise<{store: string}>;
 }
 
-export default async function InventoryLayout({children, params}: InventoryLayoutProps) {
-	const session = await getServerSession(options);
+export default async function InventoryLayout(props: InventoryLayoutProps) {
+    const params = await props.params;
 
-	const {store} = params;
+    const {
+        children
+    } = props;
 
-	const token = session?.accessToken || '';
+    const session = await getServerSession(options);
 
-	const [stores, teams, permissions] = await Promise.all([
+    const {store} = params;
+
+    const token = session?.accessToken || '';
+
+    const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 	]);
 
-	return (
+    return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

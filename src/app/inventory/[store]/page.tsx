@@ -18,16 +18,17 @@ const getTotal = async ({storeId, token}: {storeId: string; token: string}) => {
 	return response;
 };
 
-const InventoryPage = async ({params}: {params: {store: string}}) => {
-	const storeId = params.store;
+const InventoryPage = async (props: {params: Promise<{store: string}>}) => {
+    const params = await props.params;
+    const storeId = params.store;
 
-	const session = await getServerSession(options);
+    const session = await getServerSession(options);
 
-	const token = session?.accessToken || '';
+    const token = session?.accessToken || '';
 
-	const [inventory, total] = await Promise.all([getInventory({storeId, token}), getTotal({storeId, token})]);
+    const [inventory, total] = await Promise.all([getInventory({storeId, token}), getTotal({storeId, token})]);
 
-	return (
+    return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<InventoryLayout storeId={storeId}>
 				<StoreInventory item={{storeId, inventory, total}} />

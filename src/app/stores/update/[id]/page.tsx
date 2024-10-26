@@ -27,13 +27,11 @@ async function getData({id, token}: GetData): Promise<Store> {
 	return res;
 }
 
-interface Props {
-	params: {
-		id: string;
-	};
-}
+type Params = Promise<{id: string}>;
 
-const StoresPage: FC<Props> = async ({params: {id}}) => {
+const StoresPage: FC<{params: Params}> = async ({params}) => {
+	const {id} = await params;
+
 	const session = await getServerSession(options);
 
 	const token = session?.accessToken;
