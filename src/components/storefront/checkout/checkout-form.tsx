@@ -27,6 +27,7 @@ const formSchema = z.object({
 	firstName: z.string().min(2).max(255),
 	lastName: z.string().min(2).max(255),
 	address: z.string().min(2).max(255),
+	city: z.string().min(2).max(255),
 });
 
 const CheckOutForm: FC<Props> = ({shipping, token}) => {
@@ -48,9 +49,8 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 			return;
 		}
 
-		const full_place = `${place?.name}` + `, ${place?.formatted_address}`;
-
-		form.setValue('address', full_place);
+		form.setValue('address', `${place?.name}`);
+		form.setValue('city', `${place?.formatted_address}`);
 	};
 
 	useEffect(() => {
@@ -74,6 +74,7 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 			firstName: shipping?.firstName || '',
 			lastName: shipping?.lastName || '',
 			address: shipping?.address || '',
+			city: shipping?.city || '',
 		},
 	});
 
