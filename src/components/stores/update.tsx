@@ -152,11 +152,11 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 							<FormField
 								control={form.control}
 								name='address'
-								render={({field}) => (
+								render={({field: {ref, ...rest}}) => (
 									<FormItem>
 										<FormLabel>Store Address</FormLabel>
 										<FormControl>
-											<Input placeholder='Shop Address' {...field} className='w:full' />
+											<Input placeholder='Shop Address' ref={inputRef} {...rest} className='w:full' />
 										</FormControl>
 										{/* <FormDescription>Enter the physical address of your store</FormDescription> */}
 										<FormMessage />
