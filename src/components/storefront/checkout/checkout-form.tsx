@@ -79,16 +79,16 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 	const {mutate: add, isPending} = useAddShipping();
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
-		const address = `${selectedPlace?.name}`;
-		const city = `${selectedPlace?.formatted_address}`;
+		const address = selectedPlace?.name;
+		const city = selectedPlace?.formatted_address;
 		add({
 			shipping: {
 				phone: data.phone,
 				email: data.email?.length ? data.email : undefined,
 				firstName: data.firstName,
 				lastName: data.lastName,
-				address,
-				city,
+				address: address ? address : data.address,
+				city: city ? city : data.address,
 			},
 			token,
 		});

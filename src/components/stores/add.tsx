@@ -97,7 +97,7 @@ const AddStore: FC<{token: string}> = ({token}) => {
 		mutate({
 			data: {
 				...data,
-				address: full_place,
+				address: selectedPlace?.name ? full_place : data.address,
 			},
 			token,
 		});

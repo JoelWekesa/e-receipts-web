@@ -6,15 +6,51 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {Loader2} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
-import {FC, ReactNode} from 'react';
+import {FC, ReactNode, useEffect, useRef, useState} from 'react';
 import Dropzone from 'react-dropzone';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
+import {useLoadScript} from '@react-google-maps/api';
 
 const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData: Store; token: string}) => {
+	const {isLoaded, loadError} = useLoadScript({
+		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
+		libraries: ['places'],
+	});
+
+	const inputRef = useRef(null);
+
+	const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+
+	const handlePlaceChanged = async (address: google.maps.places.Autocomplete) => {
+		if (!isLoaded) return;
+		const place = address.getPlace();
+
+		console.log(place?.name);
+
+		if (!place || !place.geometry) {
+			setSelectedPlace(null);
+			return;
+		}
+		setSelectedPlace(place);
+	};
+
+	useEffect(() => {
+		if (!isLoaded || loadError) return;
+
+		const options = {
+			componentRestrictions: {country: 'ke'},
+			fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+		};
+
+		const autocomplete = new google.maps.places.Autocomplete(inputRef.current!, options);
+		autocomplete.addListener('place_changed', () => handlePlaceChanged(autocomplete));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isLoaded, loadError]);
+
 	const {data} = useStoreById({id, store: initialData});
 
 	const router = useRouter();
@@ -70,9 +106,12 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 	const {mutate, isPending} = useUpdateStore(successFn);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
+		const full_place = `${selectedPlace?.name}` + `, ${selectedPlace?.formatted_address}`;
+
 		mutate({
 			data: {
 				...data,
+				address: selectedPlace?.name ? full_place : data.address,
 				id,
 			},
 			token,
