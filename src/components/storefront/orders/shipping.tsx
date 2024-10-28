@@ -13,7 +13,6 @@ const ClientShipping: FC<Props> = ({shipping}) => {
 				<p className='text-muted-foreground'>
 					{shipping.firstName} {shipping.lastName}
 				</p>
-				<p className='text-muted-foreground'>{shipping.city}</p>
 				<p className='text-muted-foreground'>{shipping.address}</p>
 			</div>
 

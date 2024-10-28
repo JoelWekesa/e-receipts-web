@@ -57,14 +57,12 @@ const CustomerCard: FC<Props> = ({order}) => {
 									<a href={`mailto:${order.shipping.email}`}>{order.shipping.email}</a>
 								</p>
 							</div>
-							{order.shipping.city && (
+							{order.shipping.address && (
 								<>
 									<Separator orientation='vertical' />
 									<div className='flex flex-col gap-2 py-5'>
 										<p className='text-sm text-muted-foreground'>Address</p>
-										<p className='text-md'>
-											{order.shipping.address}, {order.shipping.city}
-										</p>
+										<p className='text-md'>{order.shipping.address}</p>
 									</div>
 								</>
 							)}
