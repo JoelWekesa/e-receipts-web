@@ -8,9 +8,10 @@ import useAddShipping from '@/services/shipping/add';
 import {phoneNumberPattern} from '@/utils/regex';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Loader2, Truck} from 'lucide-react';
-import {FC} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
+import {useLoadScript} from '@react-google-maps/api';
 
 interface Props {
 	shipping: Shipping | null;
@@ -23,13 +24,47 @@ const formSchema = z.object({
 	}),
 
 	email: z.string().optional(),
-	city: z.string().min(2).max(255),
 	firstName: z.string().min(2).max(255),
 	lastName: z.string().min(2).max(255),
 	address: z.string().min(2).max(255),
 });
 
 const CheckOutForm: FC<Props> = ({shipping, token}) => {
+	const {isLoaded, loadError} = useLoadScript({
+		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
+		libraries: ['places'],
+	});
+
+	const inputRef = useRef(null);
+
+	const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+
+	const handlePlaceChanged = async (address: google.maps.places.Autocomplete) => {
+		if (!isLoaded) return;
+		const place = address.getPlace();
+
+		console.log(place?.name);
+
+		if (!place || !place.geometry) {
+			setSelectedPlace(null);
+			return;
+		}
+		setSelectedPlace(place);
+	};
+
+	useEffect(() => {
+		if (!isLoaded || loadError) return;
+
+		const options = {
+			componentRestrictions: {country: 'ke'},
+			fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+		};
+
+		const autocomplete = new google.maps.places.Autocomplete(inputRef.current!, options);
+		autocomplete.addListener('place_changed', () => handlePlaceChanged(autocomplete));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isLoaded, loadError]);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -38,21 +73,22 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 			firstName: shipping?.firstName || '',
 			lastName: shipping?.lastName || '',
 			address: shipping?.address || '',
-			city: shipping?.city || '',
 		},
 	});
 
 	const {mutate: add, isPending} = useAddShipping();
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
+		const address = `${selectedPlace?.name}`;
+		const city = `${selectedPlace?.formatted_address}`;
 		add({
 			shipping: {
 				phone: data.phone,
 				email: data.email?.length ? data.email : undefined,
 				firstName: data.firstName,
 				lastName: data.lastName,
-				address: data.address,
-				city: data.city,
+				address,
+				city,
 			},
 			token,
 		});
@@ -129,28 +165,22 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 							</div>
 							<FormField
 								name='address'
-								render={({field}) => (
+								render={({field: {ref, ...rest}}) => (
 									<FormItem>
 										<FormLabel>
 											Address <Required />
 										</FormLabel>
 										<FormControl>
-											<Input id='address' placeholder='Roysambu' {...field} className='flex min-w-full' lg required />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<FormField
-								name='city'
-								render={({field}) => (
-									<FormItem>
-										<FormLabel>
-											City <Required />
-										</FormLabel>
-										<FormControl>
-											<Input id='city' placeholder='Nairobi' {...field} className='flex min-w-full' lg required />
+											<Input
+												id='address'
+												placeholder='Roysambu'
+												ref={inputRef}
+												{...rest}
+												type='search'
+												className='flex min-w-full'
+												lg
+												required
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>

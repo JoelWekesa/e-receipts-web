@@ -90,6 +90,8 @@ const AddReceiptItemsInventory: FC<Props> = ({products}) => {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
+
+		form.trigger();
 	}, [form, selected, products]);
 
 	const addItem = (data: z.infer<typeof formSchema>) => {

@@ -4,15 +4,51 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {Loader2} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
-import {FC, ReactNode} from 'react';
+import {FC, ReactNode, useEffect, useRef, useState} from 'react';
 import Dropzone from 'react-dropzone';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {Button} from '../ui/button';
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
+import {useLoadScript} from '@react-google-maps/api';
 
 const AddStore: FC<{token: string}> = ({token}) => {
+	const {isLoaded, loadError} = useLoadScript({
+		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
+		libraries: ['places'],
+	});
+
+	const inputRef = useRef(null);
+
+	const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+
+	const handlePlaceChanged = async (address: google.maps.places.Autocomplete) => {
+		if (!isLoaded) return;
+		const place = address.getPlace();
+
+		console.log(place?.name);
+
+		if (!place || !place.geometry) {
+			setSelectedPlace(null);
+			return;
+		}
+		setSelectedPlace(place);
+	};
+
+	useEffect(() => {
+		if (!isLoaded || loadError) return;
+
+		const options = {
+			componentRestrictions: {country: 'ke'},
+			fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+		};
+
+		const autocomplete = new google.maps.places.Autocomplete(inputRef.current!, options);
+		autocomplete.addListener('place_changed', () => handlePlaceChanged(autocomplete));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isLoaded, loadError]);
+
 	const router = useRouter();
 	const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 1.8MB
 	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -57,8 +93,12 @@ const AddStore: FC<{token: string}> = ({token}) => {
 	const {mutate, isPending} = useAddStore(successFn);
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
+		const full_place = `${selectedPlace?.name}` + `, ${selectedPlace?.formatted_address}`;
 		mutate({
-			data,
+			data: {
+				...data,
+				address: full_place,
+			},
 			token,
 		});
 	};
@@ -97,11 +137,11 @@ const AddStore: FC<{token: string}> = ({token}) => {
 							<FormField
 								control={form.control}
 								name='address'
-								render={({field}) => (
+								render={({field: {onChange}}) => (
 									<FormItem>
 										<FormLabel>Store Address</FormLabel>
 										<FormControl>
-											<Input placeholder='Shop Address' {...field} className='w:full' />
+											<Input placeholder='Shop Address' ref={inputRef} onChange={onChange} className='w:full' />
 										</FormControl>
 										{/* <FormDescription>Enter the physical address of your store</FormDescription> */}
 										<FormMessage />

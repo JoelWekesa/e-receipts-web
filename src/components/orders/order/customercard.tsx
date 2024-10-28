@@ -61,8 +61,10 @@ const CustomerCard: FC<Props> = ({order}) => {
 								<>
 									<Separator orientation='vertical' />
 									<div className='flex flex-col gap-2 py-5'>
-										<p className='text-sm text-muted-foreground'>City</p>
-										<p className='text-md'>{order.shipping.city}</p>
+										<p className='text-sm text-muted-foreground'>Address</p>
+										<p className='text-md'>
+											{order.shipping.address}, {order.shipping.city}
+										</p>
 									</div>
 								</>
 							)}
