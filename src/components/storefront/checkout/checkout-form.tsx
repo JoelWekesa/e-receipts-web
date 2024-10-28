@@ -43,13 +43,14 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 		if (!isLoaded) return;
 		const place = address.getPlace();
 
-		console.log(place?.name);
-
 		if (!place || !place.geometry) {
 			setSelectedPlace(null);
 			return;
 		}
-		setSelectedPlace(place);
+
+		const full_place = `${place?.name}` + `, ${place?.formatted_address}`;
+
+		form.setValue('address', full_place);
 	};
 
 	useEffect(() => {

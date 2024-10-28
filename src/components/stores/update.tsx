@@ -15,7 +15,52 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from '../ui/input';
 import {useLoadScript} from '@react-google-maps/api';
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
+const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
+const regex = /^(07|01)\d{8}$/;
+const nameRegex = /^[a-zA-Z][a-zA-Z0-9_ .]{2,15}$/;
+
+const formSchema = z.object({
+	name: z.string().min(3, {message: 'Name is required'}).regex(nameRegex, {message: 'Invalid name'}),
+	address: z.string().min(1, {message: 'Address is required'}),
+	phone: z.string().min(1, {message: 'Phone is required'}).regex(regex, {message: 'Invalid phone number'}),
+	email: z.string().min(1, {message: 'Email is required'}).email({message: 'Invalid email'}),
+	logo: z
+		.optional(z.instanceof(File))
+		.refine((file) => {
+			if (file) {
+				return !file || file.size <= MAX_UPLOAD_SIZE;
+			}
+
+			return true;
+		}, 'File size must be less than 3MB')
+		.refine((file) => {
+			if (file) {
+				return ACCEPTED_FILE_TYPES.includes(file.type);
+			}
+
+			return true;
+		}, 'File must be an image'),
+
+	pin_no: z.optional(z.string()),
+	vat_reg_no: z.optional(z.string()),
+});
+
 const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData: Store; token: string}) => {
+	const {data} = useStoreById({id, store: initialData});
+
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			name: data?.displayName,
+			address: data?.address,
+			phone: data?.phone,
+			email: data?.email,
+			pin_no: data?.pin_no || '',
+			vat_reg_no: data?.vat_reg_no || '',
+			logo: undefined,
+		},
+	});
 	const {isLoaded, loadError} = useLoadScript({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
 		libraries: ['places'],
@@ -29,13 +74,14 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 		if (!isLoaded) return;
 		const place = address.getPlace();
 
-		console.log(place?.name);
-
 		if (!place || !place.geometry) {
 			setSelectedPlace(null);
 			return;
 		}
-		setSelectedPlace(place);
+		
+		const full_place = `${place?.name}` + `, ${place?.formatted_address}`;
+
+		form.setValue('address', full_place);
 	};
 
 	useEffect(() => {
@@ -51,52 +97,7 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoaded, loadError]);
 
-	const {data} = useStoreById({id, store: initialData});
-
 	const router = useRouter();
-
-	const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
-	const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
-	const regex = /^(07|01)\d{8}$/;
-	const nameRegex = /^[a-zA-Z][a-zA-Z0-9_ .]{2,15}$/;
-	const formSchema = z.object({
-		name: z.string().min(3, {message: 'Name is required'}).regex(nameRegex, {message: 'Invalid name'}),
-		address: z.string().min(1, {message: 'Address is required'}),
-		phone: z.string().min(1, {message: 'Phone is required'}).regex(regex, {message: 'Invalid phone number'}),
-		email: z.string().min(1, {message: 'Email is required'}).email({message: 'Invalid email'}),
-		logo: z
-			.optional(z.instanceof(File))
-			.refine((file) => {
-				if (file) {
-					return !file || file.size <= MAX_UPLOAD_SIZE;
-				}
-
-				return true;
-			}, 'File size must be less than 3MB')
-			.refine((file) => {
-				if (file) {
-					return ACCEPTED_FILE_TYPES.includes(file.type);
-				}
-
-				return true;
-			}, 'File must be an image'),
-
-		pin_no: z.optional(z.string()),
-		vat_reg_no: z.optional(z.string()),
-	});
-
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			name: data?.displayName,
-			address: data?.address,
-			phone: data?.phone,
-			email: data?.email,
-			pin_no: data?.pin_no || '',
-			vat_reg_no: data?.vat_reg_no || '',
-			logo: undefined,
-		},
-	});
 
 	const successFn = () => {
 		form.reset();
@@ -156,7 +157,7 @@ const UpdateStoreComponent = ({id, initialData, token}: {id: string; initialData
 									<FormItem>
 										<FormLabel>Store Address</FormLabel>
 										<FormControl>
-											<Input placeholder='Shop Address' ref={inputRef} {...rest} className='w:full' />
+											<Input placeholder='Shop Address' className='w:full' type='search' ref={inputRef} {...rest} />
 										</FormControl>
 										{/* <FormDescription>Enter the physical address of your store</FormDescription> */}
 										<FormMessage />

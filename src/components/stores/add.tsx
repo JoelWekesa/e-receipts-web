@@ -27,13 +27,14 @@ const AddStore: FC<{token: string}> = ({token}) => {
 		if (!isLoaded) return;
 		const place = address.getPlace();
 
-		console.log(place?.name);
-
 		if (!place || !place.geometry) {
 			setSelectedPlace(null);
 			return;
 		}
-		setSelectedPlace(place);
+
+		const full_place = `${place?.name}` + `, ${place?.formatted_address}`;
+
+		form.setValue('address', full_place);
 	};
 
 	useEffect(() => {
@@ -137,11 +138,11 @@ const AddStore: FC<{token: string}> = ({token}) => {
 							<FormField
 								control={form.control}
 								name='address'
-								render={({field: {onChange}}) => (
+								render={({field: {ref, ...rest}}) => (
 									<FormItem>
 										<FormLabel>Store Address</FormLabel>
 										<FormControl>
-											<Input placeholder='Shop Address' ref={inputRef} onChange={onChange} className='w:full' />
+											<Input placeholder='Shop Address' ref={inputRef} {...rest} className='w:full' type='search' />
 										</FormControl>
 										{/* <FormDescription>Enter the physical address of your store</FormDescription> */}
 										<FormMessage />
