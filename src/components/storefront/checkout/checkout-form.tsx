@@ -52,6 +52,10 @@ const CheckOutForm: FC<Props> = ({shipping, token}) => {
 		const full_place = `${place?.name}` + `, ${place?.formatted_address}`;
 
 		form.setValue('address', full_place);
+
+		console.log({
+			selectedPlace,
+		});
 	};
 
 	useEffect(() => {
