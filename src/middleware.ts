@@ -21,5 +21,6 @@ export const config = {
         "/stores/:id*",
         "/teams",
         "/teams/:id*",
+        "/profile"
     ],
 }

@@ -164,7 +164,7 @@ const UserStores = ({initialData, token, total}: Props) => {
 						title='Inventory Value'
 						subtitle={`Total inventory value across all stores ${currencyFormat.format(tot?.total || 0)}`}
 					/>
-					<DeleteDialog open={open} setOpen={handleDeleteDialog} token={token} />
+					<DeleteDialog open={open} setOpen={handleDeleteDialog} token={token || ''} />
 				</div>
 				<SheetContent>
 					<StoreComponent />

@@ -57,6 +57,13 @@ const nextConfig = {
 				port: '',
 				pathname: '/evidence/**',
 			},
+
+			{
+				protocol: 'https',
+				hostname: 'receipts-ke.s3.amazonaws.com',
+				port: '',
+				pathname: '/dp/**',
+			},
 		],
 	},
 
