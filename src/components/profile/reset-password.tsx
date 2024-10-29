@@ -36,7 +36,11 @@ const ResetComponent: FC<{token: string}> = ({token}) => {
 		resolver: zodResolver(validationSchema),
 	});
 
-	const {mutate: reset, isPending} = useResetPasswordProfile();
+	const successFn = () => {
+		form.reset();
+	};
+
+	const {mutate: reset, isPending} = useResetPasswordProfile(successFn);
 
 	const handleRequest = (data: z.infer<typeof validationSchema>) => {
 		reset({...data, token});

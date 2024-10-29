@@ -12,16 +12,26 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import {useRouter} from 'next/navigation';
+import useProfile from '@/services/profile/get-profile';
 
 const UserNav = () => {
 	const {data: user} = useSession();
+
+	const {data: profile} = useProfile({});
+
+	const router = useRouter();
+
+	const handleRedirect = () => {
+		router.push('/profile');
+	};
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant='ghost' className='relative h-8 w-8 rounded-full'>
 					<Avatar className='h-8 w-8'>
-						<AvatarImage src={user?.image || user?.picture || ''} alt='@shadcn' />
+						<AvatarImage src={profile?.dp ? profile?.dp : user?.image || user?.picture || ''} alt='@shadcn' />
 						<AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
 					</Avatar>
 				</Button>
@@ -35,10 +45,7 @@ const UserNav = () => {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem>
-						Profile
-						<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-					</DropdownMenuItem>
+					<DropdownMenuItem onClick={handleRedirect}>Profile</DropdownMenuItem>
 					<DropdownMenuItem>
 						Billing
 						<DropdownMenuShortcut>⌘B</DropdownMenuShortcut>

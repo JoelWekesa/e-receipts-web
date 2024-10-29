@@ -41,7 +41,7 @@ const validationSchema = z.object({
 		.optional(),
 });
 
-const ProfileUpsert: FC<{profile: Profile; toggleOpen: () => void}> = ({profile, toggleOpen}) => {
+const ProfileUpsert: FC<{profile?: Profile; toggleOpen: () => void}> = ({profile, toggleOpen}) => {
 	const {data: session} = useSession({
 		required: true,
 	});

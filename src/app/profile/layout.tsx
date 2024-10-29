@@ -1,14 +1,13 @@
-import {SiteHeader} from '@/components/site-header';
-import {siteConfig} from '@/config/site';
-import {Metadata, Viewport} from 'next';
-import {getServerSession} from 'next-auth';
-import {options} from '../api/auth/[...nextauth]/options';
-import {getSetting} from '@/services/page/settings/get-setting';
-import TimerProvider from '@/providers/timer';
+import { SiteHeader } from '@/components/site-header';
+import { siteConfig } from '@/config/site';
+import { getSetting } from '@/services/page/settings/get-setting';
+import { Metadata, Viewport } from 'next';
+import { getServerSession } from 'next-auth';
+import { options } from '../api/auth/[...nextauth]/options';
 
 export const metadata: Metadata = {
 	title: {
-		default: `Settings | ${siteConfig.name}`,
+		default: `Profile | ${siteConfig.name}`,
 		template: `%s - ${siteConfig.name}`,
 	},
 	metadataBase: new URL(siteConfig.url),
@@ -70,13 +69,11 @@ export default async function StoresLayout({children}: StoreLayoutProps) {
 	const setting = await getSetting(token);
 
 	return (
-		<TimerProvider>
-			<div vaul-drawer-wrapper=''>
-				<div className='relative flex min-h-screen flex-col bg-background'>
-					<SiteHeader show={false} storeId={setting?.storeId || ''} />
-					<main className='flex-1'>{children}</main>
-				</div>
+		<div vaul-drawer-wrapper=''>
+			<div className='relative flex min-h-screen flex-col bg-background'>
+				<SiteHeader show={false} storeId={setting?.storeId || ''} />
+				<main className='flex-1'>{children}</main>
 			</div>
-		</TimerProvider>
+		</div>
 	);
 }

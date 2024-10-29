@@ -15,7 +15,7 @@ const resetPassword = async ({ token, ...data }: Reset) => {
     return response
 }
 
-const useResetPasswordProfile = () => {
+const useResetPasswordProfile = (successFn: () => void) => {
     return useMutation({
         mutationFn: resetPassword,
         onSuccess: () => {
@@ -24,6 +24,8 @@ const useResetPasswordProfile = () => {
                 icon: "✅",
                 position: "top-right"
             })
+
+            successFn()
 
         }
     })

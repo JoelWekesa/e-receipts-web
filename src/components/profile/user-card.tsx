@@ -9,7 +9,7 @@ import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
 import ProfileItem from './profile-item';
 import EditDialog from './edit-dialog';
 
-const UserCard: FC<{profile: Profile}> = ({profile}) => {
+const UserCard: FC<{profile?: Profile}> = ({profile}) => {
 	const {data: user} = useSession({
 		required: true,
 	});
@@ -41,7 +41,7 @@ const UserCard: FC<{profile: Profile}> = ({profile}) => {
 						{profile?.address && (
 							<ProfileItem
 								data={{
-									title: 'Address',
+									title: 'City',
 									content: profile.address,
 								}}
 							/>

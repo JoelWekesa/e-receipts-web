@@ -3,7 +3,7 @@ import { profileView } from "../page/profile/get";
 import { useSession } from "next-auth/react";
 import { Profile } from "@/models/profile/user-profile";
 
-const useProfile = ({ profile }: { profile: Profile }) => {
+const useProfile = ({ profile }: { profile?: Profile }) => {
     const { data: session } = useSession({
         required: true
     })
