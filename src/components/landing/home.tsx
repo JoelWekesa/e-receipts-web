@@ -8,11 +8,11 @@ const HomeComponent = () => {
 			<div className='flex flex-col items-center justify-center max-w-3xl px-8 mx-auto mt-8 sm:min-h-screen sm:mt-0 sm:px-0'>
 				<div className='hidden sm:mb-8 sm:flex sm:justify-center'>
 					<Link
-						href={process.env.NEXT_PUBLIC_DOMAIN || 'https://estore.ke'}
+						href={process.env.NEXT_PUBLIC_DOMAIN || 'https://estore.africa'}
 						className='dark:text-zinc-400 text-zinc-800 relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 dark:ring-zinc-100/10  ring-[#bfbfbf] hover:ring-zinc-100/30 duration-150'>
 						Introducing{''}
 						<span className='mx-2 font-semibold dark:text-zinc-200 text-black'>
-							estore.ke <span aria-hidden='true'>&rarr;</span>
+							estore.africa <span aria-hidden='true'>&rarr;</span>
 						</span>
 					</Link>
 				</div>

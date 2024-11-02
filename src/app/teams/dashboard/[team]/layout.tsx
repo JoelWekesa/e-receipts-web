@@ -20,25 +20,25 @@ const DynamicTeamSwitcher = dynamic(() => import('../../../../components/dashboa
 });
 
 export async function generateMetadata(props: {params: Promise<{team: string}>}): Promise<Metadata> {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {team: teamId} = params;
+	const {team: teamId} = params;
 
-    const team = await getTeam({id: teamId, token});
+	const team = await getTeam({id: teamId, token});
 
-    const store = await getStore({
+	const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-    const indexable = !!store?.logo;
+	const indexable = !!store?.logo;
 
-    return {
+	return {
 		title: `Dashboard | ${store.displayName}`,
 		description: store.displayName,
 		keywords: [store.displayName, store.address],
@@ -91,41 +91,31 @@ const StoreDashBoardLayout: FC<{
 	receipts: ReactNode;
 	top: ReactNode;
 	params: {team: string};
-}> = async props => {
-    const params = await props.params;
+}> = async (props) => {
+	const params = await props.params;
 
-    const {
-        periodsales,
-        period_all_annual_month,
-        periodtotals,
-        receipts,
-        top
-    } = props;
+	const {periodsales, period_all_annual_month, periodtotals, receipts, top} = props;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    console.log({
-		params,
-	});
+	const token = session?.accessToken || '';
 
-    const token = session?.accessToken || '';
-
-    const [stores, teams, permissions] = await Promise.all([
+	const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 	]);
 
-    const {team: teamId} = params;
+	const {team: teamId} = params;
 
-    const storeFromTeam = await getStoreFromTeam({
+	const storeFromTeam = await getStoreFromTeam({
 		token,
 		id: teamId,
 	});
 
-    const {id: storeId} = storeFromTeam.store;
+	const {id: storeId} = storeFromTeam.store;
 
-    return (
+	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

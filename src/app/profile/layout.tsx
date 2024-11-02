@@ -1,9 +1,9 @@
-import { SiteHeader } from '@/components/site-header';
-import { siteConfig } from '@/config/site';
-import { getSetting } from '@/services/page/settings/get-setting';
-import { Metadata, Viewport } from 'next';
-import { getServerSession } from 'next-auth';
-import { options } from '../api/auth/[...nextauth]/options';
+import {SiteHeader} from '@/components/site-header';
+import {siteConfig} from '@/config/site';
+import {getSetting} from '@/services/page/settings/get-setting';
+import {Metadata, Viewport} from 'next';
+import {getServerSession} from 'next-auth';
+import {options} from '../api/auth/[...nextauth]/options';
 
 export const metadata: Metadata = {
 	title: {
