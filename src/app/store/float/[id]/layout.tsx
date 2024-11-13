@@ -32,7 +32,7 @@ export async function generateMetadata(props: {params: Promise<{id: string}>}): 
 	return {
 		title: `Float | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,

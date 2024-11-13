@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: 'Register',
 		description: 'Register an account',
-		keywords: ['login', 'account', 'eStore'],
+		keywords: siteConfig.keywords,
 		metadataBase: new URL(siteConfig.url),
 		robots: {
 			index: true,

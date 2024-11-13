@@ -11,25 +11,25 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 
 export async function generateMetadata(props: {params: Promise<{store: string}>}): Promise<Metadata> {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {store: id} = params;
-    const store = await getStore({
+	const {store: id} = params;
+	const store = await getStore({
 		token,
 		id,
 	});
 
-    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-    const indexable = !!store?.logo;
+	const indexable = !!store?.logo;
 
-    return {
+	return {
 		title: `Inventory | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
@@ -85,25 +85,23 @@ interface InventoryLayoutProps {
 }
 
 export default async function InventoryLayout(props: InventoryLayoutProps) {
-    const params = await props.params;
+	const params = await props.params;
 
-    const {
-        children
-    } = props;
+	const {children} = props;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    const {store} = params;
+	const {store} = params;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const [stores, teams, permissions] = await Promise.all([
+	const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 	]);
 
-    return (
+	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 	},
 	metadataBase: new URL(siteConfig.url),
 	description: siteConfig.description,
-	keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
+	keywords: siteConfig.keywords,
 	authors: [
 		{
 			name: 'shadcn',
@@ -68,26 +68,24 @@ interface InventoryLayoutProps {
 }
 
 export default async function InventoryLayout(props: InventoryLayoutProps) {
-    const params = await props.params;
+	const params = await props.params;
 
-    const {
-        children
-    } = props;
+	const {children} = props;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    const {inventory: id} = params;
+	const {inventory: id} = params;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const [stores, teams, permissions, inventory] = await Promise.all([
+	const [stores, teams, permissions, inventory] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 		getInventory({id, token}),
 	]);
 
-    return (
+	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

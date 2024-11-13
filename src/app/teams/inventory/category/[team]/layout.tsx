@@ -13,28 +13,28 @@ import {Metadata, Viewport} from 'next';
 import {getServerSession} from 'next-auth';
 
 export async function generateMetadata(props: {params: Promise<{team: string}>}): Promise<Metadata> {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {team: teamId} = params;
+	const {team: teamId} = params;
 
-    const team = await getTeam({id: teamId, token});
+	const team = await getTeam({id: teamId, token});
 
-    const store = await getStore({
+	const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-    const indexable = !!store?.logo;
+	const indexable = !!store?.logo;
 
-    return {
+	return {
 		title: `Categories | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
@@ -90,26 +90,24 @@ interface InventoryLayoutProps {
 }
 
 export default async function InventoryLayout(props: InventoryLayoutProps) {
-    const params = await props.params;
+	const params = await props.params;
 
-    const {
-        children
-    } = props;
+	const {children} = props;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    const {team} = params;
+	const {team} = params;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const [stores, teams, permissions, {store}] = await Promise.all([
+	const [stores, teams, permissions, {store}] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 		getStoreFromTeam({id: team, token}),
 	]);
 
-    return (
+	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

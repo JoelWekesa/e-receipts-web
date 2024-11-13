@@ -41,7 +41,7 @@ export async function generateMetadata(props: {params: Promise<{team: string}>})
 	return {
 		title: `Dashboard | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,

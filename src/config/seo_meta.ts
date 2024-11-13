@@ -1,25 +1,26 @@
 export const config = {
-	"title": "ACME Storefront | Powered by Next.js Commerce",
-	"titleTemplate": "%s - ACME Storefront",
-	"description": "Next.js Commerce - https://www.nextjs.org/commerce",
+	"title": "eStore | The smart way to run your business",
+	"titleTemplate": "%s - eStore",
+	"description":
+		'Say goodbye to paper clutter and lost receipts! eStore’s AI-powered platform simplifies how businesses track sales, manage inventory, and issue digital receipts effortlessly.',
 	"openGraph": {
-		"title": "ACME Storefront | Powered by Next.js Commerce",
-		"description": "Next.js Commerce - https://www.nextjs.org/commerce",
+		"title": "eStore",
+		"description": "An all-in-one platform to manage your business, from customers to inventory, and everything in between.",
 		"type": "website",
-		"url": "https://nextjs.org/commerce",
-		"site_name": "Next.js Commerce",
+		"url": "https://estore.africa",
+		"site_name": "eStore",
 		"images": [
 			{
-				"url": "/card.png",
+				"url": "https://receipts-ke.s3.amazonaws.com/logo/opengraph.png",
 				"width": "800",
 				"height": "600",
-				"alt": "Next.js Commerce"
+				"alt": "estore"
 			}
 		]
 	},
 	"twitter": {
-		"handle": "@nextjs",
-		"site": "@nextjs",
+		"handle": "@joelwekesa_",
+		"site": "@joelwekesa_",
 		"cardType": "summary_large_image"
 	}
 }

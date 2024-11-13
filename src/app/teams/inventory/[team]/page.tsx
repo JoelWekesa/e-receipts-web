@@ -10,28 +10,28 @@ import {Metadata} from 'next';
 import {getServerSession} from 'next-auth';
 
 export async function generateMetadata(props: {params: Promise<{team: string}>}): Promise<Metadata> {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {team: teamId} = params;
+	const {team: teamId} = params;
 
-    const team = await getTeam({id: teamId, token});
+	const team = await getTeam({id: teamId, token});
 
-    const store = await getStore({
+	const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-    const indexable = !!store?.logo;
+	const indexable = !!store?.logo;
 
-    return {
+	return {
 		title: `Inventory | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
@@ -89,20 +89,20 @@ const getTotal = async ({storeId, token}: {storeId: string; token: string}) => {
 };
 
 const InventoryPage = async (props: {params: Promise<{team: string}>}) => {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const {team} = params;
+	const {team} = params;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {store} = await getStoreFromTeam({id: team, token});
+	const {store} = await getStoreFromTeam({id: team, token});
 
-    const storeId = store.id;
+	const storeId = store.id;
 
-    const [inventory, total] = await Promise.all([getInventory({storeId, token}), getTotal({storeId, token})]);
+	const [inventory, total] = await Promise.all([getInventory({storeId, token}), getTotal({storeId, token})]);
 
-    return (
+	return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<TeamInventoryLayout teamId={team}>
 				<StoreInventory item={{storeId, inventory, total, isTeam: true, teamId: team}} />

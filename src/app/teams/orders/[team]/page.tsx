@@ -15,28 +15,28 @@ interface Props {
 }
 
 export async function generateMetadata(props: {params: Promise<{team: string}>}): Promise<Metadata> {
-    const params = await props.params;
-    const session = await getServerSession(options);
+	const params = await props.params;
+	const session = await getServerSession(options);
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const {team: teamId} = params;
+	const {team: teamId} = params;
 
-    const team = await getTeam({id: teamId, token});
+	const team = await getTeam({id: teamId, token});
 
-    const store = await getStore({
+	const store = await getStore({
 		token,
 		id: team.storeId,
 	});
 
-    const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
+	const shopUrl = `${siteConfig.url}/shop/${encodeURIComponent(store.name)}`;
 
-    const indexable = !!store?.logo;
+	const indexable = !!store?.logo;
 
-    return {
+	return {
 		title: `Orders | ${store.displayName}`,
 		description: store.displayName,
-		keywords: [store.displayName, store.address],
+		keywords: [store.displayName, store.address, ...siteConfig.keywords],
 		metadataBase: new URL(shopUrl),
 		robots: {
 			index: indexable,
@@ -80,27 +80,25 @@ export async function generateMetadata(props: {params: Promise<{team: string}>})
 }
 
 const Orders = async (props: Props) => {
-    const params = await props.params;
+	const params = await props.params;
 
-    const {
-        team: id
-    } = params;
+	const {team: id} = params;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    const team = await getTeam({id, token: session?.accessToken || ''});
+	const team = await getTeam({id, token: session?.accessToken || ''});
 
-    const storeId = team.storeId;
+	const storeId = team.storeId;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const [pending, processing, completed] = await Promise.all([
+	const [pending, processing, completed] = await Promise.all([
 		orderStores({storeId, status: OrderStatus.PENDING, token}),
 		orderStores({storeId, status: OrderStatus.PROCESSING, token}),
 		orderStores({storeId, status: OrderStatus.COMPLETED, token}),
 	]);
 
-    return (
+	return (
 		<OrderTabs pending={pending} processing={processing} completed={completed} storeId={storeId} teamId={team.id} />
 	);
 };
