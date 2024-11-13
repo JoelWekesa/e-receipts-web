@@ -18,7 +18,9 @@ import useProfile from '@/services/profile/get-profile';
 const UserNav = () => {
 	const {data: user} = useSession();
 
-	const {data: profile} = useProfile({});
+	const {data: profile} = useProfile({
+		profile: null,
+	});
 
 	const router = useRouter();
 

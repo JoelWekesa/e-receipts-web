@@ -9,8 +9,8 @@ import {Store} from '@/models/store';
 import {useSession} from 'next-auth/react';
 import ResetComponent from './reset-password';
 
-const UserProfile: FC<{profile?: Profile; stores: Store[]}> = ({profile, stores}) => {
-	const {data} = useProfile({profile});
+const UserProfile: FC<{profile: Profile | null; stores: Store[]}> = ({profile, stores}) => {
+	const {data, isLoading} = useProfile({profile});
 
 	const {data: session} = useSession({
 		required: true,
@@ -18,22 +18,28 @@ const UserProfile: FC<{profile?: Profile; stores: Store[]}> = ({profile, stores}
 
 	const token = session?.accessToken || '';
 
-	return (
-		<div className='flex flex-col gap-8 pb-8 md:gap-16 md:pb-16 xl:pb-24'>
-			<div className='flex flex-col md:flex-row h-full'>
-				<div className='md:w-1/3 w-full md:h-full p-2'>
-					<UserCard profile={data} />
-				</div>
+	if (isLoading) {
+		return <></>;
+	}
 
-				<div className='md:w-2/3 w-full md:h-50 p-2'>
-					<div className='flex flex-col gap-2'>
-						<ResetComponent token={token} />
-						<MyStores stores={stores} />
+	if (data) {
+		return (
+			<div className='flex flex-col gap-8 pb-8 md:gap-16 md:pb-16 xl:pb-24'>
+				<div className='flex flex-col md:flex-row h-full'>
+					<div className='md:w-1/3 w-full md:h-full p-2'>
+						<UserCard profile={data} />
+					</div>
+
+					<div className='md:w-2/3 w-full md:h-50 p-2'>
+						<div className='flex flex-col gap-2'>
+							<ResetComponent token={token} />
+							<MyStores stores={stores} />
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 export default UserProfile;

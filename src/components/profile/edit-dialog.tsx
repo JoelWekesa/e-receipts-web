@@ -4,7 +4,11 @@ import {Profile} from '@/models/profile/user-profile';
 import {FC} from 'react';
 import ProfileUpsert from './upsert';
 
-const EditDialog: FC<{open: boolean; profile?: Profile; toggleOpen: () => void}> = ({open, profile, toggleOpen}) => {
+const EditDialog: FC<{open: boolean; profile: Profile | null; toggleOpen: () => void}> = ({
+	open,
+	profile,
+	toggleOpen,
+}) => {
 	return (
 		<Dialog open={open}>
 			<DialogContent className='sm:max-w-[425px] w-full max-w-[90vw] p-4 justify-start'>
