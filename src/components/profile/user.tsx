@@ -8,6 +8,7 @@ import MyStores from './stores';
 import {Store} from '@/models/store';
 import {useSession} from 'next-auth/react';
 import ResetComponent from './reset-password';
+import PageLoader from '../shared/pageloader';
 
 const UserProfile: FC<{profile: Profile | null; stores: Store[]}> = ({profile, stores}) => {
 	const {data, isLoading} = useProfile({profile});
@@ -19,7 +20,7 @@ const UserProfile: FC<{profile: Profile | null; stores: Store[]}> = ({profile, s
 	const token = session?.accessToken || '';
 
 	if (isLoading) {
-		return <></>;
+		return <PageLoader />;
 	}
 
 	if (data) {
