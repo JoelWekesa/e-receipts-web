@@ -18,6 +18,7 @@ import React, {useState} from 'react';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
 import {DownloadIcon} from 'lucide-react';
+import {H2} from '../titles';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({
 		<div className={`rounded-md ${black && 'dark:bg-[#000000]'}`}>
 			{title && (
 				<div className='mb-6 p-5'>
-					<h2 className='text-2xl font-bold text-primary'>{title}</h2>
+					<H2 className='text-2xl font-bold text-primary'>{title}</H2>
 					{subtitle && <p className='text-muted-foreground text-sm'>{subtitle}</p>}
 				</div>
 			)}

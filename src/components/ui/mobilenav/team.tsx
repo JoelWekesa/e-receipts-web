@@ -11,6 +11,7 @@ import {Button} from '../button';
 import {ScrollArea} from '../scroll-area';
 import {Sheet, SheetContent, SheetTrigger} from '../sheet';
 import teamNav from './team-nav-items';
+import { H4 } from '@/components/titles';
 
 interface Props {
 	teamId: string;
@@ -54,7 +55,7 @@ const TeamMobileNav: React.FC<Props> = ({teamId}) => {
 					<div className='flex flex-col space-y-2'>
 						{navItems.sidebarNav?.map((item, index) => (
 							<div key={index} className='flex flex-col space-y-3 pt-6'>
-								<h4 className='font-medium'>{item.title}</h4>
+								<H4 className='font-medium'>{item.title}</H4>
 								{item?.items?.length &&
 									item.items.map((item) => (
 										<React.Fragment key={item.href}>

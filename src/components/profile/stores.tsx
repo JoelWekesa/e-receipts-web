@@ -5,7 +5,8 @@ import useUserStores from '@/services/stores/user-stores';
 import {PackageIcon, ShoppingBagIcon} from 'lucide-react';
 import Link from 'next/link';
 import {FC} from 'react';
-import {buttonVariants} from '../ui/button';
+import { buttonVariants } from '../ui/button';
+import { H3 } from '../titles';
 
 const MyStores: FC<{stores: Store[]}> = ({stores}) => {
 	const {data = []} = useUserStores({initialData: stores});
@@ -26,7 +27,7 @@ const MyStores: FC<{stores: Store[]}> = ({stores}) => {
 									<ShoppingBagIcon className='w-6 h-6 text-primary mt-1' />
 									<Link href={`/store/dashboard/${item.id}`}>
 										<div>
-											<h3 className='font-semibold'>{item.displayName}</h3>
+											<H3 className='font-semibold'>{item.displayName}</H3>
 											<p className='text-sm text-muted-foreground'>{item.address}</p>
 										</div>
 									</Link>
@@ -37,7 +38,7 @@ const MyStores: FC<{stores: Store[]}> = ({stores}) => {
 				) : (
 					<div className='flex flex-col items-center justify-center h-[300px] text-center'>
 						<PackageIcon className='w-16 h-16 text-muted-foreground mb-4' />
-						<h3 className='text-xl font-semibold mb-2'>You do not have any stores</h3>
+						<H3 className='text-xl font-semibold mb-2'>You do not have any stores</H3>
 						<p className='text-muted-foreground'>Your stores list is empty. Add some stores to see them here!</p>
 						<Link href={`/stores/add`} className={`${buttonVariants()} my-3`}>
 							Create Store

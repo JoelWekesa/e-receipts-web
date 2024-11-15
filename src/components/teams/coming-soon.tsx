@@ -2,6 +2,7 @@
 
 import {Team} from '@/models/teams/team';
 import {FC, useEffect, useState} from 'react';
+import {H1} from '../titles';
 
 interface Props {
 	team: Team;
@@ -49,7 +50,7 @@ const ComingSoon: FC<Props> = ({team}) => {
 			}}>
 			<div className='absolute inset-0 bg-black opacity-50'></div>
 			<div className='z-10 text-center'>
-				<h1 className='text-5xl font-bold mb-4'>Coming Soon</h1>
+				<H1 className='text-5xl font-bold mb-4'>Coming Soon</H1>
 				<p className='text-xl mb-8'>We are working hard to bring you something amazing!</p>
 				<p className='text-md mb-8'>
 					You will soon be able to work under {team.name} @{team.store.name}

@@ -9,6 +9,7 @@ import {Banknote, Loader2, Store} from 'lucide-react';
 import {useSession} from 'next-auth/react';
 import {FC, useState} from 'react';
 import AddFloatDialog from './add-float-dialog';
+import {H2, H3} from '../titles';
 
 interface Props {
 	storeFloat: StoreFloat | null;
@@ -72,7 +73,7 @@ const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat, storeId}) => {
 			<Card className='w-full max-w-3xl mx-auto'>
 				<CardContent className='p-6'>
 					<div className='mb-6'>
-						<h2 className='text-2xl font-bold mb-2'>Opt In for M-Pesa Float Management</h2>
+						<H2 className='text-2xl font-bold mb-2'>Opt In for M-Pesa Float Management</H2>
 						<Progress value={(currentStep / steps.length) * 100} className='mb-2' />
 						<p className='text-sm text-muted-foreground mb-4'>
 							Step {currentStep} of {steps.length}: {steps[currentStep - 1].title}
@@ -81,7 +82,7 @@ const StoreFloatOnboardingScreen: FC<Props> = ({storeFloat, storeId}) => {
 					<div className='flex items-center mb-6'>
 						{steps[currentStep - 1].icon}
 						<div className='ml-4'>
-							<h3 className='text-xl font-semibold mb-2'>{steps[currentStep - 1].title}</h3>
+							<H3 className='text-xl font-semibold mb-2'>{steps[currentStep - 1].title}</H3>
 							<p className='text-muted-foreground'>{steps[currentStep - 1].content}</p>
 						</div>
 					</div>

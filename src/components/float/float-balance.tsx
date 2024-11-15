@@ -7,6 +7,7 @@ import {useSession} from 'next-auth/react';
 import useStoreFloat from '@/services/float/store-float';
 import {StoreFloat} from '@/models/floats/store';
 import AddFloatDialog from './add-float-dialog';
+import {H2} from '../titles';
 
 interface Props {
 	storeId: string;
@@ -42,7 +43,7 @@ const FloatBalance: FC<Props> = ({storeId, storeFloat, team}) => {
 						</div>
 						<div className='relative z-10'>
 							<div className='flex items-center justify-between mb-4 md:mb-6'>
-								<h2 className='text-lg md:text-2xl font-bold text-white'>Float Balance</h2>
+								<H2 className='text-lg md:text-2xl font-bold text-white'>Float Balance</H2>
 								<Button variant='ghost' size='icon' className='hover:bg-transparent' onClick={() => refetch()}>
 									<RefreshCw className={`w-6 h-6 md:w-8 md:h-8 text-white opacity-80 ${isRefetching && 'animate-spin'}`} />
 								</Button>

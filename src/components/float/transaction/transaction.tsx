@@ -14,6 +14,7 @@ import {Transaction} from '@/models/floats/transactions';
 import ApproveFloatDialog from './approve-dialog';
 import RejectFloatDialog from './reject-dialog';
 import useTransaction from '@/services/float/transaction';
+import {H2, H3} from '@/components/titles';
 
 interface Props {
 	transaction: Transaction;
@@ -71,7 +72,7 @@ const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 						</div>
 						<Separator />
 						<div className='space-y-2'>
-							<h2 className='font-semibold'>User Information</h2>
+							<H2 className='font-semibold'>User Information</H2>
 							<div className='flex justify-between items-center'>
 								<span className='font-semibold'>Name:</span>
 								<span className='text-xl font-bold'>{mountedTransaction.user.name}</span>
@@ -89,7 +90,7 @@ const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 						</div>
 						<Separator />
 						<div className='space-y-2 w-full md:w-3/4'>
-							<h3 className='font-semibold text-2xl'>Details</h3>
+							<H3 className='font-semibold text-2xl'>Details</H3>
 							<div className='flex justify-between items-end gap-2'>
 								<span className='font-semibold'>Transaction ID</span>
 								<span className='font-medium'>{mountedTransaction.id}</span>
@@ -106,7 +107,7 @@ const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 						<Separator />
 						<div className='space-y-2'>
 							<div className='flex justify-between items-center py-3'>
-								<h3 className='font-semibold'>Evidence</h3>
+								<H3 className='font-semibold'>Evidence</H3>
 								<Button variant='link' size='sm'>
 									<Download className='mr-2 h-4 w-4' />
 									<Link href={mountedTransaction.evidence} download={genRandomWord() + mountedTransaction.evidence}>
@@ -136,7 +137,7 @@ const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 										{mountedTransaction.Approvals.map((approval, index) => (
 											<div className='space-y-2 flex flex-col' key={index}>
 												<div className='flex flex-col w-full '>
-													<h3 className='font-semibold text-2xl'>Approved By</h3>
+													<H3 className='font-semibold text-2xl'>Approved By</H3>
 													<div className='flex flex-col md:w-3/4'>
 														<div className='flex justify-between items-center'>
 															<span className='font-semibold'>Name:</span>
@@ -173,7 +174,7 @@ const TransactionComponent: FC<Props> = ({transaction, teamId}) => {
 											<div className='space-y-2 flex flex-col' key={index}>
 												<p className='text-md'>{rejection.reason}</p>
 												<div className='flex flex-col w-full '>
-													<h3 className='font-semibold text-2xl'>Rejected By</h3>
+													<H3 className='font-semibold text-2xl'>Rejected By</H3>
 													<div className='flex flex-col md:w-3/4'>
 														<div className='flex justify-between items-center'>
 															<span className='font-semibold'>Name:</span>

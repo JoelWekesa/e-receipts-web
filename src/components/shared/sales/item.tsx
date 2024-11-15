@@ -2,7 +2,7 @@
 
 /**
  * v0 by Vercel.
- * @see https://v0.dev/t/nuwh3FMXbYZ
+ * @see https://v0.dev/t/nuwH3FMXbYZ
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import {Badge} from '@/components/ui/badge';
@@ -15,6 +15,7 @@ import {Check, CopyIcon} from 'lucide-react';
 import {FC, useState} from 'react';
 import ItemsSoldTable from './itemssold';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {H3} from '@/components/titles';
 
 interface Props {
 	receipt: Receipt;
@@ -69,7 +70,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 											<div className='flex flex-col gap-2 justify-between p-2'>
 												{payment.mpesa > 0 && (
 													<div className='flex flex-col gap-2'>
-														<h3>M-Pesa</h3>
+														<H3>M-Pesa</H3>
 														<div className='flex flex-row gap-4 px-3 py-2'>
 															<div className='text-muted-foreground'>Amount</div>
 															<div>
@@ -97,7 +98,7 @@ const SaleItem: FC<Props> = ({receipt}) => {
 
 												{payment.cash > 0 && (
 													<div className='flex flex-col gap-2 w-full'>
-														<h3>Cash</h3>
+														<H3>Cash</H3>
 														<div className='flex flex-row gap-4 px-3 py-2'>
 															<div className='text-muted-foreground'>Amount</div>
 															<div>

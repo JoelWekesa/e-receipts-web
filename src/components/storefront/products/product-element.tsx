@@ -4,6 +4,7 @@ import {Inventory} from '@/models/inventory/inventory';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import ProductImageWrapper from './product-image-wrapper';
+import {H3} from '@/components/titles';
 
 interface Product {
 	inventory: Inventory;
@@ -43,7 +44,7 @@ export function ProductElement({inventory, loading, priority}: Product) {
 					)}
 					<div className='mt-2 flex flex-col p-1'>
 						<div>
-							<h3 className='mt-1 text-sm font-semibold light:text-neutral-900'>{inventory.name}</h3>
+							<H3 className='mt-1 text-sm font-semibold light:text-neutral-900'>{inventory.name}</H3>
 							<p className='mt-1 text-sm font-medium light:text-neutral-900' data-testid='ProductElement_PriceRange'>
 								{formatMoneyRange({
 									start: {amount: start},

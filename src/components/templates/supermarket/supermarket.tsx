@@ -8,6 +8,7 @@ import {receiptItemsAtom} from '@/atoms/receiptgen/receiptitem';
 import {paymentAtom} from '@/atoms/receiptgen/payment';
 import {controlUnitAtom} from '@/atoms/receiptgen/controlunit';
 import {loyaltyAtom} from '@/atoms/receiptgen/loyalty';
+import { H1 } from '@/components/titles';
 
 const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 	const [items] = useAtom(receiptItemsAtom);
@@ -41,13 +42,13 @@ const SupermarketComponent: FC<{store: Store}> = ({store}) => {
 							<a href={process.env.NEXT_PUBLIC_DOMAIN}>
 								<Image id='barcode' alt='barcode' src={store?.logo || ''} className='block m-auto' width={70} height={70} />
 							</a>
-							<h1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>{store?.displayName}</h1>
+							<H1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>{store?.displayName}</H1>
 							<p className='m-0 sm:leading-8  font-extralight uppercase text-sm'>{store?.address}</p>
 							<p className='m-0 sm:leading-8  font-extralight text-sm'>
 								<span>Tel: {store?.phone} </span>
 								<span>{store?.email}</span>
 							</p>
-							<h1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>cash sale</h1>
+							<H1 className='m-0 text-2xl sm:leading-8  font-semibold uppercase'>cash sale</H1>
 							<p className='m-0 sm:leading-8  font-extralight text-sm'>
 								<span>VAT Reg: {store?.vat_reg_no} </span>
 								<span>PIN No: {store?.pin_no}</span>

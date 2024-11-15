@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {Check, CopyIcon} from 'lucide-react';
 import {FC, useState} from 'react';
+import {H3} from '@/components/titles';
 
 dayjs.extend(relativeTime);
 
@@ -53,7 +54,7 @@ const PaidCard: FC<Props> = ({order}) => {
 										<div className='flex flex-col gap-2 justify-between p-2'>
 											{payment.mpesa > 0 && (
 												<div className='flex flex-col gap-2'>
-													<h3>M-Pesa</h3>
+													<H3>M-Pesa</H3>
 													<div className='flex flex-row gap-4 px-3 py-2'>
 														<div className='text-muted-foreground'>Amount</div>
 														<div>
@@ -81,7 +82,7 @@ const PaidCard: FC<Props> = ({order}) => {
 
 											{payment.cash > 0 && (
 												<div className='flex flex-col gap-2 w-full'>
-													<h3>Cash</h3>
+													<H3>Cash</H3>
 													<div className='flex flex-row gap-4 px-3 py-2'>
 														<div className='text-muted-foreground'>Amount</div>
 														<div>

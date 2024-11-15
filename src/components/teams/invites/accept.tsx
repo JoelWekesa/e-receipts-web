@@ -5,6 +5,7 @@
  */
 import Link from 'next/link';
 import {FC} from 'react';
+import {H1} from '@/components/titles';
 
 interface Props {
 	teamId: string;
@@ -15,7 +16,7 @@ const AcceptComponent: FC<Props> = ({teamId}) => {
 		<div className='flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8'>
 			<div className='mx-auto max-w-md text-center'>
 				<CircleCheckIcon className='mx-auto h-12 w-12 text-green-500' />
-				<h1 className='mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>Confirmation Successful</h1>
+				<H1 className='mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>Confirmation Successful</H1>
 				<p className='mt-4 text-muted-foreground'>Congratulations! You have been added to the team.</p>
 				<div className='mt-6'>
 					<Link

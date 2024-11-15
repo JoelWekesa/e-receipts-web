@@ -1,6 +1,3 @@
-import {Viewport} from 'next';
-import '../styles/globals.css';
-import {GoogleAnalytics} from '@next/third-parties/google';
 import {Analytics} from '@/components/analytics';
 import {ThemeProvider} from '@/components/providers';
 import {SiteFooter} from '@/components/site-footer';
@@ -8,14 +5,17 @@ import {TailwindIndicator} from '@/components/tailwind-indicator';
 import {ThemeSwitcher} from '@/components/theme-switcher';
 import {Toaster as NewYorkSonner} from '@/components/ui/sonner';
 import {Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster} from '@/components/ui/toaster';
-import {fontSans} from '@/lib/fonts';
+import {bodyText} from '@/lib/fonts';
 import {cn} from '@/lib/utils';
+import IdleTime from '@/providers/idle-time';
 import NextAuthProvider from '@/providers/next-auth';
 import ReactQueryProvider from '@/providers/react-query';
+import {GoogleAnalytics} from '@next/third-parties/google';
 import {getCookies, setCookie} from 'cookies-next';
 import {Provider} from 'jotai';
+import {Viewport} from 'next';
 import {v4 as uuidv4} from 'uuid';
-import IdleTime from '@/providers/idle-time';
+import '../styles/globals.css';
 
 export const viewport: Viewport = {
 	themeColor: [
@@ -45,9 +45,9 @@ export default async function RootLayout({children}: RootLayoutProps) {
 			<IdleTime>
 				<Provider>
 					<ReactQueryProvider>
-						<html lang='en' suppressHydrationWarning>
+						<html lang='en' suppressHydrationWarning className={bodyText.className}>
 							<head />
-							<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto', fontSans.className)}>
+							<body className={cn('min-h-screen bg-background font-sans antialiased overflow-auto')}>
 								<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 									<div vaul-drawer-wrapper=''>
 										<div className='relative flex min-h-screen flex-col bg-background'>

@@ -8,6 +8,7 @@ import {ListCollapse} from 'lucide-react';
 import {useTheme} from 'next-themes';
 import Link from 'next/link';
 import {FC} from 'react';
+import {H1} from '@/components/titles';
 
 interface Props {
 	hide?: boolean;
@@ -20,9 +21,9 @@ const SeeProductHeader: FC<Props> = ({hide, inventory, isTeam, teamId}) => {
 	const {theme} = useTheme();
 	return (
 		<div className='flex items-center gap-4'>
-			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
+			<H1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
 				{inventory.name}
-			</h1>
+			</H1>
 			<div className='ml-auto sm:ml-0'>
 				<div className='flex flex-row gap-4'>
 					<Icons.whatsapp

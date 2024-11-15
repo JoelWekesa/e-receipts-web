@@ -8,6 +8,7 @@ import {FC, useState} from 'react';
 import {Button} from '../ui/button';
 import AddCashDialog from './transaction/add-cash-dialog';
 import CollectCashDialog from './transaction/collect-cash-dialog';
+import {H2} from '../titles';
 
 interface Props {
 	storeId: string;
@@ -43,7 +44,7 @@ const CashBalance: FC<Props> = ({storeId, storeCash, team}) => {
 						</div>
 						<div className='relative z-10'>
 							<div className='flex items-center justify-between mb-4 md:mb-6'>
-								<h2 className='text-lg md:text-2xl font-bold text-white'>Cash Balance</h2>
+								<H2 className='text-lg md:text-2xl font-bold text-white'>Cash Balance</H2>
 								<Button variant='ghost' size='icon' className='hover:bg-transparent' onClick={() => refetch()}>
 									<RefreshCw className={`w-6 h-6 md:w-8 md:h-8 text-white opacity-80 ${isRefetching && 'animate-spin'}`} />
 								</Button>

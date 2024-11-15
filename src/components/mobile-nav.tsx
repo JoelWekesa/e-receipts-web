@@ -12,6 +12,7 @@ import {Button} from './ui/button';
 import {ScrollArea} from './ui/scroll-area';
 import {Sheet, SheetContent, SheetTrigger} from './ui/sheet';
 import baseNav from './ui/mobilenav/main-nav-items';
+import {H4} from './titles';
 
 export function MobileNav() {
 	const [open, setOpen] = React.useState(false);
@@ -51,7 +52,7 @@ export function MobileNav() {
 					<div className='flex flex-col space-y-2'>
 						{docsConfig?.sidebarNav?.map((item, index) => (
 							<div key={index} className='flex flex-col space-y-3 pt-6'>
-								<h4 className='font-medium'>{item.title}</h4>
+								<H4 className='font-medium'>{item.title}</H4>
 								{item?.items?.length &&
 									item.items.map((item) => (
 										<React.Fragment key={item.href}>

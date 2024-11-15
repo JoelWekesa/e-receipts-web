@@ -5,13 +5,14 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from 'next/link';
+import {H1} from './titles';
 
 export default function CustomError({error}: {error: Error & {digest?: string}; reset: () => void}) {
 	return (
 		<div className='flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8'>
 			<div className='mx-auto max-w-md text-center'>
 				<div className='mx-auto h-12 w-12 text-primary' />
-				<h1 className='mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>{error?.name}</h1>
+				<H1 className='mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>{error?.name}</H1>
 				<p className='mt-4 text-muted-foreground'>{error?.message || 'Something went wrong'}</p>
 				<div className='mt-6'>
 					<Link

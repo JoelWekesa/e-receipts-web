@@ -1,4 +1,5 @@
 'use client';
+import {H1} from '@/components/titles';
 import {Button} from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -7,7 +8,7 @@ export default function StoresError({error}: {error: Error & {digest?: string}; 
 		<div className='flex flex-col items-center justify-center w-full min-h-[80vh] px-4 text-center space-y-4'>
 			<ServerCrashIcon className='h-20 w-20' />
 			<div className='space-y-2'>
-				<h1 className='text-4xl font-extrabold tracking-tighter sm:text-5xl/line-through'>{error?.name}</h1>
+				<H1 className='text-4xl font-extrabold tracking-tighter sm:text-5xl/line-through'>{error?.name}</H1>
 				<p className='text-gray-500'>{`We're sorry, but it looks like there was an error processing your request. `}</p>
 
 				<p className='text-gray-500'>

@@ -2,13 +2,14 @@ import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Loader2} from 'lucide-react';
 import {FC} from 'react';
+import {H1} from '@/components/titles';
 
 const ProductHeader: FC<{isPending: boolean; edit?: boolean; title?: string}> = ({isPending, edit, title}) => {
 	return (
 		<div className='flex items-center gap-4 my-3'>
-			<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
+			<H1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
 				{edit ? 'Edit Product' : title}
-			</h1>
+			</H1>
 			<Badge variant='outline' className='ml-auto sm:ml-0'>
 				New
 			</Badge>

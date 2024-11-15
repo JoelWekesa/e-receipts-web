@@ -1,4 +1,4 @@
-import LandingComponent from '@/components/landing';
+import HomeComponent from '@/components/landing/home';
 import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/config/site';
 import {Metadata} from 'next';
@@ -52,8 +52,8 @@ const HomePage = async () => {
 	return (
 		<>
 			<SiteHeader storeId='' />
-			<div className='flex-1 space-y-2 pt-6'>
-				<LandingComponent />
+			<div className='flex-1 space-y-2'>
+				<HomeComponent />
 			</div>
 		</>
 	);
