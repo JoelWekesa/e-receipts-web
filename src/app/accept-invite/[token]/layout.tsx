@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 	keywords: siteConfig.keywords,
 	authors: [
 		{
-			name: 'shadcn',
-			url: 'https://shadcn.com',
+			name: siteConfig.author.name,
+			url: siteConfig.author.url,
 		},
 	],
-	creator: 'shadcn',
+	creator: siteConfig.author.name,
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@shadcn',
+		creator: siteConfig.links.handle,
 	},
 	icons: {
 		icon: '/favicon.ico',

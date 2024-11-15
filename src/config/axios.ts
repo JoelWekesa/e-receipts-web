@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import { toast } from 'sonner';
 
 const ApiClient = (token: string) => {
 	const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -27,11 +26,6 @@ const ApiClient = (token: string) => {
 
 			console.log(error)
 
-			toast("An Error Occurred", {
-				description: error?.response?.data?.message || "Something went wrong!",
-				icon: "❌",
-				position: 'top-right'
-			})
 		}
 	);
 

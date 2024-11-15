@@ -6,8 +6,15 @@ export const siteConfig = {
 		'The smart way to run your business. An all-in-one platform to manage your business, from customers to inventory, and everything in between.',
 	links: {
 		twitter: 'https://x.com/joelwekesa_',
+		handle: '@joelwekesa_',
 		github: 'https://github.com/JoelWekesa',
 	},
+
+	author: {
+		name: "Joel Wekesa",
+		url: "https://x.com/joelwekesa_"
+	},
+
 
 	keywords: [
 		// Business Operations

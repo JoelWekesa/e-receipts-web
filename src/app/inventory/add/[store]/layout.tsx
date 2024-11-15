@@ -19,11 +19,11 @@ export const metadata: Metadata = {
 	keywords: siteConfig.keywords,
 	authors: [
 		{
-			name: 'shadcn',
-			url: 'https://shadcn.com',
+			name: siteConfig.author.name,
+			url: siteConfig.author.url,
 		},
 	],
-	creator: 'shadcn',
+	creator: siteConfig.author.name,
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 		title: siteConfig.name,
 		description: siteConfig.description,
 		images: [siteConfig.ogImage],
-		creator: '@shadcn',
+		creator: siteConfig.links.handle,
 	},
 	icons: {
 		icon: '/favicon.ico',
@@ -67,25 +67,23 @@ interface InventoryLayoutProps {
 }
 
 export default async function InventoryLayout(props: InventoryLayoutProps) {
-    const params = await props.params;
+	const params = await props.params;
 
-    const {
-        children
-    } = props;
+	const {children} = props;
 
-    const session = await getServerSession(options);
+	const session = await getServerSession(options);
 
-    const {store} = params;
+	const {store} = params;
 
-    const token = session?.accessToken || '';
+	const token = session?.accessToken || '';
 
-    const [stores, teams, permissions] = await Promise.all([
+	const [stores, teams, permissions] = await Promise.all([
 		userStores(token),
 		getTeams({token}),
 		getPermissions({token}),
 	]);
 
-    return (
+	return (
 		<>
 			<div vaul-drawer-wrapper=''>
 				<div className='relative flex min-h-screen flex-col bg-background'>

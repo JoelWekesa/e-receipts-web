@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import { toast } from 'sonner';
 
 interface Options {
     token: string;
@@ -31,11 +30,7 @@ const InventoryClient = ({ token, id }: Options) => {
         },
         (error) => {
             console.log({ error })
-            toast("An Error Occurred", {
-                description: error?.response?.data?.message || "Something went wrong!",
-                icon: "❌",
-                position: "top-right"
-            })
+
         }
     );
 
