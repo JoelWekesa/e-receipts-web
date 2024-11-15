@@ -1,4 +1,3 @@
-import {Analytics} from '@/components/analytics';
 import {ThemeProvider} from '@/components/providers';
 import {SiteFooter} from '@/components/site-footer';
 import {TailwindIndicator} from '@/components/tailwind-indicator';
@@ -59,7 +58,6 @@ export default async function RootLayout({children}: RootLayoutProps) {
 									</div>
 									<TailwindIndicator />
 									<ThemeSwitcher />
-									<Analytics />
 									<NewYorkToaster />
 									<DefaultToaster />
 									<NewYorkSonner />

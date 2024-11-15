@@ -19,9 +19,10 @@ interface Q {
 	total: Total;
 	isTeam?: boolean;
 	teamId?: string;
+	storeName: string;
 }
 
-const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total, isTeam, teamId}}) => {
+const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total, isTeam, teamId, storeName}}) => {
 	const columns: ColumnDef<Inventory>[] = [
 		{
 			accessorKey: 'image',
@@ -143,7 +144,7 @@ const StoreInventory: FC<{item: Q}> = ({item: {storeId, inventory: data, total, 
 				searchColumn='name'
 				searchPlaceholder='Search by inventory name...'
 				black
-				title='Inventory Value'
+				title={`${storeName} Inventory Value`}
 				subtitle={`Total store inventory value ${currencyFormat.format(tot?.total || 0)}`}
 			/>
 		</div>

@@ -105,7 +105,7 @@ const InventoryPage = async (props: {params: Promise<{team: string}>}) => {
 	return (
 		<div className='flex-1 space-y-4 p-8 pt-1'>
 			<TeamInventoryLayout teamId={team}>
-				<StoreInventory item={{storeId, inventory, total, isTeam: true, teamId: team}} />
+				<StoreInventory item={{storeId, inventory, total, isTeam: true, teamId: team, storeName: store.displayName}} />
 			</TeamInventoryLayout>
 		</div>
 	);
