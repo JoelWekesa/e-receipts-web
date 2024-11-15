@@ -1,7 +1,7 @@
 export const siteConfig = {
 	name: 'eStore',
 	url: process.env.NEXT_PUBLIC_DOMAIN || '',
-	ogImage: 'https://receipts-ke.s3.amazonaws.com/logo/opengraph.png',
+	ogImage: 'https://receipts-ke.s3.us-east-1.amazonaws.com/logo/og.png',
 	description:
 		'The smart way to run your business. An all-in-one platform to manage your business, from customers to inventory, and everything in between.',
 	links: {
