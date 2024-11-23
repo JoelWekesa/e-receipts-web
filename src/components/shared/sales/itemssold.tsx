@@ -56,10 +56,12 @@ const ItemsSoldTable: FC<{items: ReceiptItem[]}> = ({items}) => {
 			accessorFn: (row) => row.price * row.quantity - row.discount,
 			header: ({column}) => {
 				return (
-					<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					<div>
 						Total
-						<ArrowUpDown className='ml-2 h-4 w-4' />
-					</Button>
+						<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} size='icon'>
+							<ArrowUpDown className='ml-2 h-4 w-4' />
+						</Button>
+					</div>
 				);
 			},
 

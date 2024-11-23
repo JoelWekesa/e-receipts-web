@@ -1,5 +1,7 @@
 'use client';
+import useProfile from '@/services/profile/get-profile';
 import {signOut, useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
 import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
 import {Button} from '../ui/button';
 import {
@@ -12,8 +14,6 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import {useRouter} from 'next/navigation';
-import useProfile from '@/services/profile/get-profile';
 
 const UserNav = () => {
 	const {data: user} = useSession();
@@ -24,8 +24,8 @@ const UserNav = () => {
 
 	const router = useRouter();
 
-	const handleRedirect = () => {
-		router.push('/profile');
+	const handleRedirect = (href: string) => {
+		router.push(href);
 	};
 
 	return (
@@ -47,16 +47,10 @@ const UserNav = () => {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem onClick={handleRedirect}>Profile</DropdownMenuItem>
-					<DropdownMenuItem>
-						Billing
-						<DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-					</DropdownMenuItem>
-					<DropdownMenuItem>
-						Settings
-						<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-					</DropdownMenuItem>
-					<DropdownMenuItem>New Team</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => handleRedirect('/profile')}>Profile</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => handleRedirect('/pay/invoices')}>Billing</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => handleRedirect('/settings')}>Settings</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => handleRedirect('/general/teams/add')}>New Team</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem

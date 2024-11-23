@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 	searchColumn?: string;
 	searchPlaceholder: string;
+	pageSize?: number;
 	black?: boolean;
 	title?: string;
 	subtitle?: string;
@@ -40,6 +41,7 @@ export function DataTable<TData, TValue>({
 	title,
 	subtitle,
 	download,
+	pageSize,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -56,6 +58,12 @@ export function DataTable<TData, TValue>({
 		state: {
 			sorting,
 			columnFilters,
+		},
+
+		initialState: {
+			pagination: {
+				pageSize: pageSize ? pageSize : 10,
+			},
 		},
 	});
 

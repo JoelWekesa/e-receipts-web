@@ -86,6 +86,14 @@ export const MainNav: FC<Props> = ({storeId}) => {
 					</DropdownMenuContent>
 				</DropdownMenu>
 				<Link
+					href='/myteams'
+					className={cn(
+						'transition-colors hover:text-foreground/80',
+						pathname?.startsWith('/myteams') ? 'text-foreground' : 'text-foreground/60'
+					)}>
+					My Teams
+				</Link>
+				<Link
 					href='/settings'
 					className={cn(
 						'transition-colors hover:text-foreground/80',

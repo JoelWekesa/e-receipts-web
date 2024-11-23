@@ -1,27 +1,21 @@
+'use client';
+
 import {siteConfig} from '@/config/site';
+import dayjs from 'dayjs';
 
 export function SiteFooter() {
 	return (
 		<footer className='py-6 md:px-8 md:py-0'>
 			<div className='container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row'>
 				<p className='text-balance text-center text-sm leading-loose text-muted-foreground md:text-left'>
-					Built by{' '}
+					@{dayjs(new Date()).format('YYYY')}. All rights reserved{' '}
 					<a
 						href={siteConfig.links.twitter}
 						target='_blank'
 						rel='noreferrer'
 						className='font-medium underline underline-offset-4'>
-						Joel Wekesa
+						IKODE LTD
 					</a>
-					. See my Github profile for more projects{' '}
-					<a
-						href={siteConfig.links.github}
-						target='_blank'
-						rel='noreferrer'
-						className='font-medium underline underline-offset-4'>
-						GitHub
-					</a>
-					.
 				</p>
 			</div>
 		</footer>
