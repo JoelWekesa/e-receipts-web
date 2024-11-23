@@ -170,10 +170,12 @@ const InvoiceComponent: FC<{invoice: Invoice; token: string; account: BillingAcc
 							<p className='text-sm font-medium text-gray-500'>Due Date</p>
 							<p className='text-sm md:text-base'>{dayjs(data?.dueDate).format('DD MMMM YYYY HH:mm')}</p>
 						</div>
-						<div>
-							<p className='text-sm font-medium text-gray-500'>Paid Date</p>
-							<p className='text-sm md:text-base'>{dayjs(data?.paidAt).format('DD MMMM YYYY HH:mm')}</p>
-						</div>
+						{data?.paidAt && (
+							<div>
+								<p className='text-sm font-medium text-gray-500'>Paid Date</p>
+								<p className='text-sm md:text-base'>{dayjs(data?.paidAt).format('DD MMMM YYYY HH:mm')}</p>
+							</div>
+						)}
 					</div>
 					<div className='overflow-x-auto'>
 						<Table>
