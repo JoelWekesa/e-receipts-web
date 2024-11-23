@@ -3,7 +3,7 @@ import useProfile from '@/services/profile/get-profile';
 import {signOut, useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
-import {Button} from '../ui/button';
+import {Button, buttonVariants} from '../ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,9 +14,11 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import {LogIn, RefreshCw} from 'lucide-react';
+import Link from 'next/link';
 
 const UserNav = () => {
-	const {data: user} = useSession();
+	const {data: user, status} = useSession();
 
 	const {data: profile} = useProfile({
 		profile: null,
@@ -27,6 +29,18 @@ const UserNav = () => {
 	const handleRedirect = (href: string) => {
 		router.push(href);
 	};
+
+	if (status === 'loading') {
+		return <RefreshCw className={`w-4 h-4 md:w-8 md:h-8 text-white opacity-80 animate-spin`} />;
+	}
+
+	if (status === 'unauthenticated') {
+		return (
+			<Link href={`/auth/login`} className={buttonVariants({variant: 'ghost', size: 'icon'})}>
+				<LogIn className='w-6 h-6' />
+			</Link>
+		);
+	}
 
 	return (
 		<DropdownMenu>
