@@ -70,30 +70,12 @@ const SettingsComponent: FC<{stores: Store[]; setting: Setting; token: string}> 
 							onClick={() => setActiveTab('security')}>
 							Security
 						</Link>
-						<Link
-							href='#'
-							className={`font-semibold ${activeTab === 'integrations' ? 'text-primary' : 'text-muted-foreground'}`}
-							onClick={() => setActiveTab('integrations')}>
-							Integrations
-						</Link>
-						<Link
+						{/* <Link
 							href='#'
 							className={`font-semibold ${activeTab === 'support' ? 'text-primary' : 'text-muted-foreground'}`}
 							onClick={() => setActiveTab('support')}>
 							Support
-						</Link>
-						<Link
-							href='#'
-							className={`font-semibold ${activeTab === 'organizations' ? 'text-primary' : 'text-muted-foreground'}`}
-							onClick={() => setActiveTab('organizations')}>
-							Organizations
-						</Link>
-						<Link
-							href='#'
-							className={`font-semibold ${activeTab === 'advanced' ? 'text-primary' : 'text-muted-foreground'}`}
-							onClick={() => setActiveTab('advanced')}>
-							Advanced
-						</Link>
+						</Link> */}
 					</nav>
 					<div className='grid gap-6'>
 						{activeTab === 'general' && (
