@@ -18,7 +18,7 @@ import AddProductComponent from './product';
 import ProductHeader from './productheader';
 import VariantTypes from './variant-types';
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 12; // 12 MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const formSchema = z.object({
@@ -32,7 +32,7 @@ const formSchema = z.object({
 		.instanceof(File, {message: 'Thumbnail is required'})
 		.refine((file) => {
 			return !file || file.size <= MAX_UPLOAD_SIZE;
-		}, 'File size must be less than 3MB')
+		}, 'File size must be less than 12MB')
 		.refine((file) => {
 			return ACCEPTED_FILE_TYPES.includes(file.type);
 		}, 'File must be an image')
@@ -43,7 +43,7 @@ const formSchema = z.object({
 				.instanceof(File, {message: 'File is required'})
 				.refine((file) => {
 					return !file || file.size <= MAX_UPLOAD_SIZE;
-				}, 'File size must be less than 3MB')
+				}, 'File size must be less than 12MB')
 				.refine((file) => {
 					return ACCEPTED_FILE_TYPES.includes(file.type);
 				}, 'File must be an image')

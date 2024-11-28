@@ -88,7 +88,7 @@ export const AddProductComponent: FC<Props> = ({categories}) => {
 							)}
 						/>
 					</div>
-					<div className='grid gap-3'>
+					{/* <div className='grid gap-3'>
 						<FormField
 							name='price'
 							control={form.control}
@@ -108,7 +108,7 @@ export const AddProductComponent: FC<Props> = ({categories}) => {
 								</FormItem>
 							)}
 						/>
-					</div>
+					</div> */}
 					<div className='grid gap-3'>
 						<FormField
 							control={form.control}

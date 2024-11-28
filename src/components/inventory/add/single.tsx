@@ -23,7 +23,7 @@ import useAddSimpleProduct from '@/services/inventory/products/add-single';
 import Image from 'next/image';
 import {DeleteDropDown} from './images/drop';
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 1.8; // 1.8MB
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 12; // 1.8MB
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const formSchema = z.object({
@@ -37,7 +37,7 @@ const formSchema = z.object({
 		.instanceof(File, {message: 'Thumbnail is required'})
 		.refine((file) => {
 			return !file || file.size <= MAX_UPLOAD_SIZE;
-		}, 'File size must be less than 3MB')
+		}, 'File size must be less than 12MB')
 		.refine((file) => {
 			return ACCEPTED_FILE_TYPES.includes(file.type);
 		}, 'File must be an image'),
@@ -47,7 +47,7 @@ const formSchema = z.object({
 				.instanceof(File, {message: 'File is required'})
 				.refine((file) => {
 					return !file || file.size <= MAX_UPLOAD_SIZE;
-				}, 'File size must be less than 3MB')
+				}, 'File size must be less than 12MB')
 				.refine((file) => {
 					return ACCEPTED_FILE_TYPES.includes(file.type);
 				}, 'File must be an image')
@@ -319,7 +319,7 @@ const AddSingleProductComponent: FC<{categories: Category[]; storeId: string; to
 														}}
 														multiple={false}
 														maxFiles={1}
-														maxSize={5000000}
+														maxSize={50000000}
 														onDropAccepted={(items) => onDropThumbnail(items)}>
 														{({getRootProps, getInputProps}) => (
 															<div className='w-full flex justify-center items-center'>
@@ -377,7 +377,7 @@ const AddSingleProductComponent: FC<{categories: Category[]; storeId: string; to
 										render={() => (
 											<FormItem>
 												<FormLabel>
-													Product Media <span className='text text-muted-foreground'>(Max 6)</span> <Required />
+													Product Media <span className='text text-muted-foreground'>(Max 3)</span> <Required />
 												</FormLabel>
 												<FormControl>
 													<Dropzone
@@ -385,8 +385,8 @@ const AddSingleProductComponent: FC<{categories: Category[]; storeId: string; to
 															'': ['.png', '.jpg', '.jpeg'],
 														}}
 														multiple={true}
-														maxFiles={6}
-														maxSize={5000000}
+														maxFiles={3}
+														maxSize={50000000}
 														useFsAccessApi={false}
 														onDropAccepted={(items) => onDrop(items)}>
 														{({getRootProps, getInputProps}) => (

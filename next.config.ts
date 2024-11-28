@@ -1,6 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-	output: 'standalone',
+// const withPlaiceholder = require('@plaiceholder/next');
+import withPlaiceholder from '@plaiceholder/next';
+import type { NextConfig } from 'next'
+const nextConfig: NextConfig = {
+	// output: 'standalone',
 	images: {
 		remotePatterns: [
 			{
@@ -71,4 +73,6 @@ const nextConfig = {
 	output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
 };
 
-module.exports = nextConfig;
+
+
+export default withPlaiceholder(nextConfig);

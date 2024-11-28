@@ -6,8 +6,15 @@ import {useEffect, useState} from 'react';
 import ProductImageWrapper from './product-image-wrapper';
 import {H3} from '@/components/titles';
 
+export type ModeInventory = Omit<Inventory, 'thumbnail'>;
+
+export interface OptimizedInventory extends ModeInventory {
+	base64: string;
+	src: string;
+}
+
 interface Product {
-	inventory: Inventory;
+	inventory: OptimizedInventory;
 	loading: 'eager' | 'lazy';
 	priority: boolean;
 }
@@ -31,15 +38,16 @@ export function ProductElement({inventory, loading, priority}: Product) {
 		<li data-testid='ProductElement'>
 			<Link href={`/shop/item/${inventory.store.name}/${inventory.name}`}>
 				<div>
-					{inventory?.thumbnail && (
+					{inventory?.src && (
 						<ProductImageWrapper
 							loading={loading}
-							src={inventory?.thumbnail}
+							src={inventory?.src}
 							alt={inventory.name}
 							width={512}
 							height={512}
 							sizes={'512px'}
 							priority={priority}
+							blurDataURL={inventory.base64}
 						/>
 					)}
 					<div className='mt-2 flex flex-col p-1'>

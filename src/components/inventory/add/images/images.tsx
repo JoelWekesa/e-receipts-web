@@ -14,6 +14,7 @@ const ProductImages = () => {
 
 	const onDrop = (acceptedFiles: File[]) => {
 		setImages(acceptedFiles);
+		console.log(acceptedFiles);
 		form.setValue('images', acceptedFiles);
 	};
 
@@ -22,6 +23,8 @@ const ProductImages = () => {
 		setImages(newImages);
 		form.setValue('images', newImages);
 	};
+
+	console.log(form.formState.errors);
 
 	return (
 		<div className='flex flex-col gap-4 py-2'>
@@ -33,7 +36,7 @@ const ProductImages = () => {
 						render={() => (
 							<FormItem>
 								<FormLabel>
-									Product Media <span className='text text-muted-foreground'>(Max 6)</span> <Required />
+									Product Medias <span className='text text-muted-foreground'>(Max 3)</span> <Required />
 								</FormLabel>
 								<FormControl>
 									<Dropzone
@@ -41,8 +44,8 @@ const ProductImages = () => {
 											'': ['.png', '.jpg', '.jpeg'],
 										}}
 										multiple={true}
-										maxFiles={6}
-										maxSize={5000000}
+										maxFiles={3}
+										maxSize={50000000}
 										useFsAccessApi={false}
 										onDropAccepted={(items) => onDrop(items)}>
 										{({getRootProps, getInputProps}) => (

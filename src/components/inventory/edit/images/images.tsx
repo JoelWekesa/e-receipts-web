@@ -60,7 +60,7 @@ const ProductImages: FC<Props> = ({inventory}) => {
 						render={() => (
 							<FormItem>
 								<FormLabel>
-									Product Media <span className='text text-muted-foreground'>(Max 6)</span> <Required />
+									Product Media <span className='text text-muted-foreground'>(Max 3)</span> <Required />
 								</FormLabel>
 								<FormControl>
 									<Dropzone
@@ -68,8 +68,8 @@ const ProductImages: FC<Props> = ({inventory}) => {
 											'': ['.png', '.jpg', '.jpeg'],
 										}}
 										multiple={true}
-										maxFiles={6 - (images?.current?.length || 0)}
-										maxSize={5000000}
+										maxFiles={3 - (images?.current?.length || 0)}
+										maxSize={50000000}
 										useFsAccessApi={false}
 										onDropAccepted={(items) => onDrop(items)}>
 										{({getRootProps, getInputProps}) => (

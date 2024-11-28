@@ -1,6 +1,8 @@
+import {OptimizedInventory} from '@/components/storefront/products/product-element';
 import {ProductList} from '@/components/storefront/products/product-list';
 import {ProductNotFound} from '@/components/storefront/search/notfound';
 import {H1} from '@/components/titles';
+import getImage from '@/lib/image';
 import {searchInventory} from '@/services/page/search/inventory';
 import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
@@ -87,10 +89,25 @@ const SearchPage = async (props: {
 		price: '' + item.price,
 	}));
 
+	const optimizedProducts: OptimizedInventory[] = await Promise.all(
+		converted.map(async ({thumbnail, ...rest}) => {
+			const {
+				img: {src},
+				base64,
+			} = await getImage({src: thumbnail || ''});
+
+			return {
+				...rest,
+				src,
+				base64,
+			};
+		})
+	);
+
 	return (
 		<div className='mx-auto max-w-7xl p-8 pb-16'>
 			<H1 className='text-3xl font-bold leading-none tracking-tight text-foreground py-5'>Searching for {query}</H1>
-			{converted.length ? <ProductList products={converted} shop={name} /> : <ProductNotFound query={query} />}
+			{converted.length ? <ProductList products={optimizedProducts} shop={name} /> : <ProductNotFound query={query} />}
 		</div>
 	);
 };

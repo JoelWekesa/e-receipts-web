@@ -2,6 +2,7 @@ import {ProductProvider} from '@/components/storefront/product/context/product-c
 import {Gallery} from '@/components/storefront/product/gallery';
 import {ProductDescription} from '@/components/storefront/product/productdescription';
 import {siteConfig} from '@/config/site';
+import getImage from '@/lib/image';
 import {getStoreInventoryItem} from '@/services/page/inventory/store/store-inventory-item';
 import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
@@ -88,15 +89,35 @@ const Item: FC<Props> = async (props) => {
 
 	const inventoryItem = await getStoreInventoryItem({store, name});
 
+	const {
+		img: {src},
+		base64,
+	} = await getImage({src: inventoryItem?.thumbnail || ''});
+
 	const thumbnailImage = {
-		src: inventoryItem?.thumbnail || '',
+		src,
 		altText: Math.random().toString(),
+		base64,
 	};
 
-	const allImages = [
-		thumbnailImage,
-		...inventoryItem?.images.map((image) => ({src: image, altText: Math.random().toString()})),
-	];
+	const inventoryImages = await Promise.all(
+		inventoryItem?.images.map(async (image) => {
+			const {
+				img: {src},
+				base64,
+			} = await getImage({src: image});
+
+			const altText = Math.random().toString();
+
+			return {
+				src,
+				base64,
+				altText,
+			};
+		})
+	);
+
+	const allImages = [thumbnailImage, ...inventoryImages];
 
 	const maxVariantPrice = inventoryItem?.Variant.reduce(
 		(max, variant) => (variant.price > max ? variant.price : max),
@@ -113,7 +134,7 @@ const Item: FC<Props> = async (props) => {
 		'@type': 'Product',
 		name: inventoryItem?.name,
 		description: inventoryItem?.description,
-		image: inventoryItem?.images[0],
+		image: inventoryItem?.thumbnail,
 		offers: {
 			'@type': 'AggregateOffer',
 			availability:

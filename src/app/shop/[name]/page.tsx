@@ -1,5 +1,7 @@
+import {OptimizedInventory} from '@/components/storefront/products/product-element';
 import {ProductList} from '@/components/storefront/products/product-list';
 import {siteConfig} from '@/config/site';
+import getImage from '@/lib/image';
 import {getStoreProductStoreFront} from '@/services/page/inventory/store/store-variants';
 import {storeFromName} from '@/services/page/stores/store/store-from-name';
 import {Metadata} from 'next';
@@ -70,6 +72,21 @@ const Shop = async (props: {params: Promise<{name: string}>}) => {
 
 	const [shop, products] = await Promise.all([store, prods]);
 
+	const optimizedProducts: OptimizedInventory[] = await Promise.all(
+		products.map(async ({thumbnail, ...rest}) => {
+			const {
+				img: {src},
+				base64,
+			} = await getImage({src: thumbnail || ''});
+
+			return {
+				...rest,
+				src,
+				base64,
+			};
+		})
+	);
+
 	if (!shop) return notFound();
 
 	const productJsonLd = {
@@ -95,7 +112,7 @@ const Shop = async (props: {params: Promise<{name: string}>}) => {
 					__html: JSON.stringify(productJsonLd),
 				}}
 			/>
-			<ProductList products={products} shop={shop.name} />
+			<ProductList products={optimizedProducts} shop={shop.name} />
 		</div>
 	);
 };

@@ -2,14 +2,13 @@
 
 import {cartAtom, openCart} from '@/atoms/cart/add';
 import {Sheet, SheetContent, SheetHeader} from '@/components/ui/sheet';
-import {Inventory} from '@/models/inventory/inventory';
 import {useAtom} from 'jotai';
 import {FC} from 'react';
 import CartItemsComponent from '../cart/cart-items';
-import {ProductElement} from './product-element';
+import {OptimizedInventory, ProductElement} from './product-element';
 
 interface Props {
-	products: Inventory[];
+	products: OptimizedInventory[];
 	shop: string;
 }
 

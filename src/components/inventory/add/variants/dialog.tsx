@@ -62,7 +62,7 @@ const VariantsDialog = () => {
 			quantity: variant?.quantity ? '' + variant.quantity : '',
 			warnLevel: variant?.warnLevel ? '' + variant.warnLevel : '',
 			description: variant?.description || '',
-			discount: variant?.discount ? '' + variant.discount : '',
+			discount: variant?.discount ? '' + variant.discount : '0',
 		},
 	});
 

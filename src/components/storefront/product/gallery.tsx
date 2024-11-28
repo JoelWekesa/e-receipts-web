@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {GridTileImage} from './grid/tile';
 import {useProduct, useUpdateURL} from './context/product-context';
 
-export function Gallery({images}: {images: {src: string; altText: string}[]}) {
+export function Gallery({images}: {images: {src: string; altText: string; base64: string}[]}) {
 	const {state, updateImage} = useProduct();
 	const updateURL = useUpdateURL();
 	const imageIndex = state.image ? parseInt(state.image) : 0;
@@ -26,6 +26,8 @@ export function Gallery({images}: {images: {src: string; altText: string}[]}) {
 						alt={images[imageIndex]?.altText as string}
 						src={images[imageIndex]?.src as string}
 						priority={true}
+						blurDataURL={images[imageIndex]?.base64}
+						placeholder='blur'
 					/>
 				)}
 
