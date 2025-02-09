@@ -52,7 +52,7 @@ stages:
        - task: Docker@2
          inputs:
           containerRegistry: 'docker'
-          repository: 'joelwekesa/frontend'
+          repository: 'joelwekesa/estorewebdev'
           command: 'push'
           tags: '$(tag)'
 
