@@ -15,7 +15,7 @@ const HomeComponent = () => {
 						<Link
 							href={process.env.NEXT_PUBLIC_DOMAIN || 'https://estore.africa'}
 							className='relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-[#bfbfbf] hover:ring-zinc-100/30 duration-200 hover:scale-105 transition-all dark:text-zinc-400 text-zinc-800 dark:ring-zinc-100/10'>
-							Introducing{' '}
+							Introducing{'* '}
 							<span className='mx-2 font-semibold dark:text-zinc-200 text-black'>
 								estore.africa <span aria-hidden='true'>&rarr;</span>
 							</span>
