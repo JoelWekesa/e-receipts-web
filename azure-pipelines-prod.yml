@@ -5,16 +5,16 @@ resources:
  - repo: self
 
 variables:
- # Set the tag to the current timestamp
- tag: '$(Build.SourceBranchName)-$(date +%Y-%m-%d_%H%M%S)'
- PORT: 4000
+ - group: eStoreDev
+ - name: tag
+   value: $(Build.BuildId)
 
 stages:
- - stage: Build
-   displayName: Build image
+ - stage: BuildAndPushFrontend
+   displayName: Build and Push Frontend Docker Image
    jobs:
-    - job: Build
-      displayName: Build
+    - job: BuildAndPushFrontendImage
+      displayName: Build and Push Frontend Image
       pool:
        vmImage: ubuntu-latest
       steps:
@@ -43,18 +43,12 @@ stages:
 
        # Set image tag with timestamp
        - script: |
-          echo "##vso[task.setvariable variable=tag]$(Build.SourceBranchName)-$(date +%Y-%m-%d_%H%M%S)"
-         displayName: Set image tag with timestamp
-
-       # Adding logging for Docker build process
-       - script: |
-          echo "Building Docker image with tag: $(tag)"
-          docker build --build-arg PORT=$(PORT) -f Dockerfile -t joelwekesa/eweb:$(tag) .
-         displayName: Build Docker Image
+          echo "Building Docker image for frontend with tag: $(tag)"
+          docker build -f Dockerfile -t joelwekesa/eweb:$(tag) .
+         displayName: Build Frontend Docker Image
          env:
-          DOCKER_BUILDKIT: 1 # Enable buildkit for better output
+          DOCKER_BUILDKIT: 1
 
-       # Push the Docker image to registry
        - task: Docker@2
          inputs:
           containerRegistry: 'docker'
@@ -62,8 +56,7 @@ stages:
           command: 'push'
           tags: '$(tag)'
 
-       # Check the Docker image after build
        - script: |
-          echo "Docker images list:"
+          echo "Docker images list after frontend build:"
           docker images
-         displayName: List Docker Images
+         displayName: List Frontend Docker Images
