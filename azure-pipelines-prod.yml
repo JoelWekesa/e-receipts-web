@@ -5,7 +5,7 @@ resources:
  - repo: self
 
 variables:
- - group: eStoreDev
+ - group: eStoreProd
  - name: tag
    value: $(Build.BuildId)
 
