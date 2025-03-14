@@ -1,19 +1,18 @@
-import {ThemeProvider} from '@/components/providers';
-import {SiteFooter} from '@/components/site-footer';
-import {TailwindIndicator} from '@/components/tailwind-indicator';
-import {ThemeSwitcher} from '@/components/theme-switcher';
-import {Toaster as NewYorkSonner} from '@/components/ui/sonner';
-import {Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster} from '@/components/ui/toaster';
-import {bodyText} from '@/lib/fonts';
-import {cn} from '@/lib/utils';
+import { ThemeProvider } from '@/components/providers';
+import { SiteFooter } from '@/components/site-footer';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
+import { ThemeSwitcher } from '@/components/theme-switcher';
+import { Toaster as NewYorkSonner } from '@/components/ui/sonner';
+import { Toaster as DefaultToaster, Toaster as NewYorkToaster, Toaster } from '@/components/ui/toaster';
+import { bodyText } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 import IdleTime from '@/providers/idle-time';
 import NextAuthProvider from '@/providers/next-auth';
 import ReactQueryProvider from '@/providers/react-query';
-import {GoogleAnalytics} from '@next/third-parties/google';
-import {getCookies, setCookie} from 'cookies-next';
-import {Provider} from 'jotai';
-import {Viewport} from 'next';
-import {v4 as uuidv4} from 'uuid';
+import { getCookies, setCookie } from 'cookies-next';
+import { Provider } from 'jotai';
+import { Viewport } from 'next';
+import { v4 as uuidv4 } from 'uuid';
 import '../styles/globals.css';
 
 export const viewport: Viewport = {
@@ -30,7 +29,7 @@ interface RootLayoutProps {
 export default async function RootLayout({children}: RootLayoutProps) {
 	const cookies = await getCookies();
 
-	const GAID = process.env.NEXT_GOOGLE_ANALYTICS_ID || '';
+	// const GAID = process.env.NEXT_GOOGLE_ANALYTICS_ID || '';
 
 	if (!cookies?.cartId) {
 		const cartId = 'cart-' + uuidv4();
@@ -63,7 +62,7 @@ export default async function RootLayout({children}: RootLayoutProps) {
 									<NewYorkSonner />
 								</ThemeProvider>
 							</body>
-							<GoogleAnalytics gaId={GAID} />
+							{/* <GoogleAnalytics gaId={GAID} /> */}
 						</html>
 					</ReactQueryProvider>
 				</Provider>
